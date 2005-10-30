@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.2 2005-10-30 18:50:50 karl Exp $
+ * $Id: tclgd.c,v 1.3 2005-10-30 21:25:19 karl Exp $
  */
 
 #include <tcl.h>
@@ -949,7 +949,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	int color;
 
 	if (objc != 3) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "boolean");
+	    Tcl_WrongNumArgs (interp, 2, objv, "color");
 	    return TCL_ERROR;
 	}
 
@@ -1414,7 +1414,9 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	    return TCL_ERROR;
 	}
 
+#if 0
 	gdImageSharpen (im, pct);
+#endif
 	return TCL_OK;
       }
 
@@ -1423,22 +1425,26 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 
       case OPT_SQUARE_TO_CIRCLE: {
         int radius;
+	gdImagePtr newIm;
 
 	if (gdImageSX(im) != gdImageSY(im)) {
 	    Tcl_AppendResult (interp, "image must be square for square_to_circle to work", NULL);
 	    return TCL_ERROR;
 	}
 
-	if (objc != 3) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "radius");
+	if (objc != 4) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "name radius");
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetIntFromObj (interp, objv[2], &radius) == TCL_ERROR) {
+	if (Tcl_GetIntFromObj (interp, objv[3], &radius) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
-	gdImageSquareToCircle (im, radius);
+#if 0
+	newIm = gdImageSquareToCircle (im, radius);
+#endif
+	Tcl_CreateObjCommand (interp, Tcl_GetString(objv[2]), gd_GDObjCmd, newIm, gd_GDdeleteProc);
 	break;
       }
 
@@ -1460,6 +1466,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	gdImageJpeg (im, file, quality);
+	fflush (file);
 	return TCL_OK;
       }
 
@@ -1495,6 +1502,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	gdImageGif (im, file);
+	fflush (file);
 	return TCL_OK;
       }
 
@@ -1535,6 +1543,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	gdImagePngEx (im, file, compression);
+	fflush (file);
 	return TCL_OK;
       }
 
@@ -1580,6 +1589,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	gdImageWBMP (im, fgcolor, file);
+	fflush (file);
 	return TCL_OK;
       }
 
@@ -1615,6 +1625,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	gdImageGd (im, file);
+	fflush (file);
 	return TCL_OK;
       }
 
@@ -1782,6 +1793,7 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
 	}
 
 	im = gdImageCreateFromJpeg (file);
+	fflush (file);
 	break;
       }
 
@@ -1812,6 +1824,7 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
 	}
 
 	im = gdImageCreateFromPng (file);
+	fflush (file);
 	break;
       }
 
@@ -1842,6 +1855,7 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
 	}
 
 	im = gdImageCreateFromGif (file);
+	fflush (file);
 	break;
       }
 
@@ -1872,6 +1886,7 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
 	}
 
 	im = gdImageCreateFromGd (file);
+	fflush (file);
 	break;
       }
 
@@ -1902,6 +1917,7 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
 	}
 
 	im = gdImageCreateFromGd2 (file);
+	fflush (file);
 	break;
       }
 
@@ -1952,6 +1968,7 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
        }
 
 	im = gdImageCreateFromGd2Part (file, x, y, w, h);
+	fflush (file);
 	break;
       }
 
@@ -2004,6 +2021,7 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
 	}
 
 	im = gdImageCreateFromWBMP (file);
+	fflush (file);
 	break;
       }
 
@@ -2034,6 +2052,7 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
 	}
 
 	im = gdImageCreateFromXbm (file);
+	fflush (file);
 	break;
       }
 

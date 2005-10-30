@@ -1,7 +1,7 @@
 /*
  * tclcdata.c --
  *
- * $Id: tclgdtcl.c,v 1.2 2005-10-30 18:50:50 karl Exp $
+ * $Id: tclgdtcl.c,v 1.3 2005-10-30 21:25:19 karl Exp $
  */
 
 #include <tcl.h>
@@ -31,7 +31,7 @@
  */
 
 EXTERN int
-gdtcl_Init(Tcl_Interp *interp)
+Gdtcl_Init(Tcl_Interp *interp)
 {
     /*
      * This may work with 8.0, but we are using strictly stubs here,
@@ -75,7 +75,7 @@ gdtcl_Init(Tcl_Interp *interp)
  */
 
 EXTERN int
-gdtcl_SafeInit(Tcl_Interp *interp)
+Gdtcl_SafeInit(Tcl_Interp *interp)
 {
     return TCL_OK;
 }
