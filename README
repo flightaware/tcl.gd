@@ -1,142 +1,29 @@
-This is Tweezer, a hackish tool for doing dangerous but potentially 
-interesting things to Tcl objects... things that may surprise and delight... 
-or cause your interpreter to dump core...
+This is gdtcl, a new Tcl interface to GD that is significantly more feature-
+complete with gd 2 than Gdtclft.
 
-Using Tweezer you can sniff any Tcl object that you can contrive for
-the tweezer to be able to see, such as a variable, proc, array element,
-element of a list within a list, etc, find out its data type (internal 
-representation), look at and manipulate its reference count, generate
-a new reference, and even force an object to shimmer to a different internal 
-representation, which may actually be useful for something.
+Version 0.0
 
-It kind of lifts the veil on the objects that underly Tcl, that are normally
-invisible to Tcl programs.
-
-This extension is intended for experimentation and is in a relatively
-primitive state.  I strongly recommend against using it for anything
-real unless you are absolutely sure about what you're doing.  I welcome 
-suggestions on how to improve this tool and creative flames on what a
-horrible abomination it is.
-
-Version 0.1
-
-$Id: README,v 1.1.1.1 2005-10-30 18:45:18 karl Exp $
+$Id: README,v 1.2 2005-10-30 18:50:50 karl Exp $
 
 This package is a freely available open source package under the "Berkeley"
 license, same as Tcl.  You can do virtually anything you like with it, such as 
 modifying it, redistributing it, and selling it either in whole or in part.  
 See the file "license.terms" for complete information.
 
-Tweezer was written by Karl Lehenbauer.
+Gdtcl was written by Karl Lehenbauer.
 
-USING THE TWEEZER
-=================
+USING GDTCL
+===========
 
-package require tweezer
-
-% set a 10
-% tweezer type $a
-int
-
-% tweezer shimmer $a double
-% tweezer type $a
-double
-% puts $a
-10
-% tweezer type $a
-double
-
-% set a "a b c d e f g h i j k l m n o p"
-a b c d e f g h i j k l m n o p
-% tweezer type $a
-% lindex $a 4
-e
-% tweezer type $a
-list
-% tweezer shimmer [lindex $a 4] list
-% tweezer type [lindex $a 4]
-list
+package require gdtcl
 
 
-% proc die {} {if}
-% tweezer shimmer [info body die] bytecode
-wrong # args: no expression after "if" argument
+GDTCL QUICK REF
+===============
 
-% tweezer types
-boolean index double end-offset wideInt list cmdName bytecode nsName procbody bytearray int {array search} string
-
-foreach proc [info procs] {
-    tweezer convert [info body $proc] bytecode
-}
-
-...pretty cool, huh?
-
-TWEEZER QUICK REF
-=================
-
-tweezer types
-
-    Return a list of all of the defined object types within Tcl.
-
-tweezer type object
-
-    Return the internal data type of an object.  If the object has
-    no current internal representation, return nothing.
-    
-    To see the data type of a variable, reference the variable's contents
-
-    tweezer type $var
-
-    tweezer type $array(element)
-
-    To see a proc body, use info body...
-
-    tweezer type [info body myproc]
-
-    To see the type of the fourth element of a list
-
-    tweezer type [lindex $list 3]
-
-tweezer shimmer object
-
-    Shimmer an object to a different type
-
-    To force the fifth element of a list to be an integer
-    tweezer shimmer [lindex $list 4] int
-
-    Attempting to shimmer objects to strange object types can cause coredumps.
-
-    The name shimmer is possibly dumb.  It might be reasonable to just
-    have "tweezer type" set the type if 4 arguments are present.
-
-tweezer refcount object
-
-    Return the object's reference count.
-
-makeref
-
-    Create and return a reference to an object without incrementing the
-    object's reference count.  Dangerous.
-
-duplicate
-
-    Duplicate an object and return the new object.  This shouldn't be
-    dangerous but may be dumb.
-
-incr_refcount
-
-    Increment an object's reference count.  Stupid name.
-
-decr_refcount
-
-    Decrement an object's reference count.  Another stupid name plus dangerous.
 
 BUGS
 ====
-
-After changing the type of a proc body to bytecode, it doesn't show up
-as bytecode.  This used to work, maybe in earlier versions of Tcl 8.
-It does still appear to force compilation of the proc.
 
 CONTENTS
 ========
@@ -177,7 +64,7 @@ UNIX BUILD
 Building under most UNIX systems is easy, just run the configure script
 and then run make. 
 
-	$ cd tweezer
+	$ cd gdtcl
 	$ ./configure
 	$ make
 	$ make install
@@ -185,8 +72,7 @@ and then run make.
 WINDOWS BUILD
 =============
 
-Pat Thoyts has built the tweezer under Windows, using both VC++
-and also using msys + gcc.
+gdtcl has not been built under Windows at this time.
 
 The recommended method to build extensions under Windows is to use the
 Msys + Mingw build process. This provides a Unix-style build while

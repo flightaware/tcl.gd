@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
+ * $Id: tclgd.c,v 1.2 2005-10-30 18:50:50 karl Exp $
  */
 
 #include <tcl.h>

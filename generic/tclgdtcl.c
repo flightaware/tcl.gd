@@ -1,9 +1,7 @@
 /*
  * tclcdata.c --
  *
- * $Id: tclgdtcl.c,v 1.1.1.1 2005-10-30 18:45:18 karl Exp $
- *
- *
+ * $Id: tclgdtcl.c,v 1.2 2005-10-30 18:50:50 karl Exp $
  */
 
 #include <tcl.h>
