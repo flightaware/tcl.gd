@@ -3,7 +3,7 @@ dnl	This file is an input file used by the GNU "autoconf" program to
 dnl	generate the file "configure", which is run during Tcl installation
 dnl	to configure the system for the local environment.
 #
-# RCS: @(#) $Id: configure.in,v 1.1.1.1 2005-10-30 18:45:18 karl Exp $
+# RCS: @(#) $Id: configure.in,v 1.2 2005-10-30 21:23:02 karl Exp $
 
 #-----------------------------------------------------------------------
 # configure.in for Karl's gdtcl.  
@@ -60,27 +60,6 @@ TEA_PREFIX
 
 TEA_SETUP_COMPILER
 
-#--------------------------------------------------------------------
-# Get the paths to the gd includes and libraries.
-#--------------------------------------------------------------------
-
-AC_ARG_WITH(gd-include,  --with-gd-include        directory containing gd include files)
-AC_ARG_WITH(gd-lib,  --with-gd-lib        directory containing gd library files)
-
-if test "${with_gd_include+set}" = "set"; then
-    GD_INC_DIR="${with_gd_include}"
-    AC_MSG_RESULT([using gd include dir of... "$GD_INC_DIR"])
-fi
-
-if test "${with_gd_lib+set}" = "set"; then
-    GD_LIB_DIR="${with_gd_lib}"
-    AC_MSG_RESULT([using gd lib dir of... "$GD_LIB_DIR"])
-fi
-LIBGD="libgd${SHLIB_SUFFIX}"
-AC_SUBST(LIBGD)
-AC_SUBST(GD_INC_DIR)
-AC_SUBST(GD_LIB_DIR)
-
 #-----------------------------------------------------------------------
 # __CHANGE__
 # Specify the C source files to compile in TEA_ADD_SOURCES,
@@ -98,6 +77,29 @@ TEA_ADD_LIBS([])
 TEA_ADD_CFLAGS([])
 TEA_ADD_STUB_SOURCES([])
 TEA_ADD_TCL_SOURCES([])
+
+#--------------------------------------------------------------------
+# Get the paths to the gd includes and libraries.
+#--------------------------------------------------------------------
+
+AC_ARG_WITH(gd-include,  --with-gd-include        directory containing gd include files)
+AC_ARG_WITH(gd-lib,  --with-gd-lib        directory containing gd library files)
+
+if test "${with_gd_include+set}" = "set"; then
+    GD_INC_DIR="${with_gd_include}"
+    AC_MSG_RESULT([using gd include dir of... "$GD_INC_DIR"])
+fi
+
+if test "${with_gd_lib+set}" = "set"; then
+    GD_LIB_DIR="${with_gd_lib}"
+    AC_MSG_RESULT([using gd lib dir of... "$GD_LIB_DIR"])
+fi
+LIBGD="libgd${SHLIB_SUFFIX}"
+AC_SUBST(GD_INC_DIR)
+AC_SUBST(GD_LIB_DIR)
+
+AC_CHECK_LIB (gd, gdImageFill)
+AC_SUBST(LIBGD)
 
 #--------------------------------------------------------------------
 # __CHANGE__

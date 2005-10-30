@@ -13,7 +13,7 @@
 # See the file "license.terms" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
-# RCS: @(#) $Id: Makefile.in,v 1.2 2005-10-30 18:50:50 karl Exp $
+# RCS: @(#) $Id: Makefile.in,v 1.3 2005-10-30 21:23:02 karl Exp $
 
 #========================================================================
 # Add additional lines to handle any additional AC_SUBST cases that
@@ -120,6 +120,9 @@ TCL_SRC_DIR	= @TCL_SRC_DIR@
 # Not used, but retained for reference of what libs Tcl required
 TCL_LIBS	= @TCL_LIBS@
 
+GD_INC_DIR      = @GD_INC_DIR@
+GD_LIB_DIR      = @GD_LIB_DIR@
+
 #========================================================================
 # TCLLIBPATH seeds the auto_path in Tcl's init.tcl so we can test our
 # package without installing.  The other environment variables allow us
@@ -136,7 +139,7 @@ TCLSH_PROG	= @TCLSH_PROG@
 TCLSH		= $(TCLSH_ENV) $(TCLSH_PROG)
 SHARED_BUILD	= @SHARED_BUILD@
 
-INCLUDES	= @PKG_INCLUDES@ @TCL_INCLUDES@
+INCLUDES	= @PKG_INCLUDES@ @TCL_INCLUDES@ -I"@GD_INC_DIR@"
 
 PKG_CFLAGS	= @PKG_CFLAGS@
 
@@ -345,7 +348,7 @@ clean:
 distclean: clean
 	-rm -f *.tab.c
 	-rm -f $(CONFIG_CLEAN_FILES)
-	-rm -f config.cache config.log config.status autom4te*.cache
+	-rm -rf config.cache config.log config.status autom4te*.cache
 
 #========================================================================
 # Install binary object libraries.  On Windows this includes both .dll and
