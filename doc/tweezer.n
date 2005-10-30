@@ -1,0 +1,63 @@
+.TH tweezer n 0.0 "Tcl-Extensions"
+.HS tweezer tcl
+.BS
+.SH NAME
+tweezer \- view and manipulate Tcl object internals
+.SH SYNOPSIS
+\fBtweezer types\fR
+.br
+\fBtweezer type\fI object\fR
+.br
+\fBtweezer shimmer\fI object type\fR 
+.br
+\fBtweezer refcount\fI object\fR
+.br
+\fBtweezer makeref\fI object\fR
+.br
+\fBtweezer duplicate\fI object\fR
+.br
+\fBtweezer incr_refcount\fR
+.br
+\fBtweezer decr_refcount\fR
+.br
+.SH DESCRIPTION
+Tweezer gives Tcl programs the ability to examine and manipulate the
+state of Tcl objects, the core building blocks of Tcl in versions 8
+and above.
+.PP
+\fBtweezer types\fR returns a list of all object types dcurrently defined,
+while \fBtweezer type\fR will return the internal data type of the
+referenced object.  If the object has no current internal interpresentation,
+an empty string will be returned.
+.PP
+To see a variable's internal (cached) data type, reference the variable's
+contents, as in \fBtweezer type\fI $var\fR.  To see the type of a proc
+body, use \fBinfo body\fR to obtain access to the proc's body object, as in
+.nf
+    tweezer type [info body myproc]
+.fo
+.PP
+To see the type of the fourth element of a list,
+.nf
+    tweezer type [lindex $list 3]
+.fo
+.PP
+\fBtweezer shimmer\fR shimmers an object to a different type.  Arguments
+are the object and the new type.  You can try any type returned by
+\fBtweezer types\fR, however shimmering objects to strange types can
+cause coredumps.
+.PP
+\fBtweezer refcount\fR returns an object's reference count, while
+\fBtweezer incr_refcount\fR and \fBtweezer decr_refcount\fR increment
+and decrement the reference count, respectively.  Note that incrementing
+the reference count may result in objects not being freed after their
+last use, while decrementing a reference count can cause something to be
+freed while still being used, resulting in core dumps or worse.
+.PP
+\fBtweezer makeref\fR creates and returns a reference to an object without
+incrementing the object's reference count.  This is also dangerous.
+.PP
+\fBtweezer duplicate\fR duplicates an object and returns the new object.
+It probably isn't dangerous but could easily cause memory to be left
+around, plus it may be stupid, because this happens routinely in Tcl
+anyway.

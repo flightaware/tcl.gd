@@ -1,0 +1,95 @@
+# Commands covered:  search_tracks
+#
+# This file contains a collection of tests for one or more of the Tcl
+# built-in commands.  Sourcing this file into Tcl runs the tests and
+# generates output for errors.  No output means no errors were found.
+#
+# Copyright (c) 2000 by Scriptics Corporation.
+# Copyright (c) 2005 by Karl Lehenbauer.
+#
+# See the file "license.terms" for information on usage and redistribution
+# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+#
+# $Id: search.test,v 1.1.1.1 2005-10-30 18:45:18 karl Exp $
+
+package require CTrackStream
+
+test search_tracks-1.1 {incorrect command usage} {
+    list [catch {search_tracks} errMsg] $errMsg
+} {1 {wrong # args: should be "search_tracks ?-key value?..."}}
+
+test search_tracks-1.2 {incorrect usage of search_tracks subcommand} {
+    list [catch {search_tracks boo} errMsg] $errMsg
+} {1 {wrong # args: should be "search_tracks ?-key value?..."}}
+
+test search_tracks-1.3 {incorrect usage of search_tracks -countOnly arg (bad arg)} {
+    list [catch {search_tracks -countOnly foo} errMsg] $errMsg
+} {1 {expected boolean value but got "foo" while converting -countOnly value}}
+
+test search_tracks-1.4 {basic search_tracks with no matches and -countOnly 1} {
+    list [catch {search_tracks -countOnly 1} errMsg] $errMsg
+} {0 0}
+
+test search_tracks-1.5 {search_tracks with odd # of key-value pairs} {
+    list [catch {search_tracks -bark} errMsg] $errMsg
+} {1 {wrong # args: should be "search_tracks ?-key value?..."}}
+
+test search_tracks-1.6 {search_tracks with bad suboption key} {
+    list [catch {search_tracks -bark foo} errMsg] $errMsg
+} {1 {bad key "-bark": must be -clock, -prefix, -type, -suffix, -idents, -destination, -origin, -originOrDestination, -aboveAltitude, -belowAltitude, -aboveGroundspeed, -belowGroundspeed, -latlong, -countOnly, -blocked, or -unblock}}
+
+test search_tracks-1.7 {search_tracks with bad suboption key} {
+    list [catch {search_tracks -bark foo} errMsg] $errMsg
+} {1 {bad key "-bark": must be -clock, -prefix, -type, -suffix, -idents, -destination, -origin, -originOrDestination, -aboveAltitude, -belowAltitude, -aboveGroundspeed, -belowGroundspeed, -latlong, -countOnly, -blocked, or -unblock}}
+
+test search_tracks-1.8 {search_tracks with -prefix} {
+    list [catch {search_tracks -prefix foo} errMsg] $errMsg
+} {0 {}}
+
+test search_tracks-1.9 {search_tracks with -prefix and -countOnly} {
+    list [catch {search_tracks -prefix foo -countOnly 1} errMsg] $errMsg
+} {0 0}
+
+test search_tracks-1.10 {search_tracks with bad -latlong arg count} {
+    list [catch {search_tracks -latlong foo} errMsg] $errMsg
+} {1 {wrong # args: -latlong argument must be a list of 4 elements}}
+
+test search_tracks-1.11 {search_tracks with non-float -latlong arguments} {
+    list [catch {search_tracks -latlong {a b c d}} errMsg] $errMsg
+} {1 {expected floating-point number but got "a" while converting low longitude}}
+
+test search_tracks-1.12 {search_tracks with -latlong arguments} {
+    list [catch {search_tracks -latlong {1 2 3.4 5}} errMsg] $errMsg
+} {0 {}}
+
+test search_tracks-1.13 {search_tracks with -latlong arguments} {
+    list [catch {search_tracks -countOnly true -latlong {1 2 3.4 5}} errMsg] $errMsg
+} {0 0}
+
+test search_tracks-1.14 {search_tracks with -prefix argument} {
+    list [catch {search_tracks -prefix foo} errMsg] $errMsg
+} {0 {}}
+
+test search_tracks-1.15 {search_tracks with -type argument} {
+    list [catch {search_tracks -type foo} errMsg] $errMsg
+} {0 {}}
+
+test search_tracks-1.16 {search_tracks with -suffix argument} {
+    list [catch {search_tracks -suffix foo} errMsg] $errMsg
+} {0 {}}
+
+test search_tracks-1.17 {search_tracks with -origin argument} {
+    list [catch {search_tracks -origin foo} errMsg] $errMsg
+} {0 {}}
+
+test search_tracks-1.18 {search_tracks with -destination argument} {
+    list [catch {search_tracks -destination foo} errMsg] $errMsg
+} {0 {}}
+
+test search_tracks-1.19 {search_tracks with -originOrDestination argument} {
+    list [catch {search_tracks -originOrDestination foo} errMsg] $errMsg
+} {0 {}}
+
+# cleanup
+::tcltest::cleanupTests
+return
