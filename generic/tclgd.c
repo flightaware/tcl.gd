@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.4 2005-10-31 11:25:22 karl Exp $
+ * $Id: tclgd.c,v 1.5 2005-10-31 11:27:37 karl Exp $
  */
 
 #include <tcl.h>
@@ -1432,7 +1432,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 
       case OPT_SQUARE_TO_CIRCLE: {
         int radius;
-	gdImagePtr newIm;
+	gdImagePtr newIm = NULL;
 
 	if (gdImageSX(im) != gdImageSY(im)) {
 	    Tcl_AppendResult (interp, "image must be square for square_to_circle to work", NULL);
@@ -1688,7 +1688,7 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
     Tcl_Obj   *CONST objv[];
 {
     int          optIndex;
-    gdImagePtr   im;
+    gdImagePtr   im = NULL;
 
 
     static CONST char *options[] = {
@@ -1735,7 +1735,7 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
 	OPT_CREATE_FROM_XPM
     };
 
-    if (objc < 4) {
+    if (objc < 3) {
 	Tcl_WrongNumArgs (interp, 1, objv, "subcommand name ?args?");
 	return TCL_ERROR;
     }
