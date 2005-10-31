@@ -3,13 +3,107 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.5 2005-10-31 11:27:37 karl Exp $
+ * $Id: tclgd.c,v 1.6 2005-10-31 12:29:28 karl Exp $
  */
 
 #include <tcl.h>
 #include <gd.h>
 #include "gdtcl.h"
 
+static void
+gd_complain(Tcl_Interp *interp, char *element) {
+    Tcl_AppendResult (interp, " while converting ", element, " component", NULL);
+}
+
+static void
+gd_complainX(Tcl_Interp *interp) {
+    gd_complain (interp, "x");
+}
+
+static void
+gd_complainY(Tcl_Interp *interp) {
+    gd_complain (interp, "y");
+}
+
+static void
+gd_complainX1(Tcl_Interp *interp) {
+    gd_complain (interp, "x1");
+}
+
+static void
+gd_complainY1(Tcl_Interp *interp) {
+    gd_complain (interp, "y1");
+}
+
+static void
+gd_complainX2(Tcl_Interp *interp) {
+    gd_complain (interp, "x2");
+}
+
+static void
+gd_complainY2(Tcl_Interp *interp) {
+    gd_complain (interp, "y2");
+}
+
+static void
+gd_complainWidth(Tcl_Interp *interp) {
+    gd_complain (interp, "width");
+}
+
+static void
+gd_complainHeight(Tcl_Interp *interp) {
+    gd_complain (interp, "height");
+}
+
+static void
+gd_complainStartDegrees(Tcl_Interp *interp) {
+    gd_complain (interp, "startDegrees");
+}
+
+static void
+gd_complainEndDegrees(Tcl_Interp *interp) {
+    gd_complain (interp, "endDegrees");
+}
+
+static void
+gd_complainCX(Tcl_Interp *interp) {
+    gd_complain (interp, "cx");
+}
+
+static void
+gd_complainCY(Tcl_Interp *interp) {
+    gd_complain (interp, "cy");
+}
+
+static void
+gd_complainRed(Tcl_Interp *interp) {
+    gd_complain (interp, "red");
+}
+
+static void
+gd_complainGreen(Tcl_Interp *interp) {
+    gd_complain (interp, "green");
+}
+
+static void
+gd_complainBlue(Tcl_Interp *interp) {
+    gd_complain (interp, "blue");
+}
+
+static void
+gd_complainAlpha(Tcl_Interp *interp) {
+    gd_complain (interp, "alpha");
+}
+
+static void
+gd_complainColor(Tcl_Interp *interp) {
+    gd_complain (interp, "color");
+}
+
+static void
+gd_complainAngle(Tcl_Interp *interp) {
+    gd_complain (interp, "angle");
+}
 
 /*
  *----------------------------------------------------------------------
@@ -276,10 +370,12 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
        if (Tcl_GetIntFromObj (interp, objv[2], &x) == TCL_ERROR) {
+	   gd_complainX (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[3], &y) == TCL_ERROR) {
+	   gd_complainY (interp);
 	   return TCL_ERROR;
        }
 
@@ -305,18 +401,22 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
        if (Tcl_GetIntFromObj (interp, objv[2], &x1) == TCL_ERROR) {
+	   gd_complainX1 (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[3], &y1) == TCL_ERROR) {
+	   gd_complainY1 (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[4], &x2) == TCL_ERROR) {
+	   gd_complainX2 (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[5], &y2) == TCL_ERROR) {
+	   gd_complainY2 (interp);
 	   return TCL_ERROR;
        }
 
@@ -422,18 +522,22 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
        if (Tcl_GetIntFromObj (interp, objv[2], &x1) == TCL_ERROR) {
+	   gd_complainX1 (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[3], &y1) == TCL_ERROR) {
+	   gd_complainY1 (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[4], &x2) == TCL_ERROR) {
+	   gd_complainX2 (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[5], &y2) == TCL_ERROR) {
+	   gd_complainY2 (interp);
 	   return TCL_ERROR;
        }
 
@@ -454,18 +558,22 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
        if (Tcl_GetIntFromObj (interp, objv[2], &x1) == TCL_ERROR) {
+	   gd_complainX1 (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[3], &y1) == TCL_ERROR) {
+	   gd_complainY1 (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[4], &x2) == TCL_ERROR) {
+	   gd_complainX2 (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[5], &y2) == TCL_ERROR) {
+	   gd_complainY2 (interp);
 	   return TCL_ERROR;
        }
 
@@ -481,31 +589,37 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	int cx, cy, w, h, s, e, color;
 
 	if (objc != 9) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "cx cy w h s e color");
+	    Tcl_WrongNumArgs (interp, 2, objv, "cx cy width height startDegrees endDegrees color");
 	    return TCL_ERROR;
 	}
 
        if (Tcl_GetIntFromObj (interp, objv[2], &cx) == TCL_ERROR) {
+	   gd_complainCX (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[3], &cy) == TCL_ERROR) {
+	   gd_complainCY (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[4], &w) == TCL_ERROR) {
+	   gd_complainWidth (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[5], &h) == TCL_ERROR) {
+	   gd_complainHeight (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[6], &s) == TCL_ERROR) {
+	   gd_complainStartDegrees (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[7], &e) == TCL_ERROR) {
+	   gd_complainEndDegrees (interp);
 	   return TCL_ERROR;
        }
 
@@ -546,30 +660,36 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	};
 
 	if (objc < 10) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "cx cy w h s e color ?arc? ?chord? ?pie? ?nofill? ?edged?");
+	    Tcl_WrongNumArgs (interp, 2, objv, "cx cy width height startDegrees endDegrees color ?arc? ?chord? ?pie? ?nofill? ?edged?");
 	    return TCL_ERROR;
 	}
        if (Tcl_GetIntFromObj (interp, objv[2], &cx) == TCL_ERROR) {
+	   gd_complainCX (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[3], &cy) == TCL_ERROR) {
+	   gd_complainCY (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[4], &w) == TCL_ERROR) {
+	   gd_complainWidth (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[5], &h) == TCL_ERROR) {
+	   gd_complainHeight (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[6], &s) == TCL_ERROR) {
+	   gd_complainStartDegrees (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[7], &e) == TCL_ERROR) {
+	   gd_complainEndDegrees (interp);
 	   return TCL_ERROR;
        }
 
@@ -615,23 +735,27 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	int cx, cy, w, h, color;
 
 	if (objc != 7) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "cx cy w h color");
+	    Tcl_WrongNumArgs (interp, 2, objv, "cx cy width height color");
 	    return TCL_ERROR;
 	}
 
        if (Tcl_GetIntFromObj (interp, objv[2], &cx) == TCL_ERROR) {
+	   gd_complainCX (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[3], &cy) == TCL_ERROR) {
+	   gd_complainCY (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[4], &w) == TCL_ERROR) {
+	   gd_complainWidth (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[5], &h) == TCL_ERROR) {
+	   gd_complainHeight (interp);
 	   return TCL_ERROR;
        }
 
@@ -647,23 +771,27 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	int x, y, border, color;
 
 	if (objc != 6) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "x y border color");
+	    Tcl_WrongNumArgs (interp, 2, objv, "x y borderColor color");
 	    return TCL_ERROR;
 	}
 
        if (Tcl_GetIntFromObj (interp, objv[2], &x) == TCL_ERROR) {
+	   gd_complainX (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[3], &y) == TCL_ERROR) {
+	   gd_complainY (interp);
 	   return TCL_ERROR;
        }
 
 	if (gdtcl_GetColor (interp, objv[4], &border) == TCL_ERROR) {
+	   gd_complain (interp, "borderColor");
 	    return TCL_ERROR;
 	}
 
 	if (gdtcl_GetColor (interp, objv[5], &color) == TCL_ERROR) {
+	    gd_complainColor (interp);
 	    return TCL_ERROR;
 	}
 
@@ -680,10 +808,12 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
        if (Tcl_GetIntFromObj (interp, objv[2], &x) == TCL_ERROR) {
+	    gd_complainX (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[3], &y) == TCL_ERROR) {
+	    gd_complainY (interp);
 	   return TCL_ERROR;
        }
 
@@ -695,11 +825,76 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	break;
       }
 
-      case OPT_TEXT:
-	break;
-
       case OPT_TEXT_BOUNDS:
+      case OPT_TEXT: {
+	gdImagePtr textIm = NULL;
+	int        color;
+	char      *fontName;
+	double     pointSize;
+	double     angle;
+	int        x;
+	int        y;
+	char      *text;
+	char      *resultString;
+
+	int        brect[8];
+	Tcl_Obj    *brectObjv[8];
+
+	if (optIndex == OPT_TEXT) {
+	    textIm = im;
+	}
+
+	if (objc != 9) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "color font pointSize angle x y text");
+	    return TCL_ERROR;
+	}
+
+	if (Tcl_GetIntFromObj (interp, objv[2], &color) == TCL_ERROR) {
+	    gd_complainColor (interp);
+	    return TCL_ERROR;
+	}
+
+	fontName = Tcl_GetString (objv[3]);
+
+       if (Tcl_GetDoubleFromObj (interp, objv[4], &pointSize) == TCL_ERROR) {
+	    gd_complain (interp, "pointSize");
+	   return TCL_ERROR;
+       }
+
+       if (Tcl_GetDoubleFromObj (interp, objv[5], &angle) == TCL_ERROR) {
+	    gd_complain (interp, "angle");
+	   return TCL_ERROR;
+       }
+
+       if (Tcl_GetIntFromObj (interp, objv[6], &x) == TCL_ERROR) {
+	    gd_complainX (interp);
+	   return TCL_ERROR;
+       }
+
+       if (Tcl_GetIntFromObj (interp, objv[7], &y) == TCL_ERROR) {
+	    gd_complainY (interp);
+	   return TCL_ERROR;
+       }
+
+       text = Tcl_GetString (objv[8]);
+
+	resultString = gdImageStringFT (im, &brect[0], color, fontName, pointSize, angle, x, y, text);
+	if (resultString != NULL) {
+	    Tcl_SetStringObj (resultObj, resultString, -1);
+	    Tcl_AppendResult (interp, " '", fontName, "'", NULL);
+	    return TCL_ERROR;
+	}
+
+	if (optIndex == OPT_TEXT_BOUNDS) {
+	    int i;
+
+	    for (i = 0; i < 8; i++) {
+		brectObjv[i] = Tcl_NewIntObj(brect[i]);
+	    }
+	    Tcl_SetListObj (resultObj, 8, brectObjv);
+	}
 	break;
+      }
 
       case OPT_ALLOCATE_COLOR: {
 	int r, g, b, alpha;
@@ -710,14 +905,17 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
         if (Tcl_GetIntFromObj (interp, objv[2], &r) == TCL_ERROR) {
+	    gd_complainRed (interp);
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[3], &g) == TCL_ERROR) {
+	    gd_complainGreen (interp);
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[4], &b) == TCL_ERROR) {
+	    gd_complainBlue (interp);
 	   return TCL_ERROR;
         }
 
@@ -727,6 +925,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[5], &alpha) == TCL_ERROR) {
+	   gd_complainAlpha (interp);
 	    return TCL_ERROR;
 	}
 
@@ -743,14 +942,17 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
         if (Tcl_GetIntFromObj (interp, objv[2], &r) == TCL_ERROR) {
+	   gd_complainRed (interp);
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[3], &g) == TCL_ERROR) {
+	   gd_complainGreen (interp);
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[4], &b) == TCL_ERROR) {
+	   gd_complainBlue (interp);
 	   return TCL_ERROR;
         }
 
@@ -760,6 +962,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[5], &alpha) == TCL_ERROR) {
+	   gd_complainAlpha (interp);
 	    return TCL_ERROR;
 	}
 
@@ -776,14 +979,17 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
         if (Tcl_GetIntFromObj (interp, objv[2], &r) == TCL_ERROR) {
+	   gd_complainRed (interp);
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[3], &g) == TCL_ERROR) {
+	   gd_complainGreen (interp);
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[4], &b) == TCL_ERROR) {
+	   gd_complainBlue (interp);
 	   return TCL_ERROR;
         }
 
@@ -800,14 +1006,17 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
         if (Tcl_GetIntFromObj (interp, objv[2], &r) == TCL_ERROR) {
+	   gd_complainRed (interp);
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[3], &g) == TCL_ERROR) {
+	   gd_complainGreen (interp);
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[4], &b) == TCL_ERROR) {
+	   gd_complainBlue (interp);
 	   return TCL_ERROR;
         }
 
@@ -817,6 +1026,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
         if (Tcl_GetIntFromObj (interp, objv[5], &alpha) == TCL_ERROR) {
+	   gd_complainAlpha (interp);
 	   return TCL_ERROR;
         }
 
@@ -833,14 +1043,17 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
         if (Tcl_GetIntFromObj (interp, objv[2], &r) == TCL_ERROR) {
+	   gd_complainRed (interp);
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[3], &g) == TCL_ERROR) {
+	   gd_complainGreen (interp);
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[4], &b) == TCL_ERROR) {
+	   gd_complainBlue (interp);
 	   return TCL_ERROR;
         }
 
@@ -850,6 +1063,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[5], &alpha) == TCL_ERROR) {
+	   gd_complainAlpha (interp);
 	    return TCL_ERROR;
 	}
 
@@ -890,14 +1104,17 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
         if (Tcl_GetIntFromObj (interp, objv[2], &r) == TCL_ERROR) {
+	   gd_complainRed (interp);
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[3], &g) == TCL_ERROR) {
+	   gd_complainGreen (interp);
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[4], &b) == TCL_ERROR) {
+	   gd_complainBlue (interp);
 	   return TCL_ERROR;
         }
 
@@ -907,6 +1124,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[5], &alpha) == TCL_ERROR) {
+	   gd_complainAlpha (interp);
 	    return TCL_ERROR;
 	}
 
@@ -1066,18 +1284,22 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
        if (Tcl_GetIntFromObj (interp, objv[2], &x1) == TCL_ERROR) {
+	   gd_complainX1 (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[3], &y1) == TCL_ERROR) {
+	   gd_complainY1 (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[4], &x2) == TCL_ERROR) {
+	   gd_complainX2 (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[5], &y2) == TCL_ERROR) {
+	   gd_complainY2 (interp);
 	   return TCL_ERROR;
        }
 
@@ -1097,10 +1319,12 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
        if (Tcl_GetIntFromObj (interp, objv[2], &x) == TCL_ERROR) {
+	   gd_complainX (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[3], &y) == TCL_ERROR) {
+	   gd_complainY (interp);
 	   return TCL_ERROR;
        }
 
@@ -1117,6 +1341,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[2], &color) == TCL_ERROR) {
+	   gd_complainColor (interp);
 	    return TCL_ERROR;
 	}
 
@@ -1133,6 +1358,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[2], &color) == TCL_ERROR) {
+	    gd_complainColor (interp);
 	    return TCL_ERROR;
 	}
 
@@ -1149,6 +1375,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[2], &color) == TCL_ERROR) {
+	    gd_complainColor (interp);
 	    return TCL_ERROR;
 	}
 
@@ -1186,26 +1413,32 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 
 
        if (Tcl_GetIntFromObj (interp, objv[3], &dstX) == TCL_ERROR) {
+	   gd_complain (interp, "dstX");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[4], &dstY) == TCL_ERROR) {
+	   gd_complain (interp, "dstY");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[5], &srcX) == TCL_ERROR) {
+	   gd_complain (interp, "srcX");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[6], &srcY) == TCL_ERROR) {
+	   gd_complain (interp, "srcY");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[7], &w) == TCL_ERROR) {
+	   gd_complainWidth (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[8], &h) == TCL_ERROR) {
+	   gd_complainHeight (interp);
 	   return TCL_ERROR;
        }
 
@@ -1238,34 +1471,42 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 
 
        if (Tcl_GetIntFromObj (interp, objv[3], &dstX) == TCL_ERROR) {
+	   gd_complain (interp, "dstX");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[4], &dstY) == TCL_ERROR) {
+	   gd_complain (interp, "dstY");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[5], &srcX) == TCL_ERROR) {
+	   gd_complain (interp, "srcX");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[6], &srcY) == TCL_ERROR) {
+	   gd_complain (interp, "srcY");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[7], &destW) == TCL_ERROR) {
+	   gd_complain (interp, "destWidth");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[8], &destH) == TCL_ERROR) {
+	   gd_complain (interp, "destHeight");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[9], &srcW) == TCL_ERROR) {
+	   gd_complain (interp, "srcWidth");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[10], &srcH) == TCL_ERROR) {
+	   gd_complain (interp, "srcHeight");
 	   return TCL_ERROR;
        }
 
@@ -1301,30 +1542,37 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 
 
        if (Tcl_GetDoubleFromObj (interp, objv[3], &dstX) == TCL_ERROR) {
+	   gd_complain (interp, "dstX");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetDoubleFromObj (interp, objv[4], &dstY) == TCL_ERROR) {
+	   gd_complain (interp, "dstY");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[5], &srcX) == TCL_ERROR) {
+	   gd_complain (interp, "srcX");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[6], &srcY) == TCL_ERROR) {
+	   gd_complain (interp, "srcY");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[7], &srcW) == TCL_ERROR) {
+	   gd_complain (interp, "srcWidth");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[8], &srcH) == TCL_ERROR) {
+	   gd_complain (interp, "srcHeight");
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[9], &angle) == TCL_ERROR) {
+	   gd_complainAngle (interp);
 	   return TCL_ERROR;
        }
 
@@ -1356,30 +1604,37 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 
 
         if (Tcl_GetIntFromObj (interp, objv[3], &dstX) == TCL_ERROR) {
+	   gd_complain (interp, "destX");
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[4], &dstY) == TCL_ERROR) {
+	   gd_complain (interp, "destY");
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[5], &srcX) == TCL_ERROR) {
+	   gd_complain (interp, "srcX");
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[6], &srcY) == TCL_ERROR) {
+	   gd_complain (interp, "srcY");
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[7], &w) == TCL_ERROR) {
+	   gd_complainWidth (interp);
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[8], &h) == TCL_ERROR) {
+	   gd_complainHeight (interp);
 	   return TCL_ERROR;
         }
 
         if (Tcl_GetIntFromObj (interp, objv[9], &pct) == TCL_ERROR) {
+	   gd_complain (interp, "pct");
 	   return TCL_ERROR;
         }
 
@@ -1418,6 +1673,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[2], &pct) == TCL_ERROR) {
+	   gd_complain (interp, "pct");
 	    return TCL_ERROR;
 	}
 
@@ -1445,6 +1701,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[3], &radius) == TCL_ERROR) {
+	   gd_complain (interp, "radius");
 	    return TCL_ERROR;
 	}
 
@@ -1469,6 +1726,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[3], &quality) == TCL_ERROR) {
+	   gd_complain (interp, "quality");
 	    return TCL_ERROR;
 	}
 
@@ -1488,6 +1746,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[2], &quality) == TCL_ERROR) {
+	   gd_complain (interp, "quality");
 	    return TCL_ERROR;
 	}
 
@@ -1541,6 +1800,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[3], &compression) == TCL_ERROR) {
+	   gd_complain (interp, "compression");
 	    return TCL_ERROR;
 	}
 
@@ -1565,6 +1825,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[2], &compression) == TCL_ERROR) {
+	   gd_complain (interp, "compression");
 	    return TCL_ERROR;
 	}
 
@@ -1592,6 +1853,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[3], &fgcolor) == TCL_ERROR) {
+	   gd_complain (interp, "fgcolor");
 	    return TCL_ERROR;
 	}
 
@@ -1611,6 +1873,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[2], &fgcolor) == TCL_ERROR) {
+	   gd_complain (interp, "fgcolor");
 	    return TCL_ERROR;
 	}
 
@@ -1756,10 +2019,12 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
 	}
 
        if (Tcl_GetIntFromObj (interp, objv[3], &x) == TCL_ERROR) {
+	   gd_complainX (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[4], &y) == TCL_ERROR) {
+	   gd_complainY (interp);
 	   return TCL_ERROR;
        }
 
@@ -1776,10 +2041,12 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
 	}
 
        if (Tcl_GetIntFromObj (interp, objv[3], &x) == TCL_ERROR) {
+	   gd_complainX (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[4], &y) == TCL_ERROR) {
+	   gd_complainY (interp);
 	   return TCL_ERROR;
        }
 
@@ -1959,18 +2226,22 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
 	}
 
        if (Tcl_GetIntFromObj (interp, objv[4], &x) == TCL_ERROR) {
+	   gd_complainX (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[5], &y) == TCL_ERROR) {
+	   gd_complainY (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[6], &w) == TCL_ERROR) {
+	   gd_complainWidth (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[7], &h) == TCL_ERROR) {
+	   gd_complainHeight (interp);
 	   return TCL_ERROR;
        }
 
@@ -1996,18 +2267,22 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
 	memPtr = Tcl_GetByteArrayFromObj (objv[3], &size);
 
        if (Tcl_GetIntFromObj (interp, objv[4], &x) == TCL_ERROR) {
+	   gd_complainX (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[5], &y) == TCL_ERROR) {
+	   gd_complainY (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[6], &w) == TCL_ERROR) {
+	   gd_complainWidth (interp);
 	   return TCL_ERROR;
        }
 
        if (Tcl_GetIntFromObj (interp, objv[7], &h) == TCL_ERROR) {
+	   gd_complainHeight (interp);
 	   return TCL_ERROR;
        }
 
