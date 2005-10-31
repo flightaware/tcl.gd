@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.3 2005-10-30 21:25:19 karl Exp $
+ * $Id: tclgd.c,v 1.4 2005-10-31 11:25:22 karl Exp $
  */
 
 #include <tcl.h>
@@ -69,12 +69,15 @@ void gd_GDdeleteProc (ClientData clientData) {
 
     /* if color is an integer, we're done */
     if (Tcl_GetIntFromObj (interp, obj, color) == TCL_OK) {
+	/* printf("gdtcl_GetColor returns normal color %d for %s\n", *color, Tcl_GetString (obj)); */
        return TCL_OK;
     }
 
+    Tcl_ResetResult (interp);
+
     if (Tcl_GetIndexFromObj(interp, obj, options, "color", 
 	TCL_EXACT, &optIndex) != TCL_OK) {
-	Tcl_AppendResult (interp, "or a color index", NULL);
+	Tcl_AppendResult (interp, ", or a color index", NULL);
 	return TCL_ERROR;
     }
 
@@ -102,6 +105,7 @@ void gd_GDdeleteProc (ClientData clientData) {
           *color = gdTransparent;
 	  break;
     }
+    /* printf("gdtcl_GetColor returns custom color %d\n", *color); */
     return TCL_OK;
  }
 
@@ -320,6 +324,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	    return TCL_ERROR;
 	}
 
+	/* printf("gdImageLine %d %d %d %d %d\n", x1, y1, x2, y2, color); */
 	gdImageLine (im, x1, y1, x2, y2, color);
 	break;
       }
@@ -953,10 +958,11 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	    return TCL_ERROR;
 	}
 
-	if (gdtcl_GetColor (interp, objv[2], &color) == TCL_ERROR) {
+	if (Tcl_GetIntFromObj (interp, objv[2], &color) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
+	/* printf("gdImageSetAntiAliased %d\n", color); */
 	gdImageSetAntiAliased (im, color);
 	return TCL_OK;
       }
@@ -1002,6 +1008,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	    return TCL_ERROR;
 	}
 
+	/* printf("gdImageSetThickness %d\n", thickness); */
 	gdImageSetThickness (im, thickness);
 	return TCL_OK;
       }
