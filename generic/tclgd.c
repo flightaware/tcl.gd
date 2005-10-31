@@ -3,12 +3,28 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.6 2005-10-31 12:29:28 karl Exp $
+ * $Id: tclgd.c,v 1.7 2005-10-31 12:40:57 karl Exp $
  */
 
 #include <tcl.h>
 #include <gd.h>
 #include "gdtcl.h"
+#include <string.h>
+
+static char *
+gd_newObjName (Tcl_Obj *nameObj)
+{
+    char *name = Tcl_GetString (nameObj);
+    static int nextObjNumber = 0;
+    static char nextObjName[16];
+
+    if (strcmp (name, "#auto") == 0) {
+	sprintf (nextObjName, "gd%d", nextObjNumber++);
+	return nextObjName;
+    }
+
+    return name;
+}
 
 static void
 gd_complain(Tcl_Interp *interp, char *element) {
@@ -1952,6 +1968,8 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
 {
     int          optIndex;
     gdImagePtr   im = NULL;
+    char        *newName;
+    Tcl_Obj     *resultObj = Tcl_GetObjResult(interp);
 
 
     static CONST char *options[] = {
@@ -2354,7 +2372,9 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
 	return TCL_ERROR;
     }
 
-    Tcl_CreateObjCommand (interp, Tcl_GetString(objv[2]), gd_GDObjCmd, im, gd_GDdeleteProc);
+    newName = gd_newObjName (objv[2]);
+    Tcl_CreateObjCommand (interp, newName, gd_GDObjCmd, im, gd_GDdeleteProc);
+    Tcl_SetStringObj (resultObj, newName, -1);
     return TCL_OK;
 }
 
