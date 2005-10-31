@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.7 2005-10-31 12:40:57 karl Exp $
+ * $Id: tclgd.c,v 1.8 2005-10-31 12:58:18 karl Exp $
  */
 
 #include <tcl.h>
@@ -475,21 +475,22 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 
 	if (objc == 4) {
 	    suboptIndex = SUBOPT_BASIC;
-	    objOffset = 3;
+	    objOffset = 2;
 	} else {
-	    objOffset = 4;
+	    objOffset = 3;
 	    if (Tcl_GetIndexFromObj(interp, objv[2], subOptions, "suboption", 
 		TCL_EXACT, &suboptIndex) != TCL_OK) {
 		return TCL_ERROR;
 	    }
 	}
 
-	if (Tcl_ListObjGetElements (interp, objv[objOffset], &nElements, &pointObjList) == TCL_ERROR) {
+	if (Tcl_ListObjGetElements (interp, objv[objOffset++], &nElements, &pointObjList) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
 	if ((nElements % 2 != 0) || (nElements < 6)) {
 	    Tcl_WrongNumArgs (interp, 2, objv,"point list must at least three pairs of points");
+	    return TCL_ERROR;
 	}
 
 	points = (gdPoint *)ckalloc (sizeof (gdPoint) * (nElements / 2));
@@ -507,7 +508,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	    points[i/2].y = y;
 	}
 
-	if (gdtcl_GetColor (interp, objv[6], &color) == TCL_ERROR) {
+	if (gdtcl_GetColor (interp, objv[objOffset], &color) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
