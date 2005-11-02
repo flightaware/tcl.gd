@@ -1,9 +1,9 @@
-This is gdtcl, a new Tcl interface to GD that is significantly more feature-
+This is tcl.gd, a new Tcl interface to GD that is significantly more feature-
 complete with gd 2 than Gdtclft.
 
 Version 0.0
 
-$Id: README,v 1.2 2005-10-30 18:50:50 karl Exp $
+$Id: README,v 1.3 2005-11-02 22:08:22 karl Exp $
 
 This package is a freely available open source package under the "Berkeley"
 license, same as Tcl.  You can do virtually anything you like with it, such as 
@@ -12,13 +12,13 @@ See the file "license.terms" for complete information.
 
 Gdtcl was written by Karl Lehenbauer.
 
-USING GDTCL
-===========
+USING TCL.GD
+============
 
-package require gdtcl
+package require tclgd
 
 
-GDTCL QUICK REF
+TCLGD QUICK REF
 ===============
 
 
@@ -64,7 +64,7 @@ UNIX BUILD
 Building under most UNIX systems is easy, just run the configure script
 and then run make. 
 
-	$ cd gdtcl
+	$ cd tcl.gd
 	$ ./configure
 	$ make
 	$ make install
@@ -72,7 +72,7 @@ and then run make.
 WINDOWS BUILD
 =============
 
-gdtcl has not been built under Windows at this time.
+tcl.gd has not been built under Windows at this time.
 
 The recommended method to build extensions under Windows is to use the
 Msys + Mingw build process. This provides a Unix-style build while

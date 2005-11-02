@@ -1,14 +1,14 @@
 /*
- * gdtcl
+ * tcl.gd
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.8 2005-10-31 12:58:18 karl Exp $
+ * $Id: tclgd.c,v 1.9 2005-11-02 22:08:22 karl Exp $
  */
 
 #include <tcl.h>
 #include <gd.h>
-#include "gdtcl.h"
+#include "tclgd.h"
 #include <string.h>
 
 static char *
@@ -154,7 +154,7 @@ void gd_GDdeleteProc (ClientData clientData) {
  *
  *----------------------------------------------------------------------
  */
- int gdtcl_GetColor (Tcl_Interp *interp, Tcl_Obj *obj, int *color)
+ int tclgd_GetColor (Tcl_Interp *interp, Tcl_Obj *obj, int *color)
  {
      int optIndex;
 
@@ -179,7 +179,7 @@ void gd_GDdeleteProc (ClientData clientData) {
 
     /* if color is an integer, we're done */
     if (Tcl_GetIntFromObj (interp, obj, color) == TCL_OK) {
-	/* printf("gdtcl_GetColor returns normal color %d for %s\n", *color, Tcl_GetString (obj)); */
+	/* printf("tclgd_GetColor returns normal color %d for %s\n", *color, Tcl_GetString (obj)); */
        return TCL_OK;
     }
 
@@ -215,7 +215,7 @@ void gd_GDdeleteProc (ClientData clientData) {
           *color = gdTransparent;
 	  break;
     }
-    /* printf("gdtcl_GetColor returns custom color %d\n", *color); */
+    /* printf("tclgd_GetColor returns custom color %d\n", *color); */
     return TCL_OK;
  }
 
@@ -223,7 +223,7 @@ void gd_GDdeleteProc (ClientData clientData) {
 /*
  *----------------------------------------------------------------------
  *
- * gdtcl_GDObjCmd --
+ * tclgd_gdObjectObjCmd --
  *
  *    dispatches the subcommands of a gd object command
  *
@@ -233,7 +233,7 @@ void gd_GDdeleteProc (ClientData clientData) {
  *----------------------------------------------------------------------
  */
 int
-gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[])
+tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[])
 {
     gdImagePtr im = (gdImagePtr)cData;
     int         optIndex;
@@ -400,7 +400,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	   return TCL_OK;
 	}
 
-	if (gdtcl_GetColor (interp, objv[4], &color) == TCL_ERROR) {
+	if (tclgd_GetColor (interp, objv[4], &color) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
@@ -436,7 +436,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	   return TCL_ERROR;
        }
 
-	if (gdtcl_GetColor (interp, objv[6], &color) == TCL_ERROR) {
+	if (tclgd_GetColor (interp, objv[6], &color) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
@@ -508,7 +508,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	    points[i/2].y = y;
 	}
 
-	if (gdtcl_GetColor (interp, objv[objOffset], &color) == TCL_ERROR) {
+	if (tclgd_GetColor (interp, objv[objOffset], &color) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
@@ -558,7 +558,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	   return TCL_ERROR;
        }
 
-	if (gdtcl_GetColor (interp, objv[6], &color) == TCL_ERROR) {
+	if (tclgd_GetColor (interp, objv[6], &color) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
@@ -594,7 +594,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	   return TCL_ERROR;
        }
 
-	if (gdtcl_GetColor (interp, objv[6], &color) == TCL_ERROR) {
+	if (tclgd_GetColor (interp, objv[6], &color) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
@@ -640,7 +640,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	   return TCL_ERROR;
        }
 
-	if (gdtcl_GetColor (interp, objv[8], &color) == TCL_ERROR) {
+	if (tclgd_GetColor (interp, objv[8], &color) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
@@ -710,7 +710,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	   return TCL_ERROR;
        }
 
-	if (gdtcl_GetColor (interp, objv[8], &color) == TCL_ERROR) {
+	if (tclgd_GetColor (interp, objv[8], &color) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
@@ -776,7 +776,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	   return TCL_ERROR;
        }
 
-	if (gdtcl_GetColor (interp, objv[6], &color) == TCL_ERROR) {
+	if (tclgd_GetColor (interp, objv[6], &color) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
@@ -802,12 +802,12 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	   return TCL_ERROR;
        }
 
-	if (gdtcl_GetColor (interp, objv[4], &border) == TCL_ERROR) {
+	if (tclgd_GetColor (interp, objv[4], &border) == TCL_ERROR) {
 	   gd_complain (interp, "borderColor");
 	    return TCL_ERROR;
 	}
 
-	if (gdtcl_GetColor (interp, objv[5], &color) == TCL_ERROR) {
+	if (tclgd_GetColor (interp, objv[5], &color) == TCL_ERROR) {
 	    gd_complainColor (interp);
 	    return TCL_ERROR;
 	}
@@ -834,7 +834,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	   return TCL_ERROR;
        }
 
-	if (gdtcl_GetColor (interp, objv[4], &color) == TCL_ERROR) {
+	if (tclgd_GetColor (interp, objv[4], &color) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
@@ -1104,7 +1104,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	    return TCL_ERROR;
 	}
 
-	if (gdtcl_GetColor (interp, objv[2], &color) == TCL_ERROR) {
+	if (tclgd_GetColor (interp, objv[2], &color) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
@@ -1177,7 +1177,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	    return TCL_ERROR;
 	}
 
-	if (gdtcl_GetColor (interp, objv[2], &color) == TCL_ERROR) {
+	if (tclgd_GetColor (interp, objv[2], &color) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
@@ -1210,7 +1210,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 	    return TCL_ERROR;
 	}
 
-	if (gdtcl_GetColor (interp, objv[2], &color) == TCL_ERROR) {
+	if (tclgd_GetColor (interp, objv[2], &color) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
@@ -1725,7 +1725,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 #if 0
 	newIm = gdImageSquareToCircle (im, radius);
 #endif
-	Tcl_CreateObjCommand (interp, Tcl_GetString(objv[2]), gd_GDObjCmd, newIm, gd_GDdeleteProc);
+	Tcl_CreateObjCommand (interp, Tcl_GetString(objv[2]), tclgd_gdObjectObjCmd, newIm, gd_GDdeleteProc);
 	break;
       }
 
@@ -1945,9 +1945,9 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 /*
  *----------------------------------------------------------------------
  *
- * gdtcl_gdtclObjCmd --
+ * tclgd_GDObjCmd --
  *
- *	This procedure is invoked to process the "gdtcl" command.
+ *	This procedure is invoked to process the "GD" command.
  *	See the user documentation for details on what it does.
  *
  * Results:
@@ -1961,7 +1961,7 @@ gd_GDObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[
 
     /* ARGSUSED */
 int
-gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
+tclgd_GDObjCmd(clientData, interp, objc, objv)
     ClientData clientData;		/* registered proc hashtable ptr. */
     Tcl_Interp *interp;			/* Current interpreter. */
     int objc;				/* Number of arguments. */
@@ -2374,7 +2374,7 @@ gdtcl_gdtclObjCmd(clientData, interp, objc, objv)
     }
 
     newName = gd_newObjName (objv[2]);
-    Tcl_CreateObjCommand (interp, newName, gd_GDObjCmd, im, gd_GDdeleteProc);
+    Tcl_CreateObjCommand (interp, newName, tclgd_gdObjectObjCmd, im, gd_GDdeleteProc);
     Tcl_SetStringObj (resultObj, newName, -1);
     return TCL_OK;
 }

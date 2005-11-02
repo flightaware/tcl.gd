@@ -1,11 +1,11 @@
 /*
  * tclcdata.c --
  *
- * $Id: tclgdtcl.c,v 1.3 2005-10-30 21:25:19 karl Exp $
+ * $Id: tclgdtcl.c,v 1.4 2005-11-02 22:08:22 karl Exp $
  */
 
 #include <tcl.h>
-#include "gdtcl.h"
+#include "tclgd.h"
 
 #undef TCL_STORAGE_CLASS
 #define TCL_STORAGE_CLASS DLLEXPORT
@@ -14,9 +14,9 @@
 /*
  *----------------------------------------------------------------------
  *
- * gdtcl_Init --
+ * tclgd_Init --
  *
- *	Initialize the gdtcl extension.  The string "gdtcl" 
+ *	Initialize the tclgd extension.  The string "tclgd" 
  *      in the function name must match the PACKAGE declaration at the top of
  *	configure.in.
  *
@@ -25,13 +25,13 @@
  *
  * Side effects:
  *	The tweezer package is created.
- *	One new command "gdtcl" is added to the Tcl interpreter.
+ *	One new command "tclgd" is added to the Tcl interpreter.
  *
  *----------------------------------------------------------------------
  */
 
 EXTERN int
-Gdtcl_Init(Tcl_Interp *interp)
+Tclgd_Init(Tcl_Interp *interp)
 {
     /*
      * This may work with 8.0, but we are using strictly stubs here,
@@ -45,12 +45,12 @@ Gdtcl_Init(Tcl_Interp *interp)
 	return TCL_ERROR;
     }
 
-    if (Tcl_PkgProvide(interp, "gdtcl", PACKAGE_VERSION) != TCL_OK) {
+    if (Tcl_PkgProvide(interp, "tclgd", PACKAGE_VERSION) != TCL_OK) {
 	return TCL_ERROR;
     }
 
-    /* Create the gdtcl command  */
-    Tcl_CreateObjCommand(interp, "GD", (Tcl_ObjCmdProc *) gdtcl_gdtclObjCmd, (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
+    /* Create the tclgd command  */
+    Tcl_CreateObjCommand(interp, "GD", (Tcl_ObjCmdProc *) tclgd_GDObjCmd, (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
 
     return TCL_OK;
 }
@@ -59,9 +59,9 @@ Gdtcl_Init(Tcl_Interp *interp)
 /*
  *----------------------------------------------------------------------
  *
- * gdtcl_SafeInit --
+ * tclgd_SafeInit --
  *
- *	Initialize the gdtcl in a safe interpreter.
+ *	Initialize the tclgd in a safe interpreter.
  *
  *      Not safe at this time.
  *
@@ -75,7 +75,7 @@ Gdtcl_Init(Tcl_Interp *interp)
  */
 
 EXTERN int
-Gdtcl_SafeInit(Tcl_Interp *interp)
+Tclgd_SafeInit(Tcl_Interp *interp)
 {
     return TCL_OK;
 }
