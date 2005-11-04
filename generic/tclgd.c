@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.13 2005-11-04 03:13:29 karl Exp $
+ * $Id: tclgd.c,v 1.14 2005-11-04 03:28:24 karl Exp $
  */
 
 #include "tclgd.h"
@@ -1701,7 +1701,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    return TCL_ERROR;
 	}
 
-	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]))) == NULL) {
+	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]), TCL_WRITABLE)) == NULL) {
 	    return TCL_ERROR;
 	}
 
@@ -1740,7 +1740,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    return TCL_ERROR;
 	}
 
-	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]))) == NULL) {
+	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]), TCL_WRITABLE)) == NULL) {
 	    return TCL_ERROR;
 	}
 
@@ -1771,7 +1771,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    return TCL_ERROR;
 	}
 
-	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]))) == NULL) {
+	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]), TCL_WRITABLE)) == NULL) {
 	    return TCL_ERROR;
 	}
 
@@ -1821,7 +1821,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    return TCL_ERROR;
 	}
 
-	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]))) == NULL) {
+	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]), TCL_WRITABLE)) == NULL) {
 	    return TCL_ERROR;
 	}
 

@@ -1,7 +1,7 @@
 /*
  * CDATA
  *
- * $Id: tclgd.h,v 1.3 2005-11-04 02:58:09 karl Exp $
+ * $Id: tclgd.h,v 1.4 2005-11-04 03:28:24 karl Exp $
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  */
@@ -21,5 +21,5 @@ typedef struct tclgd_channelIOCtx
 gdIOCtx *tclgd_newChannelCtx (Tcl_Channel channel);
 
 gdIOCtx *
-tclgd_channelNameToIOCtx (Tcl_Interp *interp, char *channelName);
+tclgd_channelNameToIOCtx (Tcl_Interp *interp, char *channelName, int modeFlag);
 

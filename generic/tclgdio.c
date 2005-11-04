@@ -7,7 +7,7 @@
  * modeled after the gd_io_file.c file in the gd package, which is documented
  * as having been written/modified 1999, Philip Warner.
  *
- * $Id: tclgdio.c,v 1.3 2005-11-04 02:58:09 karl Exp $
+ * $Id: tclgdio.c,v 1.4 2005-11-04 03:28:24 karl Exp $
  */
 
 #include "tclgd.h"
@@ -117,7 +117,7 @@ tclgd_channelTell (struct gdIOCtx *ctx)
 }
 
 gdIOCtx *
-tclgd_channelNameToIOCtx (Tcl_Interp *interp, char *channelName)
+tclgd_channelNameToIOCtx (Tcl_Interp *interp, char *channelName, int modeFlag)
 {
     gdIOCtx     *outctx;
     Tcl_Channel  channel;
@@ -130,8 +130,8 @@ tclgd_channelNameToIOCtx (Tcl_Interp *interp, char *channelName)
 
     outctx = tclgd_newChannelCtx (channel);
 
-    if (!(mode & TCL_WRITABLE)) {
-	Tcl_AppendResult (interp, "channel '", channelName, "' not open for writing", NULL);
+    if (!(mode & modeFlag)) {
+	Tcl_AppendResult (interp, "channel '", channelName, "' not open for ", ((modeFlag & TCL_WRITABLE) ? "writing" : "reading"), NULL);
 	return NULL;
     }
 
