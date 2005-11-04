@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.14 2005-11-04 03:28:24 karl Exp $
+ * $Id: tclgd.c,v 1.15 2005-11-04 03:57:43 karl Exp $
  */
 
 #include "tclgd.h"
@@ -184,6 +184,12 @@ tclgd_complainCompression(Tcl_Interp *interp) {
 static int
 tclgd_complainQuality(Tcl_Interp *interp) {
     return tclgd_complain (interp, "quality");
+}
+
+static int
+tclgd_complainCorrupt(Tcl_Interp *interp) {
+    Tcl_AppendResult (interp, "image is corrupt or incorrect image type", NULL);
+    return TCL_ERROR;
 }
 
 
@@ -1924,7 +1930,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
     gdImagePtr   im = NULL;
     char        *newName;
     Tcl_Obj     *resultObj = Tcl_GetObjResult(interp);
-
+    gdIOCtx     *inctx = NULL;
 
     static CONST char *options[] = {
         "create",
@@ -2023,19 +2029,16 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_JPEG: {
-	FILE *file;
-
 	if (objc != 4) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "name fileHandle");
+	    Tcl_WrongNumArgs (interp, 2, objv, "name channel");
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[3]), 1, 1, (ClientData *)&file) == TCL_ERROR) {
+	if ((inctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[3]), TCL_READABLE)) == NULL) {
 	    return TCL_ERROR;
 	}
 
-	im = gdImageCreateFromJpeg (file);
-	fflush (file);
+	im = gdImageCreateFromJpegCtx (inctx);
 	break;
       }
 
@@ -2054,19 +2057,16 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_PNG: {
-	FILE *file;
-
 	if (objc != 4) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "name fileHandle");
+	    Tcl_WrongNumArgs (interp, 2, objv, "name channel");
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[3]), 1, 1, (ClientData *)&file) == TCL_ERROR) {
+	if ((inctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[3]), TCL_READABLE)) == NULL) {
 	    return TCL_ERROR;
 	}
 
-	im = gdImageCreateFromPng (file);
-	fflush (file);
+	im = gdImageCreateFromPngCtx (inctx);
 	break;
       }
 
@@ -2085,19 +2085,16 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_GIF: {
-	FILE *file;
-
 	if (objc != 4) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "name fileHandle");
+	    Tcl_WrongNumArgs (interp, 2, objv, "name channel");
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[3]), 1, 1, (ClientData *)&file) == TCL_ERROR) {
+	if ((inctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[3]), TCL_READABLE)) == NULL) {
 	    return TCL_ERROR;
 	}
 
-	im = gdImageCreateFromGif (file);
-	fflush (file);
+	im = gdImageCreateFromGifCtx (inctx);
 	break;
       }
 
@@ -2116,19 +2113,16 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_GD: {
-	FILE *file;
-
 	if (objc != 4) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "name fileHandle");
+	    Tcl_WrongNumArgs (interp, 2, objv, "name channel");
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[3]), 1, 1, (ClientData *)&file) == TCL_ERROR) {
+	if ((inctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[3]), TCL_READABLE)) == NULL) {
 	    return TCL_ERROR;
 	}
 
-	im = gdImageCreateFromGd (file);
-	fflush (file);
+	im = gdImageCreateFromGdCtx (inctx);
 	break;
       }
 
@@ -2147,19 +2141,16 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_GD2: {
-	FILE *file;
-
 	if (objc != 4) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "name fileHandle");
+	    Tcl_WrongNumArgs (interp, 2, objv, "name channel");
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[3]), 1, 1, (ClientData *)&file) == TCL_ERROR) {
+	if ((inctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[3]), TCL_READABLE)) == NULL) {
 	    return TCL_ERROR;
 	}
 
-	im = gdImageCreateFromGd2 (file);
-	fflush (file);
+	im = gdImageCreateFromGd2Ctx (inctx);
 	break;
       }
 
@@ -2178,24 +2169,23 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_GD2_PART: {
-	FILE *file;
-	int   x;
-	int   y;
-	int   w;
-	int   h;
+	int          x;
+	int          y;
+	int          w;
+	int          h;
 
 	if (objc != 8) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "name fileHandle x y w h");
+	    Tcl_WrongNumArgs (interp, 2, objv, "name channel x y w h");
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[3]), 1, 1, (ClientData *)&file) == TCL_ERROR) {
-	    return TCL_ERROR;
-	}
+	/* check the integer conversions first so we don't leave an
+	 * unfreed inctx if one of them fails
+	 */
 
-       if (Tcl_GetIntFromObj (interp, objv[4], &x) == TCL_ERROR) {
+        if (Tcl_GetIntFromObj (interp, objv[4], &x) == TCL_ERROR) {
 	   return tclgd_complainX (interp);
-       }
+        }
 
        if (Tcl_GetIntFromObj (interp, objv[5], &y) == TCL_ERROR) {
 	   return tclgd_complainY (interp);
@@ -2209,8 +2199,11 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	   return tclgd_complainHeight (interp);
        }
 
-	im = gdImageCreateFromGd2Part (file, x, y, w, h);
-	fflush (file);
+	if ((inctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[3]), TCL_READABLE)) == NULL) {
+	    return TCL_ERROR;
+	}
+
+	im = gdImageCreateFromGd2PartCtx (inctx, x, y, w, h);
 	break;
       }
 
@@ -2251,19 +2244,16 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_WBMP: {
-	FILE *file;
-
 	if (objc != 4) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "name fileHandle");
+	    Tcl_WrongNumArgs (interp, 2, objv, "name channel");
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[3]), 1, 1, (ClientData *)&file) == TCL_ERROR) {
+	if ((inctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[3]), TCL_READABLE)) == NULL) {
 	    return TCL_ERROR;
 	}
 
-	im = gdImageCreateFromWBMP (file);
-	fflush (file);
+	im = gdImageCreateFromWBMPCtx (inctx);
 	break;
       }
 
@@ -2294,7 +2284,6 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	}
 
 	im = gdImageCreateFromXbm (file);
-	fflush (file);
 	break;
       }
 
@@ -2309,9 +2298,19 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
     }
 
+    /* if we got here we completed one of the create routines...
+     *
+     * if inctx was allocated, we need to free it
+     */
+    if (inctx == NULL) {
+	gdFree (inctx);
+    }
+
+    /*
+     * if the image pointer is null, something is wrong, complain and bail
+     */
     if (im == NULL) {
-	Tcl_AppendResult (interp, "image is corrupt or incorrect image type", NULL);
-	return TCL_ERROR;
+	return tclgd_complainCorrupt(interp);
     }
 
     newName = tclgd_newObjName (objv[2]);
