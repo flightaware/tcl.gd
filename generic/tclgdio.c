@@ -7,20 +7,11 @@
  * modeled after the gd_io_file.c file in the gd package, which is documented
  * as having been written/modified 1999, Philip Warner.
  *
- * $Id: tclgdio.c,v 1.2 2005-11-04 01:18:32 karl Exp $
+ * $Id: tclgdio.c,v 1.3 2005-11-04 02:58:09 karl Exp $
  */
 
-#include <tcl.h>
-#include "gd.h"
+#include "tclgd.h"
 #include "gdhelpers.h"
-
-typedef struct tclgd_channelIOCtx
-{
-    gdIOCtx      ctx;
-    Tcl_Channel  channel;
-} tclgd_channelIOCtx;
-
-gdIOCtx *tclgd_newChannelCtx (Tcl_Channel channel);
 
 static int tclgd_channelGetbuf (gdIOCtx *, void *, int);
 static int tclgd_channelPutbuf (gdIOCtx *, const void *, int);
@@ -33,7 +24,7 @@ static long tclgd_channelTell (struct gdIOCtx *);
 static void tclgd_FreeChannelCtx (gdIOCtx * ctx);
 
 /* return data as a dynamic pointer */
-BGD_DECLARE(gdIOCtx *) gdNewChannelCtx (Tcl_Channel channel)
+BGD_DECLARE(gdIOCtx *) tclgd_newChannelCtx (Tcl_Channel channel)
 {
     tclgd_channelIOCtx *ctx;
 
@@ -124,3 +115,26 @@ tclgd_channelTell (struct gdIOCtx *ctx)
 
   return Tcl_Tell (tctx->channel);
 }
+
+gdIOCtx *
+tclgd_channelNameToIOCtx (Tcl_Interp *interp, char *channelName)
+{
+    gdIOCtx     *outctx;
+    Tcl_Channel  channel;
+    int          mode;
+
+    channel = Tcl_GetChannel (interp, channelName, &mode);
+    if (channel == NULL) {
+	return NULL;
+    }
+
+    outctx = tclgd_newChannelCtx (channel);
+
+    if (!(mode & TCL_WRITABLE)) {
+	Tcl_AppendResult (interp, "channel '", channelName, "' not open for writing", NULL);
+	return NULL;
+    }
+
+    return outctx;
+}
+

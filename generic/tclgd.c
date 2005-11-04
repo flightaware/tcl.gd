@@ -3,11 +3,9 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.11 2005-11-02 22:29:42 karl Exp $
+ * $Id: tclgd.c,v 1.12 2005-11-04 02:58:09 karl Exp $
  */
 
-#include <tcl.h>
-#include <gd.h>
 #include "tclgd.h"
 #include <string.h>
 
@@ -1736,19 +1734,18 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
       }
 
       case OPT_WRITE_GIF: {
-	FILE *file;
+	gdIOCtx     *outctx;
 
 	if (objc != 3) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "fileHandle");
+	    Tcl_WrongNumArgs (interp, 2, objv, "channel");
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[2]), 1, 1, (ClientData *)&file) == TCL_ERROR) {
+	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]))) == NULL) {
 	    return TCL_ERROR;
 	}
 
-	gdImageGif (im, file);
-	fflush (file);
+	gdImageGifCtx (im, outctx);
 	return TCL_OK;
       }
 

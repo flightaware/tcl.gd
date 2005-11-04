@@ -1,10 +1,9 @@
 /*
  * tclcdata.c --
  *
- * $Id: tclgdtcl.c,v 1.4 2005-11-02 22:08:22 karl Exp $
+ * $Id: tclgdtcl.c,v 1.5 2005-11-04 02:58:09 karl Exp $
  */
 
-#include <tcl.h>
 #include "tclgd.h"
 
 #undef TCL_STORAGE_CLASS
