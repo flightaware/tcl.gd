@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.12 2005-11-04 02:58:09 karl Exp $
+ * $Id: tclgd.c,v 1.13 2005-11-04 03:13:29 karl Exp $
  */
 
 #include "tclgd.h"
@@ -1693,15 +1693,15 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
       }
 
       case OPT_WRITE_JPEG: {
-	int   quality;
-	FILE *file;
+	gdIOCtx     *outctx;
+	int          quality;
 
 	if (objc != 4) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "fileHandle quality");
+	    Tcl_WrongNumArgs (interp, 2, objv, "channel quality");
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[2]), 1, 1, (ClientData *)&file) == TCL_ERROR) {
+	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]))) == NULL) {
 	    return TCL_ERROR;
 	}
 
@@ -1709,8 +1709,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	   return tclgd_complainQuality (interp);
 	}
 
-	gdImageJpeg (im, file, quality);
-	fflush (file);
+	gdImageJpegCtx (im, outctx, quality);
 	return TCL_OK;
       }
 
@@ -1764,15 +1763,15 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
       }
 
       case OPT_WRITE_PNG: {
-	int   compression;
-	FILE *file;
+	gdIOCtx     *outctx;
+	int          compression;
 
 	if (objc != 4) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "fileHandle compressionLevel");
+	    Tcl_WrongNumArgs (interp, 2, objv, "channel compressionLevel");
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[2]), 1, 1, (ClientData *)&file) == TCL_ERROR) {
+	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]))) == NULL) {
 	    return TCL_ERROR;
 	}
 
@@ -1785,8 +1784,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    return TCL_ERROR;
 	}
 
-	gdImagePngEx (im, file, compression);
-	fflush (file);
+	gdImagePngCtxEx (im, outctx, compression);
 	return TCL_OK;
       }
 
@@ -1815,15 +1813,15 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
       }
 
       case OPT_WRITE_WBMP: {
-	int   fgcolor;
-	FILE *file;
+	gdIOCtx     *outctx;
+	int          fgcolor;
 
 	if (objc != 4) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "fileHandle fgcolor");
+	    Tcl_WrongNumArgs (interp, 2, objv, "channel fgcolor");
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[2]), 1, 1, (ClientData *)&file) == TCL_ERROR) {
+	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]))) == NULL) {
 	    return TCL_ERROR;
 	}
 
@@ -1831,8 +1829,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	   return tclgd_complainFgColor (interp);
 	}
 
-	gdImageWBMP (im, fgcolor, file);
-	fflush (file);
+	gdImageWBMPCtx (im, fgcolor, outctx);
 	return TCL_OK;
       }
 
