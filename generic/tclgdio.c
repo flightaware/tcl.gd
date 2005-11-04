@@ -1,22 +1,23 @@
-
 /*
-   * tclgdio.c
-   *
-   * Implements the tcl.gd I/O interface to Tcl channels.
-   *
-   * Tcl channel interface written by Karl Lehenbauer,
-   * modeled after the gd_io_file.c file in the gd package, which is documented
-   * as having been written/modified 1999, Philip Warner.
-   *
+ * tclgdio.c
+ *
+ * Implements the tcl.gd I/O interface to Tcl channels.
+ *
+ * Tcl channel interface written by Karl Lehenbauer,
+ * modeled after the gd_io_file.c file in the gd package, which is documented
+ * as having been written/modified 1999, Philip Warner.
+ *
+ * $Id: tclgdio.c,v 1.2 2005-11-04 01:18:32 karl Exp $
  */
 
 #include <tcl.h>
 #include "gd.h"
+#include "gdhelpers.h"
 
 typedef struct tclgd_channelIOCtx
 {
-  gdIOCtx      ctx;
-  Tcl_Channel  channel;
+    gdIOCtx      ctx;
+    Tcl_Channel  channel;
 } tclgd_channelIOCtx;
 
 gdIOCtx *tclgd_newChannelCtx (Tcl_Channel channel);
@@ -26,8 +27,8 @@ static int tclgd_channelPutbuf (gdIOCtx *, const void *, int);
 static void tclgd_channelPutchar (gdIOCtx *, int);
 static int  tclgd_channelGetchar (gdIOCtx * ctx);
 
-static int tclgd_Seek (struct gdIOCtx *, const int);
-static long tclgd_Tell (struct gdIOCtx *);
+static int tclgd_channelSeek (struct gdIOCtx *, const int);
+static long tclgd_channelTell (struct gdIOCtx *);
 
 static void tclgd_FreeChannelCtx (gdIOCtx * ctx);
 
@@ -80,7 +81,7 @@ tclgd_channelGetbuf (gdIOCtx * ctx, void *buf, int size)
     tclgd_channelIOCtx *tctx;
     tctx = (tclgd_channelIOCtx *) ctx;
 
-    return Tcl_ReadChars (tctx->channel, buf, size, 0);
+    return Tcl_Read (tctx->channel, buf, size);
 }
 
 static void
@@ -98,14 +99,13 @@ tclgd_channelPutchar (gdIOCtx * ctx, int a)
 static int
 tclgd_channelGetchar (gdIOCtx * ctx)
 {
-    unsigned char b;
+    unsigned char b[2];
     tclgd_channelIOCtx *tctx;
     tctx = (tclgd_channelIOCtx *) ctx;
 
-    Tcl_ReadChars (tctx->channel, &b, 1, 0);
-    return b;
+    Tcl_Read (tctx->channel, (char *)&b, 1);
+    return b[0];
 }
-
 
 static int
 tclgd_channelSeek (struct gdIOCtx *ctx, const int pos)
