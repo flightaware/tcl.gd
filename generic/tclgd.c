@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.15 2005-11-04 03:57:43 karl Exp $
+ * $Id: tclgd.c,v 1.16 2005-11-09 07:48:22 karl Exp $
  */
 
 #include "tclgd.h"
@@ -525,7 +525,8 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	static CONST char *subOptions[] = {
 	    "filled",
 	    "open",
-	    "basic"
+	    "basic",
+	    NULL
 	};
 
 	enum suboptions {
@@ -1716,7 +1717,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImageJpegCtx (im, outctx, quality);
-	return TCL_OK;
+	break;
       }
 
       case OPT_JPEG_DATA: {
@@ -1735,7 +1736,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 
 	memPtr = gdImageJpegPtr (im, &size, quality);
 	Tcl_SetByteArrayObj (resultObj, memPtr, size);
-	return TCL_OK;
+	break;
       }
 
       case OPT_WRITE_GIF: {
@@ -1751,7 +1752,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImageGifCtx (im, outctx);
-	return TCL_OK;
+	break;
       }
 
       case OPT_GIF_DATA: {
@@ -1765,7 +1766,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 
 	memPtr = gdImageGifPtr (im, &size);
 	Tcl_SetByteArrayObj (resultObj, memPtr, size);
-	return TCL_OK;
+	break;
       }
 
       case OPT_WRITE_PNG: {
@@ -1791,7 +1792,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImagePngCtxEx (im, outctx, compression);
-	return TCL_OK;
+	break;
       }
 
       case OPT_PNG_DATA: {
@@ -1815,7 +1816,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 
 	memPtr = gdImagePngPtrEx (im, &size, compression);
 	Tcl_SetByteArrayObj (resultObj, memPtr, size);
-	return TCL_OK;
+	break;
       }
 
       case OPT_WRITE_WBMP: {
@@ -1855,7 +1856,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 
 	memPtr = gdImageWBMPPtr (im, &size, fgcolor);
 	Tcl_SetByteArrayObj (resultObj, memPtr, size);
-	return TCL_OK;
+	break;
       }
 
       case OPT_WRITE_GD: {
@@ -1872,7 +1873,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 
 	gdImageGd (im, file);
 	fflush (file);
-	return TCL_OK;
+	break;
       }
 
       case OPT_GD_DATA: {
@@ -1886,15 +1887,112 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 
 	memPtr = gdImageGdPtr (im, &size);
 	Tcl_SetByteArrayObj (resultObj, memPtr, size);
-	return TCL_OK;
+	break;
       }
 
       case OPT_WRITE_GD2: {
+	gdIOCtx     *outctx;
+	int          chunkSize;
+	int          formatIndex;
+	int          format;
+
+	static CONST char *formatOptions[] = {
+	    "compressed",
+	    "raw",
+	    NULL
+	};
+
+	enum formatOptions {
+	    FORMAT_COMPRESSED,
+	    FORMAT_RAW
+	};
+
+
+	if (objc != 5) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "channel chunkSize format");
+	    return TCL_ERROR;
+	}
+
+	if (Tcl_GetIntFromObj (interp, objv[3], &chunkSize) == TCL_ERROR) {
+	   return tclgd_complain (interp, "chunk size");
+	}
+
+	if (Tcl_GetIndexFromObj (interp, objv[4], formatOptions, "format", 
+	    TCL_EXACT, &formatIndex) != TCL_OK) {
+	    return TCL_ERROR;
+	}
+
+	switch ((enum formatOptions) formatIndex) {
+	  case FORMAT_COMPRESSED:
+	    format = GD2_FMT_COMPRESSED;
+	    break;
+
+	  case FORMAT_RAW:
+	    format = GD2_FMT_RAW;
+	    break;
+	}
+
+	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]), TCL_WRITABLE)) == NULL) {
+	    return TCL_ERROR;
+	}
+
+#if 0
+	gdImageGd2Ctx (im, outctx, chunkSize, format);
+#else
+	Tcl_AppendResult (interp, "gdImageGd2Ctx is documented but doesn'ta ctually exist", NULL);
+	return TCL_ERROR;
+
+#endif
+	break;
       }
 
       case OPT_GD2_DATA: {
-      }
+	int          chunkSize;
+	int          formatIndex;
+	int          format = GD2_FMT_COMPRESSED;
+	int          size;
+	void        *memPtr;
 
+	static CONST char *formatOptions[] = {
+	    "compressed",
+	    "raw",
+	    NULL
+	};
+
+	enum formatOptions {
+	    FORMAT_COMPRESSED,
+	    FORMAT_RAW
+	};
+
+
+	if (objc != 4) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "chunkSize format");
+	    return TCL_ERROR;
+	}
+
+	if (Tcl_GetIntFromObj (interp, objv[2], &chunkSize) == TCL_ERROR) {
+	   return tclgd_complain (interp, "chunk size");
+	}
+
+	if (Tcl_GetIndexFromObj (interp, objv[3], formatOptions, "format", 
+	    TCL_EXACT, &formatIndex) != TCL_OK) {
+	    return TCL_ERROR;
+	}
+
+	switch ((enum formatOptions) formatIndex) {
+	  case FORMAT_COMPRESSED:
+	    format = GD2_FMT_COMPRESSED;
+	    break;
+
+	  case FORMAT_RAW:
+	    format = GD2_FMT_RAW;
+	    break;
+	}
+
+	memPtr = gdImageGd2Ptr (im, chunkSize, format, &size);
+	Tcl_SetByteArrayObj (resultObj, memPtr, size);
+	break;
+      }
     }
 
     return TCL_OK;
