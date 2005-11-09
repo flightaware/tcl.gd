@@ -1,5 +1,5 @@
 #
-# Tcl package index file
+# Tcl package index file for tclgd @PACKAGE_VERSION@
 #
-package ifneeded Tclsha1 @PACKAGE_VERSION@ \
+package ifneeded tclgd @PACKAGE_VERSION@ \
     [list load [file join $dir @PKG_LIB_FILE@]]

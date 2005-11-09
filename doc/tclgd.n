@@ -1,0 +1,324 @@
+.TH tclgd n 0.0 "Tcl-Extensions"
+.HS tclgd tcl
+.BS
+.SH NAME
+gdtcl \- modern, nearly feature-complete interface to gd-2 graphics drawing routines
+.SH SYNOPSIS
+\fBpackage require gdtcl\fR
+.br
+\fBGD create\fI objName width height\fR
+.br
+\fBGD create_truecolor\fI objName width height\fR 
+.br
+\fBGD create_from_jpeg\fI objName channel\fR
+.br
+\fBGD create_from_jpeg_data\fI objName data\fR
+.br
+\fBGD create_from_png\fI objName channel\fR
+.br
+\fBGD create_from_png_data\fI objName data\fR
+.br
+\fBGD create_from_gif\fI objName channel\fR
+.br
+\fBGD create_from_gif_data\fI objName data\fR
+.br
+\fBGD create_from_gd\fI objName channel\fR
+.br
+\fBGD create_from_gd_data\fI objName data\fR
+.br
+\fBGD create_from_gd2\fI objName channel\fR
+.br
+\fBGD create_from_gd2_data\fI objName data\fR
+.br
+\fBGD create_from_gd2_part\fI objName channel x y width height\fR
+.br
+\fBGD create_from_gd2_part_data\fI objName data x y width height\fR
+.br
+\fBGD create_from_wbmp\fI objName channel\fR
+.br
+\fBGD create_from_wbmp_data\fI objName data\fR
+.br
+\fBGD create_from_xbm\fI objName fileHandle\fR
+.br
+\fBGD create_from_xpm\fI objName fileHandle\fR
+.br
+\fBobjName pixel\fI x y ?color?\fR
+.br
+\fBobjName line\fI x1 y1 x2 y2 color\fR
+.br
+\fBobjName polygon\fI ?filled|open? pointList color\fR
+.br
+\fBobjName rectangle\fI x1 y1 x2 y2 color\fR
+.br
+\fBobjName filled_rectangle\fI x1 y1 x2 y2 color\fR
+.br
+\fBobjName arc\fI cx cy width height startDegrees endDegrees color\fR
+.br
+\fBobjName filled_arc\fI cx cy width height startDegrees endDegrees color ?arc? ?chord? ?pie? ?nofill? ?edged?\fR
+.br
+\fBobjName filled_ellipse\fI cx cy width height color\fR
+.br
+\fBobjName fill_to_border\fI x y borderColor color\fR
+.br
+\fBobjName fill\fI x y color\fR
+.br
+\fBobjName fill\fI x y color\fR
+.br
+\fBobjName text\fI color font pointSize angle x y text\fR
+.br
+\fBobjName text_bounds\fI color font pointSize angle x y text\fR
+.br
+\fBobjName allocate_color\fI r g b ?alpha?\fR
+.br
+\fBobjName closest_color\fI r g b ?alpha?\fR
+.br
+\fBobjName closest_color_hwb\fI r g b\fR
+.br
+\fBobjName exact_color\fI r g b ?alpha?\fR
+.br
+\fBobjName resolve_color\fI r g b ?alpha?\fR
+.br
+\fBobjName total_colors\fR
+.br
+\fBobjName deallocate_color\fI color\fR
+.br
+\fBobjName true_color\fI r g b ?alpha?\fR
+.br
+\fBobjName interlace\fI ?boolean?\fR
+.br
+\fBobjName transparent\fI color\fR
+.br
+\fBobjName set_anti_aliased\fI color\fR
+.br
+\fBobjName set_anti_aliased_dont_blend\fI color\fR
+.br
+\fBobjName set_brush\fI BROKE\fR
+.br
+\fBobjName set_tile\fI BROKE\fR
+.br
+\fBobjName set_style\fI BROKE\fR
+.br
+\fBobjName set_thickness\fI thickness\fR
+.br
+\fBobjName alpha_blending\fI blending\fR
+.br
+\fBobjName save_alpha\fI boolean\fR
+.br
+\fBobjName get_alpha\fR
+.br
+\fBobjName bounds_safe\fI x y\fR
+.br
+\fBobjName bounds_safe\fI x y\fR
+.br
+\fBobjName green_component\fI color\fR
+.br
+\fBobjName red_component\fI color\fR
+.br
+\fBobjName blue_component\fI color\fR
+.br
+\fBobjName width\fR
+.br
+\fBobjName height\fR
+.br
+\fBobjName copy\fI srcImageCommand destX destY srcX srcY width height\fR
+.br
+\fBobjName copy_resized\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR
+.br
+\fBobjName copy_resampled\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR
+.br
+\fBobjName copy_rotated\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight angle\fR
+.br
+\fBobjName copy_merge\fI srcImageCommand destX destY srcX srcY width height percent\fR
+.br
+\fBobjName copy_merge_grey\fI srcImageCommand destX destY srcX srcY width height percent\fR
+.br
+\fBobjName copy_palette\fI srcImageCommand\fR
+.br
+\fBobjName sharpen\fI percent\fR
+.br
+\fBobjName square_to_circle\fI name radius\fR
+.br
+\fBobjName write_jpeg\fI channel quality\fR
+.br
+\fBobjName jpeg_data\fI quality\fR
+.br
+\fBobjName write_gif\fI channel\fR
+.br
+\fBobjName gif_data\fR
+.br
+\fBobjName write_png\fI channel compressionLevel\fR
+.br
+\fBobjName png_data\fI compressionLevel\fR
+.br
+\fBobjName write_wbmp\fI channel fgcolor\fR
+.br
+\fBobjName wbmp_data\fI fgcolor\fR
+.br
+\fBobjName write_gd\fI fileHandle\fR
+.br
+\fBobjName gd_data\fR
+.br
+\fBobjName write_gd2\fI channel chunkSize format\fR
+.br
+\fBobjName gd2_data\fI chunkSize format\fR
+.br
+.SH DESCRIPTION
+tclgd gives Tcl programs the ability to read, manipulate, and generate
+graphic images in a number of popular formats.
+.PP
+The \fBGD\fR command creates a new Tcl command, either prepping it with
+an empty graphic for the case of \fBcreate\fR and \fBcreate_truecolor\fR,
+or by reading file data either from a Tcl \fIchannel\fR, from in-memory
+data, or from a Tcl file handle (in a couple of cases where a channel 
+interface can't be provided due to limitations of the underlying gd library 
+routines).
+.PP
+For formats where channels are support (the majority), any type of channel
+can be used, including files, sockets, and, if so equipped, alternate
+channel interfaces such as reading the data directly from zip files.
+.PP
+Tweezer gives Tcl programs the ability to examine and manipulate the
+state of Tcl objects, the core building blocks of Tcl in versions 8
+and above.
+.PP
+Once an image has been created or loaded, it can be manipulated via the
+named object, or if the object name is \fB#auto\fR, a unique command name
+is returned and should be grabbed into a variable and executed using a
+reference to that variable, in the same manner as Incr Tcl.
+.PP
+.nf
+    GD create img 100 100
+    img pixel 5 5
+.fo
+.PP
+.SH DRAWING FUNCTIONS
+.PP
+\fBobjName pixel \fIx y\fR returns the color index of the pixel located at
+coordinates x and y, while \fBobjName pixel \fIx y color\fR sets that pixel
+location to the specified color index.
+.PP
+\fBobjName line\fI x1 y1 x2 y2 color\fR
+.PP
+\fBobjName polygon\fI ?filled|open? pointList color\fR
+.PP
+\fBobjName rectangle\fI x1 y1 x2 y2 color\fR
+.PP
+\fBobjName filled_rectangle\fI x1 y1 x2 y2 color\fR
+.PP
+\fBobjName arc\fI cx cy width height startDegrees endDegrees color\fR
+.PP
+\fBobjName filled_arc\fI cx cy width height startDegrees endDegrees color ?arc? ?chord? ?pie? ?nofill? ?edged?\fR
+.PP
+\fBobjName filled_ellipse\fI cx cy width height color\fR
+.PP
+\fBobjName fill_to_border\fI x y borderColor color\fR
+.PP
+\fBobjName fill\fI x y color\fR
+.PP
+\fBobjName fill\fI x y color\fR
+.PP
+\fBobjName text\fI color font pointSize angle x y text\fR
+.PP
+\fBobjName text_bounds\fI color font pointSize angle x y text\fR
+.PP
+\fBobjName allocate_color\fI r g b ?alpha?\fR
+.PP
+\fBobjName closest_color\fI r g b ?alpha?\fR
+.PP
+\fBobjName closest_color_hwb\fI r g b\fR
+.PP
+\fBobjName exact_color\fI r g b ?alpha?\fR
+.PP
+\fBobjName resolve_color\fI r g b ?alpha?\fR
+.PP
+\fBobjName total_colors\fR
+.PP
+\fBobjName deallocate_color\fI color\fR
+.PP
+\fBobjName true_color\fI r g b ?alpha?\fR
+.PP
+\fBobjName interlace\fI ?boolean?\fR
+.PP
+\fBobjName transparent\fI color\fR
+.PP
+\fBobjName set_anti_aliased\fI color\fR
+.PP
+\fBobjName set_anti_aliased_dont_blend\fI color\fR
+.PP
+\fBobjName set_brush\fI BROKE\fR
+.PP
+\fBobjName set_tile\fI BROKE\fR
+.PP
+\fBobjName set_style\fI BROKE\fR
+.PP
+\fBobjName set_thickness\fI thickness\fR
+.PP
+\fBobjName alpha_blending\fI blending\fR
+.PP
+\fBobjName save_alpha\fI boolean\fR
+.PP
+\fBobjName get_alpha\fR
+.PP
+\fBobjName bounds_safe\fI x y\fR
+.PP
+\fBobjName bounds_safe\fI x y\fR
+.PP
+\fBobjName green_component\fI color\fR
+.PP
+\fBobjName red_component\fI color\fR
+.PP
+\fBobjName blue_component\fI color\fR
+.PP
+\fBobjName width\fI return the width of the image, while
+\fBobjName height\fR returns the height.
+.PP
+\fBobjName copy\fI srcImageCommand destX destY srcX srcY width height\fR
+.PP
+\fBobjName copy_resized\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR
+.PP
+\fBobjName copy_resampled\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR
+.PP
+\fBobjName copy_rotated\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight angle\fR
+.PP
+\fBobjName copy_merge\fI srcImageCommand destX destY srcX srcY width height percent\fR
+.PP
+\fBobjName copy_merge_grey\fI srcImageCommand destX destY srcX srcY width height percent\fR
+.PP
+\fBobjName copy_palette\fI srcImageCommand\fR
+.PP
+\fBobjName sharpen\fI percent\fR
+.PP
+\fBobjName square_to_circle\fI name radius\fR
+.PP
+.SH IMAGE OUTPUT ROUTINES
+\fBobjName write_jpeg\fI channel quality\fR writes the image in JPEG format,
+with the specified quality level,
+to the specified Tcl channel, while \fBobjName jpeg_data\fI quality\fR
+will return it as binary data.
+.PP
+\fBobjName write_gif\fI channel\fR writes the image to the specified
+channel in GIF format, while \fBobjName gif_data\fR returns it as binary
+data.
+.PP
+\fBobjName write_png\fI channel compressionLevel\fR write the image to
+the specified channel, with the compression level of \fB-1\fR for the
+default set when gd was built, \fB0\fR to indicate no compression,
+\fB1\fR to compress quickly, all th eway to \fB9\fR to select the best
+possible compression.  Likewise \fBobjName png_data\fI compressionLevel\fR
+returns the image as binary data, with the specified compression.
+.PP
+\fBobjName write_wbmp\fI channel fgcolor\fR write the image to the specified
+channel in Windows bitmap format, selecting only pixels matching the specified
+foreground color.  \fBobjName wbmp_data\fI fgcolor\fR returns the image
+in wbmp format as binary data.
+.PP
+\fBobjName write_gd\fI fileHandle\fR writes the image out in the 
+high-performance but non-portable \fIgd\fR format, while
+\fBobjName gd_data\fR returns the image as binary data.
+.PP
+\fBobjName write_gd2\fI channel chunkSize format\fR
+.PP
+\fBobjName gd2_data\fI chunkSize format\fR writes the image out in the
+high-performance but non-portable \fIgd2\fR format, with \fIchunkSize\fR
+determining the size of each chunk, and format being either \fBcompressed\fR
+or \fBraw\fR.
