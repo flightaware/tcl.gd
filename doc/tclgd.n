@@ -5,7 +5,7 @@
 gdtcl \- modern, nearly feature-complete interface to gd-2 graphics drawing routines
 .SH SYNOPSIS
 \fBpackage require gdtcl\fR
-.br
+.PP
 \fBGD create\fI objName width height\fR
 .br
 \fBGD create_truecolor\fI objName width height\fR 
@@ -41,7 +41,7 @@ gdtcl \- modern, nearly feature-complete interface to gd-2 graphics drawing rout
 \fBGD create_from_xbm\fI objName fileHandle\fR
 .br
 \fBGD create_from_xpm\fI objName fileHandle\fR
-.br
+.PP
 \fBobjName pixel\fI x y ?color?\fR
 .br
 \fBobjName line\fI x1 y1 x2 y2 color\fR
@@ -197,33 +197,56 @@ reference to that variable, in the same manner as Incr Tcl.
 coordinates x and y, while \fBobjName pixel \fIx y color\fR sets that pixel
 location to the specified color index.
 .PP
-\fBobjName line\fI x1 y1 x2 y2 color\fR
+\fBobjName line\fI x1 y1 x2 y2 color\fR draws a line from the coordinates
+\fIx1, y1\fR to \fIx2, y2\fR using color \fIcolor\fR.  If thickness is set
+to 1 and antialiasing is enabled, the line will be drawn antialiased.
 .PP
-\fBobjName polygon\fI ?filled|open? pointList color\fR
+\fBobjName polygon\fI ?filled|open? pointList color\fR draws a polygon
+of color \fIcolor\fR using points from the point list \fIpointList\fR
+which must contain an even number of xy pairs.
 .PP
-\fBobjName rectangle\fI x1 y1 x2 y2 color\fR
+\fBobjName rectangle\fI x1 y1 x2 y2 color\fR draws a rectangle of the given
+color from the corner at x1, y2 to the corner at x2, y2.
 .PP
-\fBobjName filled_rectangle\fI x1 y1 x2 y2 color\fR
+\fBobjName filled_rectangle\fI x1 y1 x2 y2 color\fR same as rectangle except
+the rectangle is filled.
 .PP
-\fBobjName arc\fI cx cy width height startDegrees endDegrees color\fR
+\fBobjName arc\fI cx cy width height startDegrees endDegrees color\fR draws
+an arc centered on cx, cy, of the specified width and heigtht, starting
+and ending at the specified degrees, and using the specified color.
 .PP
-\fBobjName filled_arc\fI cx cy width height startDegrees endDegrees color ?arc? ?chord? ?pie? ?nofill? ?edged?\fR
+\fBobjName filled_arc\fI cx cy width height startDegrees endDegrees color ?arc? ?chord? ?pie? ?nofill? ?edged?\fR draws
+an arc centered on cx, cy, of the specified width and heigtht, starting
+and ending at the specified degrees, and using the specified color.  Additional
+options can be specified and are logically or'ed together,
+\fBchord\fR, \fBpie\fR, \fBnofill\fR and/or \fBedged\fR.
 .PP
-\fBobjName filled_ellipse\fI cx cy width height color\fR
+\fBobjName filled_ellipse\fI cx cy width height color\fR draws a filled
+ellipse centered at cx, cy, of the given width, height and color.
 .PP
-\fBobjName fill_to_border\fI x y borderColor color\fR
+\fBobjName fill_to_border\fI x y borderColor color\fR fills to the border
+matching the specified borderColor, starting at x, y, using the specified
+color.
 .PP
-\fBobjName fill\fI x y color\fR
+\fBobjName fill\fI x y color\fR does a flood fill starting at x, y using
+the specified color.
 .PP
-\fBobjName fill\fI x y color\fR
+\fBobjName text\fI color font pointSize angle x y text\fR renders text
+using the specified font and point size, at the specified angle, starting
+at x, y.
 .PP
-\fBobjName text\fI color font pointSize angle x y text\fR
+\fBobjName text_bounds\fI color font pointSize angle x y text\fRdetermines the
+bounds of text given the specified font and point size, at the specified angle,
+starting at x, y.  The bounds are returned as an 8-element list giving the
+x and y coordinates of the four corners of a box the text will be within.
 .PP
-\fBobjName text_bounds\fI color font pointSize angle x y text\fR
+\fBobjName allocate_color\fI r g b ?alpha?\fR allocates a color given the
+specified red, green and blue values, and optional alpha value, and returns
+the color index.  For truecolor images it returns a value that can be used
+to draw the specified color, but it's not really an index per se.
 .PP
-\fBobjName allocate_color\fI r g b ?alpha?\fR
-.PP
-\fBobjName closest_color\fI r g b ?alpha?\fR
+\fBobjName closest_color\fI r g b ?alpha?\fR returns the closest color index
+that can be found among the currently allocated colors.
 .PP
 \fBobjName closest_color_hwb\fI r g b\fR
 .PP
@@ -237,9 +260,14 @@ location to the specified color index.
 .PP
 \fBobjName true_color\fI r g b ?alpha?\fR
 .PP
-\fBobjName interlace\fI ?boolean?\fR
+\fBobjName interlace\fI ?boolean?\fR if set to 1, t, etc, causes the image
+to be saved interlaced if the output format supports it, if 0, f, etc, causes
+the image to be saved noninterlaced.  If boolean isn't specified, returns
+the current interlace setting for the image.
 .PP
-\fBobjName transparent\fI color\fR
+\fBobjName transparent\fI color\fR says what color index will be generated as
+transparent when the image is saved, assuming the outputted image format 
+supports it.
 .PP
 \fBobjName set_anti_aliased\fI color\fR
 .PP
@@ -263,11 +291,14 @@ location to the specified color index.
 .PP
 \fBobjName bounds_safe\fI x y\fR
 .PP
-\fBobjName green_component\fI color\fR
+\fBobjName green_component\fI color\fR - returns the green component of the
+color.
 .PP
-\fBobjName red_component\fI color\fR
+\fBobjName red_component\fI color\fR - returns the red component of the
+color.
 .PP
-\fBobjName blue_component\fI color\fR
+\fBobjName blue_component\fI color\fR - returns the blue component of the
+color.
 .PP
 \fBobjName width\fI return the width of the image, while
 \fBobjName height\fR returns the height.
