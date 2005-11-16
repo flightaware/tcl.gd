@@ -3,7 +3,7 @@ dnl	This file is an input file used by the GNU "autoconf" program to
 dnl	generate the file "configure", which is run during Tcl installation
 dnl	to configure the system for the local environment.
 #
-# RCS: @(#) $Id: configure.in,v 1.5 2005-11-09 06:44:39 karl Exp $
+# RCS: @(#) $Id: configure.in,v 1.6 2005-11-16 18:59:41 karl Exp $
 
 #-----------------------------------------------------------------------
 # configure.in for Karl's tcl.gd.  
@@ -18,7 +18,7 @@ dnl	to configure the system for the local environment.
 # so you can encode the package version directly into the source files.
 #-----------------------------------------------------------------------
 
-AC_INIT([tclgd], [0.0])
+AC_INIT([tclgd], [0.5])
 
 #--------------------------------------------------------------------
 # Call TEA_INIT as the first TEA_ macro to set up initial vars.
@@ -82,24 +82,30 @@ TEA_ADD_TCL_SOURCES([])
 # Get the paths to the gd includes and libraries.
 #--------------------------------------------------------------------
 
-AC_ARG_WITH(gd-include,  --with-gd-include        directory containing gd include files)
-AC_ARG_WITH(gd-lib,  --with-gd-lib        directory containing gd library files)
-
-if test "${with_gd_include+set}" = "set"; then
-    GD_INC_DIR="${with_gd_include}"
-    AC_MSG_RESULT([using gd include dir of... "$GD_INC_DIR"])
+AC_PATH_PROGS(GDLIB_CONFIG, gdlib-config)
+if test "$GDLIB_CONFIG" = ""; then
+    AC_MSG_ERROR([Cannot locate program gdlib-config to determine GD library paths.  Make sure gdlib-config is in PATH or set GDLIB_CONFIG env var to path to gdlib-config.])
 fi
 
-if test "${with_gd_lib+set}" = "set"; then
-    GD_LIB_DIR="${with_gd_lib}"
-    AC_MSG_RESULT([using gd lib dir of... "$GD_LIB_DIR"])
-fi
-LIBGD="libgd${SHLIB_SUFFIX}"
-AC_SUBST(GD_INC_DIR)
-AC_SUBST(GD_LIB_DIR)
+GD_VERSION="`$GDLIB_CONFIG --version`"
+AC_MSG_RESULT([using gdlib-config reported version... "$GD_VERSION"])
+AC_SUBST(GD_VERSION)
 
-AC_CHECK_LIB (gd, gdImageFill)
-AC_SUBST(LIBGD)
+GD_INCLUDES="`$GDLIB_CONFIG --includes`"
+AC_MSG_RESULT([using gdlib-config reported GD includes of... "$GD_INCLUDES"])
+AC_SUBST(GD_INCLUDES)
+
+GD_LDFLAGS="`$GDLIB_CONFIG --ldflags`"
+AC_MSG_RESULT([using gdlib-config reported GD LDFLAGS of... "$GD_LDFLAGS"])
+AC_SUBST(GD_LDFLAGS)
+
+GD_LIBS="`$GDLIB_CONFIG --libs`"
+AC_MSG_RESULT([using gdlib-config reported GD link libraries of... "$GD_LIBS"])
+AC_SUBST(GD_LIBS)
+
+GD_FEATURES="`$GDLIB_CONFIG --features`"
+AC_MSG_RESULT([using gdlib-config reported GD features of... "$GD_FEATURES"])
+AC_SUBST(GD_FEATURES)
 
 #--------------------------------------------------------------------
 # __CHANGE__

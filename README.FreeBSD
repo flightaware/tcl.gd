@@ -1,6 +1,6 @@
 
 
-$Id: README.FreeBSD,v 1.2 2005-11-02 22:08:22 karl Exp $
+# $Id: README.FreeBSD,v 1.3 2005-11-16 18:59:41 karl Exp $
 
 ./configure --with-tcl=/usr/local/lib/tcl8.4 --with-tclinclude=/usr/local/include/tcl8.4 --with-gd-include=/usr/local/include --with-gd-lib=/usr/local/lib
 

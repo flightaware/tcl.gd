@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.17 2005-11-16 15:59:01 karl Exp $
+ * $Id: tclgd.c,v 1.18 2005-11-16 18:59:41 karl Exp $
  */
 
 #include "tclgd.h"
@@ -774,7 +774,8 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    "chord",
 	    "pie",
 	    "nofill",
-	    "edged"
+	    "edged",
+	    NULL
 	};
 
 	enum styles {
@@ -2181,6 +2182,8 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	"create_from_wbmp_data",
 	"create_from_xbm",
 	"create_from_xpm",
+	"version",
+	"features",
         (char *)NULL
     };
 
@@ -2203,11 +2206,13 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	OPT_CREATE_FROM_WBMP,
 	OPT_CREATE_FROM_WBMP_DATA,
 	OPT_CREATE_FROM_XBM,
-	OPT_CREATE_FROM_XPM
+	OPT_CREATE_FROM_XPM,
+	OPT_VERSION,
+	OPT_FEATURES
     };
 
-    if (objc < 3) {
-	Tcl_WrongNumArgs (interp, 1, objv, "subcommand name ?args?");
+    if (objc < 2) {
+	Tcl_WrongNumArgs (interp, 1, objv, "subcommand ?args?");
 	return TCL_ERROR;
     }
 
@@ -2525,6 +2530,26 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 
 	im = gdImageCreateFromXpm (Tcl_GetString(objv[2]));
 	break;
+      }
+
+      case OPT_VERSION: {
+	if (objc != 2) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "");
+	    return TCL_ERROR;
+	}
+
+	Tcl_SetStringObj (resultObj, GD_VERSION, -1);
+	return TCL_OK;
+      }
+
+      case OPT_FEATURES: {
+	if (objc != 2) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "");
+	    return TCL_ERROR;
+	}
+
+	Tcl_SetStringObj (resultObj, GD_FEATURES, -1);
+	return TCL_OK;
       }
     }
 
