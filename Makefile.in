@@ -13,7 +13,7 @@
 # See the file "license.terms" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
-# RCS: @(#) $Id: Makefile.in,v 1.5 2005-11-16 18:59:41 karl Exp $
+# RCS: @(#) $Id: Makefile.in,v 1.6 2005-11-16 23:56:13 karl Exp $
 
 #========================================================================
 # Add additional lines to handle any additional AC_SUBST cases that
@@ -150,7 +150,7 @@ PKG_CFLAGS	= @PKG_CFLAGS@
 #DEFS		= $(TCL_DEFS) @DEFS@ $(PKG_CFLAGS)
 DEFS		= @DEFS@ $(PKG_CFLAGS)
 
-CONFIG_CLEAN_FILES = Makefile
+CONFIG_CLEAN_FILES = Makefile pkgIndex.tcl
 
 CPPFLAGS	= @CPPFLAGS@
 LIBS		= @PKG_LIBS@ @LIBS@ @GD_LDFLAGS@ @GD_LIBS@
@@ -179,7 +179,7 @@ all: binaries libraries doc
 # of the Makefile, in the "BINARIES" variable.
 #========================================================================
 
-binaries: $(BINARIES) pkgIndex.tcl
+binaries: $(BINARIES)
 
 libraries:
 
@@ -273,22 +273,6 @@ VPATH = $(srcdir):$(srcdir)/generic:$(srcdir)/unix:$(srcdir)/win
 	$(COMPILE) -c `@CYGPATH@ $<` -o $@
 
 #========================================================================
-# Create the pkgIndex.tcl file.
-# It is usually easiest to let Tcl do this for you with pkg_mkIndex, but
-# you may find that you need to customize the package.  If so, either
-# modify the -hand version, or create a pkgIndex.tcl.in file and have
-# the configure script output the pkgIndex.tcl by editing configure.in.
-#========================================================================
-
-pkgIndex.tcl:
-	( echo pkg_mkIndex . $(PKG_LIB_FILE) \; exit; ) | $(TCLSH)
-
-pkgIndex.tcl-hand:
-	(echo 'package ifneeded $(PACKAGE_NAME) $(PACKAGE_VERSION) \
-	    [list load [file join $$dir $(PKG_LIB_FILE)]]'\
-	) > pkgIndex.tcl
-
-#========================================================================
 # Distribution creation
 # You may need to tweak this target to make it work correctly.
 #========================================================================
@@ -354,8 +338,8 @@ distclean: clean
 # .lib files.  Because the .lib files are not explicitly listed anywhere,
 # we need to deduce their existence from the .dll file of the same name.
 # Library files go into the lib directory.
-# In addition, this will generate the pkgIndex.tcl
-# file in the install location (assuming it can find a usable tclsh shell)
+# In addition, this will install pkgIndex.tcl
+# file in the install location 
 #
 # You should not have to modify this target.
 #========================================================================
