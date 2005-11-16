@@ -3,12 +3,28 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.16 2005-11-09 07:48:22 karl Exp $
+ * $Id: tclgd.c,v 1.17 2005-11-16 15:59:01 karl Exp $
  */
 
 #include "tclgd.h"
 #include <string.h>
 
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * tclgd_newObjName --
+ *
+ *    Given a Tcl_Obj containing a name for a new GD image handling
+ *    command object, if it contains "#auto", return an autoincrementing
+ *    unique handle name, a la incr Tcl, otherwise return the name
+ *    passed.
+ *
+ * Results:
+ *    None.
+ *
+ *----------------------------------------------------------------------
+ */
 static char *
 tclgd_newObjName (Tcl_Obj *nameObj)
 {
@@ -23,6 +39,40 @@ tclgd_newObjName (Tcl_Obj *nameObj)
 
     return name;
 }
+
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * tclgd_cmdNameObjToIM --
+ *
+ *    Given a Tcl_Obj containing a name for an existing GD image handling
+ *    command object and a pointer to a gd image pointer...
+ *
+ *    If the command name can be successfully looked up, set the passed
+ *    address of a gd image pointer to contain the GD image held within
+ *    the image handling object's client data and return TCL_OK, else
+ *    return TCL_ERROR.
+ *
+ * Results:
+ *    None.
+ *
+ *----------------------------------------------------------------------
+ */
+static int
+tclgd_cmdNameObjToIM (Tcl_Interp *interp, Tcl_Obj *commandNameObj, gdImagePtr *srcImPtr)
+{
+    Tcl_CmdInfo  cmdInfo;
+
+    if (!Tcl_GetCommandInfo ( interp, Tcl_GetString(commandNameObj), &cmdInfo)) {
+	return TCL_ERROR;
+    }
+
+    *srcImPtr = (gdImagePtr)cmdInfo.objClientData;
+
+    return TCL_OK;
+}
+
 
 /* tclgd_complain routines -- these get called in a lot of places after
  * integer and double-precision floating point conversion failures to
@@ -372,6 +422,9 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	"gd_data",
 	"write_gd2",
 	"gd2_data",
+	"gif_anim_begin",
+	"gif_anim_add",
+	"gif_anim_end",
 	(char *)NULL
     };
 
@@ -435,7 +488,10 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	OPT_WRITE_GD,
 	OPT_GD_DATA,
 	OPT_WRITE_GD2,
-	OPT_GD2_DATA
+	OPT_GD2_DATA,
+	OPT_GIF_ANIM_BEGIN,
+	OPT_GIF_ANIM_ADD,
+	OPT_GIF_ANIM_END
     };
 
     if (objc == 1) {
@@ -1416,18 +1472,15 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int          w;
 	int          h;
 	gdImagePtr   srcIm;
-	Tcl_CmdInfo  cmdInfo;
 
 	if (objc != 9) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "srcImageCommand destX destY srcX srcY w h");
 	    return TCL_ERROR;
 	}
 
-	if (!Tcl_GetCommandInfo ( interp, Tcl_GetString(objv[2]), &cmdInfo)) {
+	if (tclgd_cmdNameObjToIM (interp, objv[2], &srcIm) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
-	srcIm = (gdImagePtr)cmdInfo.objClientData;
-
 
        if (Tcl_GetIntFromObj (interp, objv[3], &destX) == TCL_ERROR) {
 	   return tclgd_complainDestX (interp);
@@ -1468,18 +1521,15 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int          srcW;
 	int          srcH;
 	gdImagePtr   srcIm;
-	Tcl_CmdInfo  cmdInfo;
 
 	if (objc != 11) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "srcImageCommand destX destY srcX srcY destW destH srcW srcH");
 	    return TCL_ERROR;
 	}
 
-	if (!Tcl_GetCommandInfo ( interp, Tcl_GetString(objv[2]), &cmdInfo)) {
+	if (tclgd_cmdNameObjToIM (interp, objv[2], &srcIm) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
-	srcIm = (gdImagePtr)cmdInfo.objClientData;
-
 
        if (Tcl_GetIntFromObj (interp, objv[3], &destX) == TCL_ERROR) {
 	   return tclgd_complainDestX (interp);
@@ -1531,18 +1581,15 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int          srcH;
 	int          angle;
 	gdImagePtr   srcIm;
-	Tcl_CmdInfo  cmdInfo;
 
 	if (objc != 10) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "srcImageCommand destX destY srcX srcY destW destH srcW srcH angle");
 	    return TCL_ERROR;
 	}
 
-	if (!Tcl_GetCommandInfo ( interp, Tcl_GetString(objv[2]), &cmdInfo)) {
+	if (tclgd_cmdNameObjToIM (interp, objv[2], &srcIm) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
-	srcIm = (gdImagePtr)cmdInfo.objClientData;
-
 
        if (Tcl_GetDoubleFromObj (interp, objv[3], &destX) == TCL_ERROR) {
 	   return tclgd_complainDestX (interp);
@@ -1586,18 +1633,15 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int          h;
 	int          pct;
 	gdImagePtr   srcIm;
-	Tcl_CmdInfo  cmdInfo;
 
 	if (objc != 10) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "srcImageCommand destX destY srcX srcY width height percent");
 	    return TCL_ERROR;
 	}
 
-	if (!Tcl_GetCommandInfo ( interp, Tcl_GetString(objv[2]), &cmdInfo)) {
+	if (tclgd_cmdNameObjToIM (interp, objv[2], &srcIm) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
-	srcIm = (gdImagePtr)cmdInfo.objClientData;
-
 
         if (Tcl_GetIntFromObj (interp, objv[3], &destX) == TCL_ERROR) {
 	   return tclgd_complainDestX (interp);
@@ -1636,7 +1680,6 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
       }
 
       case OPT_COPY_PALETTE: {
-	Tcl_CmdInfo  cmdInfo;
 	gdImagePtr   srcIm;
 
 	if (objc != 3) {
@@ -1644,10 +1687,9 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    return TCL_ERROR;
 	}
 
-	if (!Tcl_GetCommandInfo ( interp, Tcl_GetString(objv[2]), &cmdInfo)) {
+	if (tclgd_cmdNameObjToIM (interp, objv[2], &srcIm) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
-	srcIm = (gdImagePtr)cmdInfo.objClientData;
 
 	gdImagePaletteCopy (im, srcIm);
 	break;
@@ -1991,6 +2033,96 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 
 	memPtr = gdImageGd2Ptr (im, chunkSize, format, &size);
 	Tcl_SetByteArrayObj (resultObj, memPtr, size);
+	break;
+      }
+
+      case OPT_GIF_ANIM_BEGIN: {
+	gdIOCtx     *outctx;
+	int          globalCM;
+	int          loops;
+
+	if (objc != 5) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "channel global_color_map loops");
+	    return TCL_ERROR;
+	}
+
+	if (Tcl_GetIntFromObj (interp, objv[3], &globalCM) == TCL_ERROR) {
+	    return tclgd_complain (interp, "global_color_map");
+	}
+
+	if (Tcl_GetIntFromObj (interp, objv[4], &loops) == TCL_ERROR) {
+	    return tclgd_complain (interp, "loops");
+	}
+
+	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]), TCL_WRITABLE)) == NULL) {
+	    return TCL_ERROR;
+	}
+
+	gdImageGifAnimBeginCtx (im, outctx, globalCM, loops);
+	break;
+      }
+
+      case OPT_GIF_ANIM_ADD: {
+	gdIOCtx     *outctx;
+	int          localCM;
+	int          leftOffset;
+	int          topOffset;
+	int          delay;
+	int          disposal;
+	gdImagePtr   previousIm = NULL;
+
+	if ((objc < 8) || (objc > 9)) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "channel local_color_map left_offset top_offset delay disposal ?previous_image?");
+	    return TCL_ERROR;
+	}
+
+	if (Tcl_GetIntFromObj (interp, objv[3], &localCM) == TCL_ERROR) {
+	    return tclgd_complain (interp, "global_color_map");
+	}
+
+	if (Tcl_GetIntFromObj (interp, objv[4], &leftOffset) == TCL_ERROR) {
+	    return tclgd_complain (interp, "left_offset");
+	}
+
+	if (Tcl_GetIntFromObj (interp, objv[5], &topOffset) == TCL_ERROR) {
+	    return tclgd_complain (interp, "top_offset");
+	}
+
+	if (Tcl_GetIntFromObj (interp, objv[6], &delay) == TCL_ERROR) {
+	    return tclgd_complain (interp, "delay");
+	}
+
+	if (Tcl_GetIntFromObj (interp, objv[7], &disposal) == TCL_ERROR) {
+	    return tclgd_complain (interp, "disposal");
+	}
+
+	if (objc == 9) {
+	    if (tclgd_cmdNameObjToIM (interp, objv[8], &previousIm) == TCL_ERROR) {
+		return TCL_ERROR;
+	    }
+	}
+
+	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]), TCL_WRITABLE)) == NULL) {
+	    return TCL_ERROR;
+	}
+
+	gdImageGifAnimAddCtx (im, outctx, localCM, leftOffset, topOffset, delay, disposal, previousIm);
+	break;
+      }
+
+      case OPT_GIF_ANIM_END: {
+	gdIOCtx     *outctx;
+
+	if (objc != 3) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "channel");
+	    return TCL_ERROR;
+	}
+
+	if ((outctx = tclgd_channelNameToIOCtx (interp, Tcl_GetString(objv[2]), TCL_WRITABLE)) == NULL) {
+	    return TCL_ERROR;
+	}
+
+	gdImageGifAnimEndCtx (outctx);
 	break;
       }
     }
