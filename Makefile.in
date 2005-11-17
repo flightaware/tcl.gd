@@ -13,7 +13,7 @@
 # See the file "license.terms" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
-# RCS: @(#) $Id: Makefile.in,v 1.6 2005-11-16 23:56:13 karl Exp $
+# RCS: @(#) $Id: Makefile.in,v 1.7 2005-11-17 03:32:13 karl Exp $
 
 #========================================================================
 # Add additional lines to handle any additional AC_SUBST cases that
@@ -120,7 +120,7 @@ TCL_SRC_DIR	= @TCL_SRC_DIR@
 # Not used, but retained for reference of what libs Tcl required
 TCL_LIBS	= @TCL_LIBS@
 
-GD_DEFS		= -DGD_VERSION=\"@GD_VERSION@\" -DGD_FEATURES="\"@GD_FEATURES@\""
+GD_DEFS		= -DGD_VERSION=\"@GD_VERSION@\" -DGD_FEATURES="\"@GD_FEATURES@\"" @GD_FEATURE_DEFS@
 
 #========================================================================
 # TCLLIBPATH seeds the auto_path in Tcl's init.tcl so we can test our

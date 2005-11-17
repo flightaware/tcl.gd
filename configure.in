@@ -3,7 +3,7 @@ dnl	This file is an input file used by the GNU "autoconf" program to
 dnl	generate the file "configure", which is run during Tcl installation
 dnl	to configure the system for the local environment.
 #
-# RCS: @(#) $Id: configure.in,v 1.7 2005-11-16 23:56:13 karl Exp $
+# RCS: @(#) $Id: configure.in,v 1.8 2005-11-17 03:32:13 karl Exp $
 
 #-----------------------------------------------------------------------
 # configure.in for Karl's tcl.gd.  
@@ -83,29 +83,37 @@ TEA_ADD_TCL_SOURCES([])
 #--------------------------------------------------------------------
 
 AC_PATH_PROGS(GDLIB_CONFIG, gdlib-config)
-if test "$GDLIB_CONFIG" = ""; then
+if test "${GDLIB_CONFIG}" = ""; then
     AC_MSG_ERROR([Cannot locate program gdlib-config to determine GD library paths.  Make sure gdlib-config is in PATH or set GDLIB_CONFIG env var to path to gdlib-config.])
 fi
 
-GD_VERSION="`$GDLIB_CONFIG --version`"
-AC_MSG_RESULT([using gdlib-config reported version... "$GD_VERSION"])
+GD_VERSION="`${GDLIB_CONFIG} --version`"
+AC_MSG_RESULT([using gdlib-config reported version... "${GD_VERSION}"])
 AC_SUBST(GD_VERSION)
 
-GD_INCLUDES="`$GDLIB_CONFIG --includes`"
-AC_MSG_RESULT([using gdlib-config reported GD includes of... "$GD_INCLUDES"])
+GD_INCLUDES="`${GDLIB_CONFIG} --includes`"
+AC_MSG_RESULT([using gdlib-config reported GD includes of... "${GD_INCLUDES}"])
 AC_SUBST(GD_INCLUDES)
 
-GD_LDFLAGS="`$GDLIB_CONFIG --ldflags`"
-AC_MSG_RESULT([using gdlib-config reported GD LDFLAGS of... "$GD_LDFLAGS"])
+GD_LDFLAGS="`${GDLIB_CONFIG} --ldflags`"
+AC_MSG_RESULT([using gdlib-config reported GD LDFLAGS of... "${GD_LDFLAGS}"])
 AC_SUBST(GD_LDFLAGS)
 
-GD_LIBS="`$GDLIB_CONFIG --libs`"
-AC_MSG_RESULT([using gdlib-config reported GD link libraries of... "$GD_LIBS"])
+GD_LIBS="`${GDLIB_CONFIG} --libs`"
+AC_MSG_RESULT([using gdlib-config reported GD link libraries of... "${GD_LIBS}"])
 AC_SUBST(GD_LIBS)
 
-GD_FEATURES="`$GDLIB_CONFIG --features`"
-AC_MSG_RESULT([using gdlib-config reported GD features of... "$GD_FEATURES"])
+GD_FEATURES="`${GDLIB_CONFIG} --features`"
+AC_MSG_RESULT([using gdlib-config reported GD features of... "${GD_FEATURES}"])
 AC_SUBST(GD_FEATURES)
+
+GD_FEATURE_DEFS=""
+for arg in ${GD_FEATURES}
+do
+    GD_FEATURE_DEFS="${GD_FEATURE_DEFS} -D${arg}"
+    AC_MSG_RESULT([Defining GD feature... "${arg}"])
+done
+AC_SUBST(GD_FEATURE_DEFS)
 
 #--------------------------------------------------------------------
 # __CHANGE__
