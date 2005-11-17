@@ -1,7 +1,7 @@
 /*
  * CDATA
  *
- * $Id: tclgd.h,v 1.4 2005-11-04 03:28:24 karl Exp $
+ * $Id: tclgd.h,v 1.5 2005-11-17 05:48:19 karl Exp $
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  */
@@ -11,6 +11,9 @@
 
 extern int
 tclgd_GDObjCmd(ClientData dummy, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[]);
+
+extern int
+tclgd_newGDObject (Tcl_Interp *interp, Tcl_Obj *nameObj, gdImagePtr im);
 
 typedef struct tclgd_channelIOCtx
 {

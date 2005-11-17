@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.19 2005-11-17 03:31:26 karl Exp $
+ * $Id: tclgd.c,v 1.20 2005-11-17 05:48:19 karl Exp $
  */
 
 #include "tclgd.h"
@@ -2187,6 +2187,37 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 /*
  *----------------------------------------------------------------------
  *
+ * tclgd_newGDObject --
+ *
+ *	This procedure is invoked to create a new Tcl command
+ *      that invokes the tclgd_gdObjectobjCmd command, that
+ *      attaches the specified gd image pointer to the new
+ *      command's client data structure.
+ *
+ * Results:
+ *	A standard Tcl result.
+ *
+ * Side effects:
+ *	A new Tcl command is created.
+ *
+ *----------------------------------------------------------------------
+ */
+int
+tclgd_newGDObject (Tcl_Interp *interp, Tcl_Obj *nameObj, gdImagePtr im)
+{
+    Tcl_Obj     *resultObj = Tcl_GetObjResult(interp);
+    char        *newName;
+
+    newName = tclgd_newObjName (nameObj);
+    Tcl_CreateObjCommand (interp, newName, tclgd_gdObjectObjCmd, im, tclgd_GDdeleteProc);
+    Tcl_SetStringObj (resultObj, newName, -1);
+    return TCL_OK;
+}
+
+
+/*
+ *----------------------------------------------------------------------
+ *
  * tclgd_GDObjCmd --
  *
  *	This procedure is invoked to process the "GD" command.
@@ -2211,7 +2242,6 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 {
     int          optIndex;
     gdImagePtr   im = NULL;
-    char        *newName;
     Tcl_Obj     *resultObj = Tcl_GetObjResult(interp);
     gdIOCtx     *inctx = NULL;
 
@@ -2643,9 +2673,6 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	return tclgd_complainCorrupt(interp);
     }
 
-    newName = tclgd_newObjName (objv[2]);
-    Tcl_CreateObjCommand (interp, newName, tclgd_gdObjectObjCmd, im, tclgd_GDdeleteProc);
-    Tcl_SetStringObj (resultObj, newName, -1);
-    return TCL_OK;
+    return tclgd_newGDObject (interp, objv[2], im);
 }
 
