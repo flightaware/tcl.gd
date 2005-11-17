@@ -1,0 +1,35 @@
+# Commands covered:  GD
+#
+# This file contains a collection of tests for one or more of the tcl.gd
+# commands.  Sourcing this file into Tcl runs the tests and
+# generates output for errors.  No output means no errors were found.
+#
+# Copyright (c) 2000 by Scriptics Corporation.
+# Copyright (c) 2005 by Karl Lehenbauer.
+#
+# See the file "license.terms" for information on usage and redistribution
+# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+#
+# $Id: gd.test,v 1.1 2005-11-17 06:47:19 karl Exp $
+
+package require tclgd
+
+test GD-1.1 {incorrect command usage} {
+    list [catch {GD} errMsg] $errMsg
+} {1 {wrong # args: should be "GD subcommand ?args?"}}
+
+test GD-1.2 {incorrect command usage} {
+    list [catch {GD asdf} errMsg] $errMsg
+} {1 {bad option "asdf": must be create, create_truecolor, create_from_jpeg, create_from_jpeg_data, create_from_png, create_from_png_data, create_from_gif, create_from_gif_data, create_from_gd, create_from_gd_data, create_from_gd2, create_from_gd2_data, create_from_gd2_part, create_from_gd2_part_data, create_from_wbmp, create_from_wbmp_data, create_from_xbm, create_from_xpm, version, or features}}
+
+test GD-1.3 {GD version} {
+    list [catch {GD version} errMsg] $errMsg
+} {0 2.0.33}
+
+test GD-1.3 {GD create} {
+    list [catch {GD create foo 100 100} errMsg] $errMsg
+} {0 foo}
+
+# cleanup
+::tcltest::cleanupTests
+return
