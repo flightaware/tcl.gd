@@ -7,7 +7,7 @@
  * modeled after the gd_io_file.c file in the gd package, which is documented
  * as having been written/modified 1999, Philip Warner.
  *
- * $Id: tclgdio.c,v 1.4 2005-11-04 03:28:24 karl Exp $
+ * $Id: tclgdio.c,v 1.5 2005-11-17 03:30:02 karl Exp $
  */
 
 #include "tclgd.h"
@@ -52,6 +52,7 @@ BGD_DECLARE(gdIOCtx *) tclgd_newChannelCtx (Tcl_Channel channel)
 static void
 tclgd_FreeChannelCtx (gdIOCtx * ctx)
 {
+    /* printf("tclgd_FreeChannelCtx %lx\n", ctx); */
     gdFree (ctx);
 }
 
@@ -59,20 +60,32 @@ tclgd_FreeChannelCtx (gdIOCtx * ctx)
 static int
 tclgd_channelPutbuf (gdIOCtx * ctx, const void *buf, int size)
 {
+    int writeResult;
+
     tclgd_channelIOCtx *tctx;
 
     tctx = (tclgd_channelIOCtx *) ctx;
 
-    return Tcl_WriteChars (tctx->channel, buf, size);
+    writeResult = Tcl_Write (tctx->channel, buf, size);
+
+    /* printf("tclgd_channelPutbuf ctx %lx buf %lx size %d result %d\n", ctx, buf, size, writeResult); */
+
+    return writeResult;
 }
 
 static int
 tclgd_channelGetbuf (gdIOCtx * ctx, void *buf, int size)
 {
     tclgd_channelIOCtx *tctx;
+    int readResult;
+
     tctx = (tclgd_channelIOCtx *) ctx;
 
-    return Tcl_Read (tctx->channel, buf, size);
+    readResult = Tcl_Read (tctx->channel, buf, size);
+
+    /* printf("tclgd_channelGetbuf ctx %lx buf %lx size %d result %d\n", ctx, buf, size, readResult); */
+
+    return readResult;
 }
 
 static void
@@ -85,6 +98,8 @@ tclgd_channelPutchar (gdIOCtx * ctx, int a)
 
     b = a;
     Tcl_WriteChars (tctx->channel, &b, 1);
+
+    /* printf("tclgd_channelPutchar ctx %lx %d\n", ctx, a); */
 }
 
 static int
@@ -95,25 +110,40 @@ tclgd_channelGetchar (gdIOCtx * ctx)
     tctx = (tclgd_channelIOCtx *) ctx;
 
     Tcl_Read (tctx->channel, (char *)&b, 1);
+
+    /* printf("tclgd_channelGetchar ctx %lx char %d\n", ctx, b[0]); */
+
     return b[0];
 }
 
 static int
 tclgd_channelSeek (struct gdIOCtx *ctx, const int pos)
 {
+    int seekResult;
+
     tclgd_channelIOCtx *tctx;
     tctx = (tclgd_channelIOCtx *) ctx;
 
-    return (Tcl_Seek (tctx->channel, pos, SEEK_SET) != -1);
+    seekResult = (Tcl_Seek (tctx->channel, pos, SEEK_SET) != -1);
+
+    /* printf("tclgd_channelSeek ctx %lx pos %d result %d\n", ctx, pos, seekResult); */
+
+    return seekResult;
 }
 
 static long
 tclgd_channelTell (struct gdIOCtx *ctx)
 {
-  tclgd_channelIOCtx *tctx;
-  tctx = (tclgd_channelIOCtx *) ctx;
+    long tellResult;
 
-  return Tcl_Tell (tctx->channel);
+    tclgd_channelIOCtx *tctx;
+    tctx = (tclgd_channelIOCtx *) ctx;
+
+    tellResult = Tcl_Tell (tctx->channel);
+
+    /* printf("tclgd_channelTell ctx %lx pos %d\n", ctx, tellResult); */
+
+   return tellResult;
 }
 
 gdIOCtx *
