@@ -10,7 +10,7 @@
 # See the file "license.terms" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
-# $Id: gd.test,v 1.1 2005-11-17 06:47:19 karl Exp $
+# $Id: gd.test,v 1.2 2005-11-17 07:00:34 karl Exp $
 
 package require tclgd
 
@@ -26,9 +26,73 @@ test GD-1.3 {GD version} {
     list [catch {GD version} errMsg] $errMsg
 } {0 2.0.33}
 
-test GD-1.3 {GD create} {
+test GD-1.4 {invalid GD create usage} {
+    list [catch {GD create} errMsg] $errMsg
+} {1 {wrong # args: should be "GD create name x y"}}
+
+test GD-1.5 {GD create with invalid x component} {
+    list [catch {GD create foo bar 100} errMsg] $errMsg
+} {1 {expected integer but got "bar" while converting x component}}
+
+test GD-1.6 {GD create with invalid y component} {
+    list [catch {GD create foo bar 100} errMsg] $errMsg
+} {1 {expected integer but got "bar" while converting x component}}
+
+test GD-1.7 {valid GD create command} {
     list [catch {GD create foo 100 100} errMsg] $errMsg
 } {0 foo}
+
+test GD-1.8 {delete newly created gd command} {
+    list [catch {rename foo {}} errMsg] $errMsg
+} {0 {}}
+
+test GD-1.9 {valid GD create command with self-defined object name} {
+    list [catch {GD create #auto 100 100} errMsg] $errMsg
+} {0 gd0}
+
+test GD-1.10 {delete of self-defined object name} {
+    list [catch {rename gd0 {}} errMsg] $errMsg
+} {0 {}}
+
+test GD-1.11 {invalid GD create_truecolor usage} {
+    list [catch {GD create_truecolor} errMsg] $errMsg
+} {1 {wrong # args: should be "GD create_truecolor name x y"}}
+
+test GD-1.12 {GD create_truecolor with invalid x component} {
+    list [catch {GD create_truecolor foo bar 100} errMsg] $errMsg
+} {1 {expected integer but got "bar" while converting x component}}
+
+test GD-1.13 {GD create_truecolor with invalid y component} {
+    list [catch {GD create_truecolor foo bar 100} errMsg] $errMsg
+} {1 {expected integer but got "bar" while converting x component}}
+
+test GD-1.14 {valid GD create_truecolor command} {
+    list [catch {GD create_truecolor foo 100 100} errMsg] $errMsg
+} {0 foo}
+
+test GD-1.15 {delete newly created_truecolor gd command} {
+    list [catch {rename foo {}} errMsg] $errMsg
+} {0 {}}
+
+test GD-1.16 {valid GD create_truecolor command with self-defined object name} {
+    list [catch {GD create_truecolor #auto 100 100} errMsg] $errMsg
+} {0 gd1}
+
+test GD-1.17 {delete of self-defined object name} {
+    list [catch {rename gd1 {}} errMsg] $errMsg
+} {0 {}}
+
+test GD-1.18 {valid GD create} {
+    list [catch {GD create img 100 100} errMsg] $errMsg
+} {0 img}
+
+test GD-1.19 {invalid invocation of GD object command -- no subcommand} {
+    list [catch {img} errMsg] $errMsg
+} {1 {wrong # args: should be "img option ?args?"}}
+
+test GD-1.20 {invalid invocation of GD object command -- invalid subcommand} {
+    list [catch {img asdf} errMsg] $errMsg
+} {1 {bad option "asdf": must be pixel, line, polygon, rectangle, filled_rectangle, arc, filled_arc, filled_ellipse, fill_to_border, fill, text, text_bounds, allocate_color, closest_color, closest_color_hwb, exact_color, resolve_color, total_colors, deallocate_color, true_color, interlace, transparent, set_anti_aliased, set_anti_aliased_dont_blend, set_brush, set_tile, set_style, set_thickness, alpha_blending, save_alpha, clip, get_alpha, bounds_safe, green_component, red_component, blue_component, width, height, copy, copy_resized, copy_resampled, copy_rotated, copy_merge, copy_merge_grey, copy_palette, sharpen, compare, square_to_circle, write_jpeg, jpeg_data, write_gif, gif_data, gif_anim_begin, gif_anim_add, gif_anim_end, write_png, png_data, write_wbmp, wbmp_data, write_gd, gd_data, write_gd2, or gd2_data}}
 
 # cleanup
 ::tcltest::cleanupTests
