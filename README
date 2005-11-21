@@ -3,7 +3,7 @@ complete with gd 2 than Gdtclft.
 
 Version 0.0
 
-$Id: README,v 1.3 2005-11-02 22:08:22 karl Exp $
+$Id: README,v 1.4 2005-11-21 11:38:11 karl Exp $
 
 This package is a freely available open source package under the "Berkeley"
 license, same as Tcl.  You can do virtually anything you like with it, such as 
@@ -43,10 +43,11 @@ configure	Generated file.  Do not edit.  This must be regenerated
 configure.in	Configure script template.  Autoconf uses this file as input
 		to produce the final configure script.
 
-generic/tweezer.c	Tcl object tweezer and interface source code
-generic/tcltweezer.c
-
-generic/tweezer.h	Header files for the tweezer.
+generic/tclgd.c		Interface between Tcl and GD
+generic/tclgd.h		include file
+generic/tclgdio.c	Channel interface to allow GD-oriented I/O to Tcl
+                        channels.
+generic/tclgdtcl.c	Init routines.
 
 
 tclconfig/	This directory contains various template files that build
