@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.20 2005-11-17 05:48:19 karl Exp $
+ * $Id: tclgd.c,v 1.21 2005-11-24 04:10:11 karl Exp $
  */
 
 #include "tclgd.h"
@@ -1796,6 +1796,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImageJpegCtx (im, outctx, quality);
+	gdFree (outctx);
 	break;
       }
 
@@ -1840,6 +1841,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImageGifCtx (im, outctx);
+	gdFree (outctx);
 	break;
       }
 
@@ -1880,6 +1882,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImageGifAnimBeginCtx (im, outctx, globalCM, loops);
+	gdFree (outctx);
 	break;
       }
 
@@ -1928,6 +1931,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImageGifAnimAddCtx (im, outctx, localCM, leftOffset, topOffset, delay, disposal, previousIm);
+	gdFree (outctx);
 	break;
       }
 
@@ -1944,6 +1948,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImageGifAnimEndCtx (outctx);
+	gdFree (outctx);
 	break;
       }
 #endif /* GD_GIF */
@@ -1976,6 +1981,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImagePngCtxEx (im, outctx, compression);
+	gdFree (outctx);
 	break;
       }
 
@@ -2022,6 +2028,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImageWBMPCtx (im, fgcolor, outctx);
+	gdFree (outctx);
 	return TCL_OK;
       }
 
@@ -2128,6 +2135,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	return TCL_ERROR;
 
 #endif
+	gdFree (outctx);
 	break;
       }
 
