@@ -1,4 +1,9 @@
 
-2005-07-01 Karl Lehenbauer <karl-ccom@sc.com>
+2005-11-01 Karl Lehenbauer <karl-tclgd@sc.com>
 
     * Export 
+
+2005-11-22 Karl Lehenbauer <karl-tclgd@sc.com>
+
+    * Fix minor memory leak where tclgd_channelIOCtx structures weren't
+      being freed after writing images to Tcl channels.
