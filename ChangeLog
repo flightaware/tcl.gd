@@ -10,7 +10,12 @@
 
 2005-11-25 Karl Lehenbauer <karl-tclgd@sc.com>
 
-    * Make "handle transparent" return the current transparency color
-      index if no color is specified.  Also when it is specified, require
-      it to be a color number, not that or possibly one of the color
-      aliases.
+    * generic/tclgde.c: Make "handle transparent" return the current 
+      transparency color index if no color is specified.  Also when it 
+      is specified, require it to be a color number, not that or possibly 
+      one of the color aliases.
+
+    * generic/tclgdio.c: Panic if the size written doesn't equal the size
+      requested, but since we're using Tcl_Write I don't think that is
+      likely to happen.  If it does, we have to panic because GD's
+      ioctx stuff doesn't have a way to return an error.

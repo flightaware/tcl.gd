@@ -7,7 +7,7 @@
  * modeled after the gd_io_file.c file in the gd package, which is documented
  * as having been written/modified 1999, Philip Warner.
  *
- * $Id: tclgdio.c,v 1.5 2005-11-17 03:30:02 karl Exp $
+ * $Id: tclgdio.c,v 1.6 2005-11-25 06:40:00 karl Exp $
  */
 
 #include "tclgd.h"
@@ -68,6 +68,10 @@ tclgd_channelPutbuf (gdIOCtx * ctx, const void *buf, int size)
 
     writeResult = Tcl_Write (tctx->channel, buf, size);
 
+    if (writeResult != size) {
+	Tcl_Panic ("image write of %d chars only did %d, is your channel's translation set to binary?", size, writeResult);
+    }
+
     /* printf("tclgd_channelPutbuf ctx %lx buf %lx size %d result %d\n", ctx, buf, size, writeResult); */
 
     return writeResult;
@@ -97,7 +101,9 @@ tclgd_channelPutchar (gdIOCtx * ctx, int a)
     tctx = (tclgd_channelIOCtx *) ctx;
 
     b = a;
-    Tcl_WriteChars (tctx->channel, &b, 1);
+    if (Tcl_Write (tctx->channel, &b, 1) != 1) {
+	Tcl_Panic ("image write of 1 char didn't write 1 char, is your channel's translation set to binary?");
+    }
 
     /* printf("tclgd_channelPutchar ctx %lx %d\n", ctx, a); */
 }
