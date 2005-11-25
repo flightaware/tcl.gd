@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.23 2005-11-25 09:15:32 karl Exp $
+ * $Id: tclgd.c,v 1.24 2005-11-25 10:21:24 karl Exp $
  */
 
 #include "tclgd.h"
@@ -62,13 +62,13 @@ tclgd_newObjName (Tcl_Obj *nameObj)
 static int
 tclgd_cmdNameObjToIM (Tcl_Interp *interp, Tcl_Obj *commandNameObj, gdImagePtr *srcImPtr)
 {
-    Tcl_CmdInfo  cmdInfo;
+    Tcl_CmdInfo        cmdInfo;
 
     if (!Tcl_GetCommandInfo ( interp, Tcl_GetString(commandNameObj), &cmdInfo)) {
 	return TCL_ERROR;
     }
 
-    *srcImPtr = (gdImagePtr)cmdInfo.objClientData;
+    *srcImPtr = ((tclgd_clientData *)cmdInfo.objClientData)->im;
 
     return TCL_OK;
 }
@@ -2229,7 +2229,7 @@ tclgd_newGDObject (Tcl_Interp *interp, Tcl_Obj *nameObj, gdImagePtr im, int dest
     tclgdClientData->destroyOnDelete = destroyOnDelete;
 
     newName = tclgd_newObjName (nameObj);
-    Tcl_CreateObjCommand (interp, newName, tclgd_gdObjectObjCmd, im, tclgd_GDdeleteProc);
+    Tcl_CreateObjCommand (interp, newName, tclgd_gdObjectObjCmd, tclgdClientData, tclgd_GDdeleteProc);
     Tcl_SetStringObj (resultObj, newName, -1);
     return TCL_OK;
 }
