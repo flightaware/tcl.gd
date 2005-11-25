@@ -7,3 +7,10 @@
 
     * Fix minor memory leak where tclgd_channelIOCtx structures weren't
       being freed after writing images to Tcl channels.
+
+2005-11-25 Karl Lehenbauer <karl-tclgd@sc.com>
+
+    * Make "handle transparent" return the current transparency color
+      index if no color is specified.  Also when it is specified, require
+      it to be a color number, not that or possibly one of the color
+      aliases.

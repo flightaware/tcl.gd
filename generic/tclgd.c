@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.21 2005-11-24 04:10:11 karl Exp $
+ * $Id: tclgd.c,v 1.22 2005-11-25 05:28:01 karl Exp $
  */
 
 #include "tclgd.h"
@@ -1269,13 +1269,18 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
       case OPT_TRANSPARENT: {
 	int color;
 
-	if (objc != 3) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "color");
+	if ((objc < 2) || (objc > 3)) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "?color?");
 	    return TCL_ERROR;
 	}
 
-	if (tclgd_GetColor (interp, objv[2], &color) == TCL_ERROR) {
-	    return TCL_ERROR;
+	if (objc == 2) {
+	   Tcl_SetIntObj (resultObj, gdImageGetTransparent (im));
+	   return TCL_OK;
+	}
+
+	if (Tcl_GetIntFromObj (interp, objv[2], &color) == TCL_ERROR) {
+	    return tclgd_complainColor (interp);
 	}
 
 	gdImageColorTransparent (im, color);

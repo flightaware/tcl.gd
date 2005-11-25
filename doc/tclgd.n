@@ -86,7 +86,7 @@ gdtcl \- modern, nearly feature-complete interface to gd-2 graphics drawing rout
 .br
 \fBobjName interlace\fI ?boolean?\fR
 .br
-\fBobjName transparent\fI color\fR
+\fBobjName transparent\fI ?color?\fR
 .br
 \fBobjName set_anti_aliased\fI color\fR
 .br
@@ -267,7 +267,8 @@ the current interlace setting for the image.
 .PP
 \fBobjName transparent\fI color\fR says what color index will be generated as
 transparent when the image is saved, assuming the outputted image format 
-supports it.
+supports it.  If \fIcolor\fR is not specified, the current color is returned.
+\fB-1\fR means transparency is disabled.
 .PP
 \fBobjName set_anti_aliased\fI color\fR
 .PP
