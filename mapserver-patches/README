@@ -1,13 +1,17 @@
 
-$Id: README,v 1.2 2005-11-25 08:04:06 karl Exp $
+$Id: README,v 1.3 2005-11-25 09:02:49 karl Exp $
 
 mapscript-image.i.patch is a patch to Mapserver's mapscript/swiginc/image.i
-file to add support for tclgd.
+file to add support for tclgd.  
 
-You apply this patch and rebuild and reinstall the Tcl Mapscript extension, 
+Also pkgIndex.tcl.patch is need to patch
+pkgIndex.tcl so that "package require Mapscript" will do a "package require
+tclgd" first.  Failure to apply this patch will result in an undefined
+symbol when loading the mapscript shared library.
+
+You apply these patches and rebuild and reinstall the Tcl Mapscript extension, 
 and you then have an additional method for mapscript image objects.
 
-package require tclgd
 package require Mapscript
 
     $mapImage gdHandle newCommandName
@@ -17,11 +21,6 @@ are operating on the gd buffer that's part of the Mapserver/Mapscript
 image object.  For instance, you can draw lines, write text into the buffer,
 merge images into the buffer, and write it to a channel or to memory.
 
-BUG: If you delete the new command it will free the gd buffer out from
-underneath Mapscript.  This would be bad.  We need to track whether we
-allocated the image or not and if we didn't, not free the buffer upon
-deletion.
+If you delete the new command it will not free the gd buffer out from
+underneath Mapscript.
 
-NOTE: You will have to have already package required tclgd prior to doing
-a package require Mapscript or the package require Mapscript will fail
-for not being to find a symbol that the tclgd package defines.
