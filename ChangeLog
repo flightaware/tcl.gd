@@ -1,3 +1,4 @@
+$Id: ChangeLog,v 1.5 2005-11-25 08:01:55 karl Exp $
 
 2005-11-01 Karl Lehenbauer <karl-tclgd@sc.com>
 
@@ -19,3 +20,8 @@
       requested, but since we're using Tcl_Write I don't think that is
       likely to happen.  If it does, we have to panic because GD's
       ioctx stuff doesn't have a way to return an error.
+
+    * patches/(README,mapscript-image.i.patch): Document and store the
+      patch to Mapserver/Mapscript to allow us to bind one of our tclgd
+      command objects to the gd buffer contained in Mapscript image object.
+
