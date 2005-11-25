@@ -1,5 +1,5 @@
 
-$Id: README,v 1.1 2005-11-25 08:01:55 karl Exp $
+$Id: README,v 1.2 2005-11-25 08:04:06 karl Exp $
 
 mapscript-image.i.patch is a patch to Mapserver's mapscript/swiginc/image.i
 file to add support for tclgd.
@@ -21,3 +21,7 @@ BUG: If you delete the new command it will free the gd buffer out from
 underneath Mapscript.  This would be bad.  We need to track whether we
 allocated the image or not and if we didn't, not free the buffer upon
 deletion.
+
+NOTE: You will have to have already package required tclgd prior to doing
+a package require Mapscript or the package require Mapscript will fail
+for not being to find a symbol that the tclgd package defines.
