@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.22 2005-11-25 05:28:01 karl Exp $
+ * $Id: tclgd.c,v 1.23 2005-11-25 09:15:32 karl Exp $
  */
 
 #include "tclgd.h"
@@ -288,9 +288,11 @@ tclgd_complainNoJPEGSupport(Tcl_Interp *interp) {
  *----------------------------------------------------------------------
  */
 void tclgd_GDdeleteProc (ClientData clientData) {
-    gdImagePtr im = (gdImagePtr)clientData;
+    tclgd_clientData *tclgdClientData = (tclgd_clientData *)clientData;
 
-    gdImageDestroy(im);
+    if (tclgdClientData->destroyOnDelete) {
+	gdImageDestroy(tclgdClientData->im);
+    }
 }
 
 
@@ -2216,15 +2218,54 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
  *----------------------------------------------------------------------
  */
 int
-tclgd_newGDObject (Tcl_Interp *interp, Tcl_Obj *nameObj, gdImagePtr im)
+tclgd_newGDObject (Tcl_Interp *interp, Tcl_Obj *nameObj, gdImagePtr im, int destroyOnDelete)
 {
-    Tcl_Obj     *resultObj = Tcl_GetObjResult(interp);
-    char        *newName;
+    Tcl_Obj           *resultObj = Tcl_GetObjResult(interp);
+    char              *newName;
+    tclgd_clientData  *tclgdClientData;
+
+    tclgdClientData = (tclgd_clientData *)ckalloc (sizeof (tclgd_clientData));
+    tclgdClientData->im = im;
+    tclgdClientData->destroyOnDelete = destroyOnDelete;
 
     newName = tclgd_newObjName (nameObj);
     Tcl_CreateObjCommand (interp, newName, tclgd_gdObjectObjCmd, im, tclgd_GDdeleteProc);
     Tcl_SetStringObj (resultObj, newName, -1);
     return TCL_OK;
+}
+
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * tclgd_newGDObjectAttach --
+ *
+ *	This procedure is invoked to create a new Tcl command
+ *      that invokes the tclgd_gdObjectobjCmd command, that
+ *      attaches the specified gd image pointer to the new
+ *      command's client data structure.
+ *
+ *      The differences between this and tclgd_newGDObject are:
+ *
+ *          1. The new command name is passed as a char * instead of a
+ *             Tcl_Object.
+ *
+ *          2. When the created command is deleted, the gd buffer is not
+ *             destroyed via gdImageDestroy
+ *             .
+ *
+ * Results:
+ *	A standard Tcl result.
+ *
+ * Side effects:
+ *	A new Tcl command is created.
+ *
+ *----------------------------------------------------------------------
+ */
+int
+tclgd_newGDObjectAttach (Tcl_Interp *interp, char *name, gdImagePtr im)
+{
+    return tclgd_newGDObject (interp, Tcl_NewStringObj(name, -1), im, 0);
 }
 
 
@@ -2686,6 +2727,6 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	return tclgd_complainCorrupt(interp);
     }
 
-    return tclgd_newGDObject (interp, objv[2], im);
+    return tclgd_newGDObject (interp, objv[2], im, 1);
 }
 

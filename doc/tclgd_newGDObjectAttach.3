@@ -1,0 +1,19 @@
+.TH tclgd_newGDObjectAttach 3 0.6 "Tcl-Extensions"
+.HS tclgd tcl
+.BS
+.SH NAME
+tclgd_newGDObjectAttach \- Attach an existing GD image pointer to a new tclgd object command
+.SH SYNOPSIS
+\fBtclgd_newGDObjectAttach  (Tcl_Interp *interp, char *name, gdImagePtr im);\fR
+.br
+.SH DESCRIPTION
+\fItclgd_newGDObjectAttach\fR takes a Tcl interpreter, a command name, and
+a \fIgdImagePtr\fR pointing to a gd "graphics draw" library image buffer
+and creates a new tclgd object command to access it.
+.PP
+It is the responsibility of the caller to destroy the \fIgdImagePtr\fR
+when done with it -- tclgd will not destroy the buffer if or when the
+newly created command is deleted.
+.PP
+.SH SEE ALSO
+tclgd

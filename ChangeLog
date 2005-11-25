@@ -1,4 +1,4 @@
-$Id: ChangeLog,v 1.5 2005-11-25 08:01:55 karl Exp $
+$Id: ChangeLog,v 1.6 2005-11-25 09:15:32 karl Exp $
 
 2005-11-01 Karl Lehenbauer <karl-tclgd@sc.com>
 
@@ -21,7 +21,16 @@ $Id: ChangeLog,v 1.5 2005-11-25 08:01:55 karl Exp $
       likely to happen.  If it does, we have to panic because GD's
       ioctx stuff doesn't have a way to return an error.
 
-    * patches/(README,mapscript-image.i.patch): Document and store the
-      patch to Mapserver/Mapscript to allow us to bind one of our tclgd
-      command objects to the gd buffer contained in Mapscript image object.
+    * mapserver-patches/(README,mapscript-image.i.patch,pkgIndex.tcl.patch): 
+      Document and store the patch to Mapserver/Mapscript to allow us to 
+      bind one of our tclgd command objects to the gd buffer contained in 
+      Mapscript image object.
+
+    * created new tclgd_newGDObjectAttach API for external C programs that
+      have a gdImagePtr and want to have a new command object attached to 
+      that image pointer that will invoke all of our tclgd magic against it.
+
+    * doc/tclgd_newGDObjectAttach.3: Documentation for the above API.
+
+    * Release version 0.6
 
