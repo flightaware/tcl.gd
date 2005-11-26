@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.24 2005-11-25 10:21:24 karl Exp $
+ * $Id: tclgd.c,v 1.25 2005-11-26 03:20:26 karl Exp $
  */
 
 #include "tclgd.h"
@@ -390,7 +390,7 @@ void tclgd_GDdeleteProc (ClientData clientData) {
 int
 tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[])
 {
-    gdImagePtr im = (gdImagePtr)cData;
+    gdImagePtr im = ((tclgd_clientData *)cData)->im;
     int         optIndex;
     Tcl_Obj    *resultObj = Tcl_GetObjResult(interp);
 
