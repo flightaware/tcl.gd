@@ -1,4 +1,4 @@
-$Id: ChangeLog,v 1.6 2005-11-25 09:15:32 karl Exp $
+$Id: ChangeLog,v 1.7 2005-11-26 22:47:41 karl Exp $
 
 2005-11-01 Karl Lehenbauer <karl-tclgd@sc.com>
 
@@ -11,7 +11,7 @@ $Id: ChangeLog,v 1.6 2005-11-25 09:15:32 karl Exp $
 
 2005-11-25 Karl Lehenbauer <karl-tclgd@sc.com>
 
-    * generic/tclgde.c: Make "handle transparent" return the current 
+    * generic/tclgd.c: Make "handle transparent" return the current 
       transparency color index if no color is specified.  Also when it 
       is specified, require it to be a color number, not that or possibly 
       one of the color aliases.
@@ -31,6 +31,12 @@ $Id: ChangeLog,v 1.6 2005-11-25 09:15:32 karl Exp $
       that image pointer that will invoke all of our tclgd magic against it.
 
     * doc/tclgd_newGDObjectAttach.3: Documentation for the above API.
+
+2005-11-25 Karl Lehenbauer <karl-tclgd@sc.com>
+
+    * generic/tclgd.c: "text_bounds" method was still rendering into the
+      target image because we weren't passing a null target image when
+      we wanted the bounds.
 
     * Release version 0.6
 
