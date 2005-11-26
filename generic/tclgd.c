@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.25 2005-11-26 03:20:26 karl Exp $
+ * $Id: tclgd.c,v 1.26 2005-11-26 22:45:07 karl Exp $
  */
 
 #include "tclgd.h"
@@ -1017,7 +1017,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 
        text = Tcl_GetString (objv[8]);
 
-	resultString = gdImageStringFT (im, &brect[0], color, fontName, pointSize, angle, x, y, text);
+	resultString = gdImageStringFT (textIm, &brect[0], color, fontName, pointSize, angle, x, y, text);
 	if (resultString != NULL) {
 	    Tcl_SetStringObj (resultObj, resultString, -1);
 	    Tcl_AppendResult (interp, " '", fontName, "'", NULL);
