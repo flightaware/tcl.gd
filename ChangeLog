@@ -1,4 +1,4 @@
-$Id: ChangeLog,v 1.7 2005-11-26 22:47:41 karl Exp $
+$Id: ChangeLog,v 1.8 2005-11-27 04:49:50 karl Exp $
 
 2005-11-01 Karl Lehenbauer <karl-tclgd@sc.com>
 
@@ -37,6 +37,11 @@ $Id: ChangeLog,v 1.7 2005-11-26 22:47:41 karl Exp $
     * generic/tclgd.c: "text_bounds" method was still rendering into the
       target image because we weren't passing a null target image when
       we wanted the bounds.
+
+    * configure.in: Use TEA_ADD_HEADERS([generic/tclgd.h]) to cause tclgd.h
+      to get installed into the runtime include directory.  This is needed
+      for any C applications that link with tcl.gd, specifically our
+      patch to link us up with Mapserver.
 
     * Release version 0.6
 
