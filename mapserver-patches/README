@@ -1,5 +1,8 @@
 
-$Id: README,v 1.3 2005-11-25 09:02:49 karl Exp $
+$Id: README,v 1.4 2005-11-27 07:03:31 karl Exp $
+
+MAPSERVER/MAPSCRIPT
+===================
 
 mapscript-image.i.patch is a patch to Mapserver's mapscript/swiginc/image.i
 file to add support for tclgd.  
@@ -12,7 +15,28 @@ symbol when loading the mapscript shared library.
 You apply these patches and rebuild and reinstall the Tcl Mapscript extension, 
 and you then have an additional method for mapscript image objects.
 
+HOW TO PATCH
+============
+
+cd to your mapserver directory, cd to mapscript
+
+    patch -p0 <.../mapserver-patches/mapscript-image.i.patch
+
+    patch -p0 <.../mapserver-patches/pkgIndex.tcl.patch
+
+HOW TO USE
+==========
+
 package require Mapscript
+
+Do whatever map generation stuff you choose.
+
+Eventually you get a mapImage handle by doing something like...
+
+    set mapImage [$map draw]
+
+Now you're ready to attach the gd buffer out of the map image and manipulate
+it using tcl.gd...
 
     $mapImage gdHandle newCommandName
 
@@ -21,6 +45,6 @@ are operating on the gd buffer that's part of the Mapserver/Mapscript
 image object.  For instance, you can draw lines, write text into the buffer,
 merge images into the buffer, and write it to a channel or to memory.
 
-If you delete the new command it will not free the gd buffer out from
-underneath Mapscript.
+If you delete the new command (rename newCommandName "") it will not free the 
+gd buffer out from underneath Mapscript -- we're too smart for that ;-)
 

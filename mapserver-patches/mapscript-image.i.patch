@@ -1,11 +1,10 @@
-cvs diff: Diffing .
-Index: image.i
+Index: swiginc/image.i
 ===================================================================
 RCS file: /data2/cvsroot/mapserver/mapscript/swiginc/image.i,v
 retrieving revision 1.12
 diff -c -r1.12 image.i
-*** image.i     18 Feb 2005 20:08:01 -0000      1.12
---- image.i     25 Nov 2005 07:42:10 -0000
+*** swiginc/image.i     18 Feb 2005 20:08:01 -0000      1.12
+--- swiginc/image.i     27 Nov 2005 06:52:08 -0000
 ***************
 *** 117,122 ****
 --- 117,135 ----
@@ -19,13 +18,12 @@ diff -c -r1.12 image.i
 + 
 +     int gdHandle (char *newCommandName)
 +     {
-+       return tclgd_newGDObject (SWIG_TCL_INTERP, 
-+                                 Tcl_NewStringObj (newCommandName, -1), 
-+                                 self->img.gd);
++       return tclgd_newGDObjectAttach (SWIG_TCL_INTERP, 
++                                       newCommandName, 
++                                       self->img.gd);
 +     }
 + 
 + #endif
       /* -----------------------------------------------------------------------
          saveToString is deprecated and no longer supported.  Users should use
          the write() method instead.
-
