@@ -1,7 +1,11 @@
-$Id: ChangeLog,v 1.9 2005-12-14 01:59:31 karl Exp $
+$Id: ChangeLog,v 1.10 2005-12-14 02:08:13 karl Exp $
 
 2005-12-14 Karl Lehenbauer <karl-tclgd@sc.com>
     * Update to Tcl TEA build environment version 3.4.
+
+    * generic/tclgd.c: Compile properly when gd was built without GIF support.
+
+    * generic/tclgd.c: Compile properly when gd was built without JPEG support.
 
 2005-11-26 Karl Lehenbauer <karl-tclgd@sc.com>
 

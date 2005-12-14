@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.26 2005-11-26 22:45:07 karl Exp $
+ * $Id: tclgd.c,v 1.27 2005-12-14 02:08:13 karl Exp $
  */
 
 #include "tclgd.h"
@@ -1783,7 +1783,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 #ifndef GD_JPEG
       case OPT_WRITE_JPEG:
       case OPT_JPEG_DATA:
-	return tclgd_complainNoJPEGSupport(*interp);
+	return tclgd_complainNoJPEGSupport(interp);
 #else
       case OPT_WRITE_JPEG: {
 	gdIOCtx     *outctx;
@@ -1833,7 +1833,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
       case OPT_GIF_ANIM_BEGIN:
       case OPT_GIF_ANIM_ADD:
       case OPT_GIF_ANIM_END:
-	return tclgd_complainNoGIFSupport(*interp);
+	return tclgd_complainNoGIFSupport(interp);
 #else
       case OPT_WRITE_GIF: {
 	gdIOCtx     *outctx;
@@ -2401,7 +2401,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 
 #ifndef GD_JPEG
       case OPT_CREATE_FROM_JPEG:
-      case OPT_OPT_CREATE_FROM_JPEG_DATA:
+      case OPT_CREATE_FROM_JPEG_DATA:
 	return tclgd_complainNoJPEGSupport(interp);
 #else
       case OPT_CREATE_FROM_JPEG: {
