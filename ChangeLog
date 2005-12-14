@@ -1,7 +1,10 @@
-$Id: ChangeLog,v 1.10 2005-12-14 02:08:13 karl Exp $
+$Id: ChangeLog,v 1.11 2005-12-14 02:15:26 karl Exp $
 
 2005-12-14 Karl Lehenbauer <karl-tclgd@sc.com>
     * Update to Tcl TEA build environment version 3.4.
+
+    * configure.in: Enforce GD version must be at least 2.0.33 (we need
+      features therein, like "gdlib-config --features" needs to work.)
 
     * generic/tclgd.c: Compile properly when gd was built without GIF support.
 

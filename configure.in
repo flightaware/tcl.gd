@@ -3,7 +3,7 @@ dnl	This file is an input file used by the GNU "autoconf" program to
 dnl	generate the file "configure", which is run during Tcl installation
 dnl	to configure the system for the local environment.
 #
-# RCS: @(#) $Id: configure.in,v 1.11 2005-12-14 01:59:31 karl Exp $
+# RCS: @(#) $Id: configure.in,v 1.12 2005-12-14 02:15:26 karl Exp $
 
 #-----------------------------------------------------------------------
 # configure.in for Karl's tcl.gd.  
@@ -90,6 +90,22 @@ fi
 GD_VERSION="`${GDLIB_CONFIG} --version`"
 AC_MSG_RESULT([using gdlib-config reported version... "${GD_VERSION}"])
 AC_SUBST(GD_VERSION)
+
+GD_MAJOR_VERSION="`${GDLIB_CONFIG} --majorversion`"
+GD_MINOR_VERSION="`${GDLIB_CONFIG} --minorversion`"
+GD_REVISION="`${GDLIB_CONFIG} --revision`"
+
+if test "${GD_MAJOR_VERSION}" -lt "2"; then
+    AC_MSG_ERROR([GD version must be at least 2.0.33.])
+fi
+
+if test "${GD_MAJOR_VERSION}" -eq "2"; then
+if test "${GD_MINOR_VERSION}" -eq "0"; then
+if test "${GD_REVISION}" -lt "33"; then
+    AC_MSG_ERROR([GD version must be at least 2.0.33.])
+fi
+fi
+fi
 
 GD_INCLUDES="`${GDLIB_CONFIG} --includes`"
 AC_MSG_RESULT([using gdlib-config reported GD includes of... "${GD_INCLUDES}"])
