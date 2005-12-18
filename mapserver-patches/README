@@ -1,5 +1,5 @@
 
-$Id: README,v 1.4 2005-11-27 07:03:31 karl Exp $
+$Id: README,v 1.5 2005-12-18 23:49:37 karl Exp $
 
 MAPSERVER/MAPSCRIPT
 ===================
@@ -18,11 +18,17 @@ and you then have an additional method for mapscript image objects.
 HOW TO PATCH
 ============
 
-cd to your mapserver directory, cd to mapscript
+cd to your mapserver build directory, then cd to the mapscript directory within
+it.
 
     patch -p0 <.../mapserver-patches/mapscript-image.i.patch
 
     patch -p0 <.../mapserver-patches/pkgIndex.tcl.patch
+
+cd to the tcl subdirectory and run the configure script.  FreeBSD users will
+need to alter the configure script to be able to find the Tcl libraries and
+includes in the slightly different places where Tcl, when built from the ports
+tree or installed from pacakges, is installed.
 
 HOW TO USE
 ==========
@@ -35,7 +41,8 @@ Eventually you get a mapImage handle by doing something like...
 
     set mapImage [$map draw]
 
-Now you're ready to attach the gd buffer out of the map image and manipulate
+At this point, you normally write out the mapImage, but instead,
+now you're ready to attach the gd buffer out of the map image and manipulate
 it using tcl.gd...
 
     $mapImage gdHandle newCommandName
@@ -43,8 +50,12 @@ it using tcl.gd...
 You can now use newCommandName to do all of the usual tclgd magic, and you
 are operating on the gd buffer that's part of the Mapserver/Mapscript
 image object.  For instance, you can draw lines, write text into the buffer,
-merge images into the buffer, and write it to a channel or to memory.
+merge images into the buffer, and write the GD image it to a channel (for
+instance, a file or a socket, but it could be something more exotic like a
+file in a zip archive or anything else there's a channel driver for), or to 
+memory.
 
-If you delete the new command (rename newCommandName "") it will not free the 
-gd buffer out from underneath Mapscript -- we're too smart for that ;-)
+If you delete the new tcl.gd manipulation command (rename newCommandName "") it
+will not free the gd buffer out from underneath Mapscript -- we're too smart 
+for that, at least since verison 0.6 or so ;-)
 

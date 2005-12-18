@@ -173,6 +173,17 @@ data, or from a Tcl file handle (in a couple of cases where a channel
 interface can't be provided due to limitations of the underlying gd library 
 routines).
 .PP
+IMPORTANT: The channel being read should be configured for binary translation
+using something like
+.nf
+    set fp [open parrots.png]
+    fconfigure $fp -translation binary
+    GD create_from_png parrots $fp
+.fo
+If you get corrupt image errors on images that you feel pretty sure are OK, 
+like you can load them into Photoshop, you probably are not setting
+translation to binary.
+.PP
 For formats where channels are support (the majority), any type of channel
 can be used, including files, sockets, and, if so equipped, alternate
 channel interfaces such as reading the data directly from zip files.

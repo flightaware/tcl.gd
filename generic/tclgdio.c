@@ -7,11 +7,10 @@
  * modeled after the gd_io_file.c file in the gd package, which is documented
  * as having been written/modified 1999, Philip Warner.
  *
- * $Id: tclgdio.c,v 1.6 2005-11-25 06:40:00 karl Exp $
+ * $Id: tclgdio.c,v 1.7 2005-12-18 23:49:37 karl Exp $
  */
 
 #include "tclgd.h"
-#include "gdhelpers.h"
 
 static int tclgd_channelGetbuf (gdIOCtx *, void *, int);
 static int tclgd_channelPutbuf (gdIOCtx *, const void *, int);
@@ -28,7 +27,7 @@ BGD_DECLARE(gdIOCtx *) tclgd_newChannelCtx (Tcl_Channel channel)
 {
     tclgd_channelIOCtx *ctx;
 
-    ctx = (tclgd_channelIOCtx *) gdMalloc (sizeof (tclgd_channelIOCtx));
+    ctx = (tclgd_channelIOCtx *) ckalloc (sizeof (tclgd_channelIOCtx));
     if (ctx == NULL) {
 	return NULL;
     }
@@ -53,7 +52,7 @@ static void
 tclgd_FreeChannelCtx (gdIOCtx * ctx)
 {
     /* printf("tclgd_FreeChannelCtx %lx\n", ctx); */
-    gdFree (ctx);
+    ckfree ((char *) ctx);
 }
 
 
@@ -95,7 +94,7 @@ tclgd_channelGetbuf (gdIOCtx * ctx, void *buf, int size)
 static void
 tclgd_channelPutchar (gdIOCtx * ctx, int a)
 {
-    unsigned char b;
+    char b;
     tclgd_channelIOCtx *tctx;
 
     tctx = (tclgd_channelIOCtx *) ctx;

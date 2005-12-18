@@ -1,9 +1,9 @@
 This is tcl.gd, a new Tcl interface to GD that is significantly more feature-
 complete with gd 2 than Gdtclft.
 
-Version 0.0
+Version 0.6
 
-$Id: README,v 1.4 2005-11-21 11:38:11 karl Exp $
+$Id: README,v 1.5 2005-12-18 23:49:37 karl Exp $
 
 This package is a freely available open source package under the "Berkeley"
 license, same as Tcl.  You can do virtually anything you like with it, such as 
@@ -21,9 +21,30 @@ package require tclgd
 TCLGD QUICK REF
 ===============
 
+Please see the tclgd manpage in the doc directory.
 
 BUGS
 ====
+
+Yes.
+
+INTEGRATING TCLGD WITH EXISTING C APPLICATIONS THAT USE GD
+==========================================================
+
+You can attach an existing gd handle to a tcl.gd image manipulation command
+using tclgd_newGDObjectAttach.  Please see the tclgd_newGDObjectAttach manpage
+for details.
+
+MAPSERVER MAPSCRIPT PATCH
+=========================
+
+Included with tcl.gd is a patch to Mapserver's mapscript Tcl extension to
+use the aforementioned capability for integrating tcl.gd with C 
+aplications that use gd to provide a tcl.gd capability for mapscript.
+
+Consult the README file in the mapserver-patches subdirectory for details
+on how to install the mapserver patch to add this capability to mapserver.
+
 
 CONTENTS
 ========

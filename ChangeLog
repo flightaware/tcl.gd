@@ -1,4 +1,19 @@
-$Id: ChangeLog,v 1.11 2005-12-14 02:15:26 karl Exp $
+$Id: ChangeLog,v 1.12 2005-12-18 23:49:37 karl Exp $
+
+2005-12-18 Karl Lehenbauer <karl-tclgd@sc.com>
+
+    * generic/tclgdio.c: Use Tcl's ckalloc and ckfree instead of GD's
+      gdMalloc and gdFree -- it wasn't necessary to use GD's versions,
+      and this keeps us from needing to access GD functions that are
+      not declared in gd.h plus it lets us use Tcl's memory debugging
+      capabilities to determine if we're leaking anything here.
+
+    * doc/tclgd.n:  Added an admonition of the importance of configuring
+      channels for binary tranlation when loading and saving images.
+
+    * README, mapserver-patches/README: Improve docs, explain how to use
+      the C function to bring a GD image structure into Tcl from a C
+      program.  Better document the Mapserver patch.
 
 2005-12-14 Karl Lehenbauer <karl-tclgd@sc.com>
     * Update to Tcl TEA build environment version 3.4.
