@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.27 2005-12-14 02:08:13 karl Exp $
+ * $Id: tclgd.c,v 1.28 2006-01-10 15:18:09 karl Exp $
  */
 
 #include "tclgd.h"
@@ -819,7 +819,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    STYLE_EDGED
 	};
 
-	if (objc < 10) {
+	if (objc < 9) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "cx cy width height startDegrees endDegrees color ?arc? ?chord? ?pie? ?nofill? ?edged?");
 	    return TCL_ERROR;
 	}
@@ -851,12 +851,11 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetIndexFromObj(interp, objv[9], styles, "style", 
-	    TCL_EXACT, &styleIndex) != TCL_OK) {
-	    return TCL_ERROR;
-	}
-
 	for (i = 9; i < objc; i++) {
+	    if (Tcl_GetIndexFromObj(interp, objv[i], styles, "style", 
+		TCL_EXACT, &styleIndex) != TCL_OK) {
+		return TCL_ERROR;
+	    }
 
 	    switch ((enum styles) styleIndex) {
 	      case STYLE_ARC:
