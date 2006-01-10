@@ -1,4 +1,10 @@
-$Id: ChangeLog,v 1.12 2005-12-18 23:49:37 karl Exp $
+$Id: ChangeLog,v 1.13 2006-01-10 15:19:24 karl Exp $
+
+2006-01-10 Karl Lehenbauer <karl-tclgd@sc.com>
+    * generic/tclgd.c: Fix filled_arc to require the correct number of
+      parameters (it required one too many) and to handle optional
+      parameters correctly (it would only use the first one, when
+      multiple are allowed.)
 
 2005-12-18 Karl Lehenbauer <karl-tclgd@sc.com>
 
