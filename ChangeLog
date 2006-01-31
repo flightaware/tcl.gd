@@ -1,4 +1,10 @@
-$Id: ChangeLog,v 1.13 2006-01-10 15:19:24 karl Exp $
+$Id: ChangeLog,v 1.14 2006-01-31 04:11:02 karl Exp $
+
+2006-01-10 Karl Lehenbauer <karl-tclgd@sc.com>
+    * configure.in: Remove pkgIndex.tcl from list of files that are to
+      be deleted on "make clean" -- since it's now generated from 
+      pkgIndex.tcl.in (updated TEA), it should only be cleaned by
+      make distclean, not make clean.
 
 2006-01-10 Karl Lehenbauer <karl-tclgd@sc.com>
     * generic/tclgd.c: Fix filled_arc to require the correct number of
