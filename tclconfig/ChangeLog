@@ -1,3 +1,70 @@
+2006-03-28  Jeff Hobbs  <jeffh@ActiveState.com>
+
+	* tcl.m4: []-quote AC_DEFUN functions.
+	(TEA_PATH_TKCONFIG): Fixed Windows-specific check for tkConfig.sh.
+	(TEA_MAKE_LIB): Prepend 'lib' for Windows-gcc configs.
+
+2006-03-07  Joe English  <jenglish@users.sourceforge.net>
+
+	* tcl.m4: Set SHLIB_LD_FLAGS='${LIBS}' on NetBSD,
+	as per the other *BSD variants [Bug 1334613].
+
+2006-01-25  Jeff Hobbs  <jeffh@ActiveState.com>
+
+	*** Bump to TEA version 3.5 ***
+
+	* tcl.m4: keep LD_SEARCH_FLAGS and CC_SEARCH_FLAGS synchronous
+	with core tcl.m4 meaning.
+
+2006-01-24  Daniel Steffen  <das@users.sourceforge.net>
+
+	* tcl.m4 (Darwin): use makefile variable LDFLAGS_DEFAULT instead of
+	LDFLAGS in SHLIB_LD, to ensure linker flags in sampleextension Makefile
+	are picked up. [Bug 1403343]
+
+2006-01-23  Jeff Hobbs  <jeffh@ActiveState.com>
+
+	* tcl.m4: add C:/Tcl/lib and C:/Progra~1/Tcl/lib dirs to check for
+	*Config.sh on Windows. [Bug 1407544]
+
+2006-01-23  Daniel Steffen  <das@users.sourceforge.net>
+
+	* tcl.m4 (Darwin): for Tk extensions, remove -arch ppc64 from CFLAGS
+	like in the Tk configure, as neither TkAqua nor TkX11 can be built for
+	64bit at present (no 64bit GUI libraries).
+
+2006-01-22  Jeff Hobbs  <jeffh@ActiveState.com>
+
+	* tcl.m4: restore system=windows on Windows.
+	Remove error if 'ar' isn't found (it may not be on Windows).
+	Do not add -lxnet or define _XOPEN_SOURCE on HP-UX by default.
+	Ensure the C|LDFLAGS_DEFAULT gets the fully sub'd value at
+	configure time.
+
+2006-01-10  Daniel Steffen  <das@users.sourceforge.net>
+
+	* tcl.m4: add caching, use AC_CACHE_CHECK instead of AC_CACHE_VAL
+	where possible, consistent message quoting, sync relevant
+	tcl/unix/tcl.m4 HEAD changes and gratuitous formatting differences
+	(notably sunc removal of support for for ancient BSD's, IRIX 4,
+	RISCos and Ultrix by kennykb), Darwin improvements to
+	TEA_LOAD_*CONFIG to make linking work against Tcl/Tk frameworks
+	installed in arbitrary location, change TEA_PROG_* search order
+	(look in *_BIN_DIR parents before *_PREFIX).
+
+2006-01-05  Jeff Hobbs  <jeffh@ActiveState.com>
+
+	* tcl.m4: add dkf's system config refactor
+
+2006-01-04  Jeff Hobbs  <jeffh@ActiveState.com>
+
+	* tcl.m4: remove extraneous ' that causes bash 3.1 to choke
+
+2005-12-19  Joe English  <jenglish@users.sourceforge.net>
+
+	* tcl.m4 (TEA_PATH_TCLCONFIG &c): Look for tclConfig.sh &c 
+	in ${libdir}, where they are installed by default [Patch #1377407].
+
 2005-12-05  Don Porter  <dgp@users.sf.net>
 
 	* tcl.m4 (TEA_PUBLIC_*_HEADERS):	Better support for finding
