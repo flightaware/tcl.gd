@@ -25,16 +25,16 @@ GD create img2 200 200
 set white [img2 allocate_color 255 255 255]
 img2 copy_palette img
 
-img2 text $black $font 20 0 10 30 DBAKER
+img2 text $black $font 20 0 10 30 DOES
 
 img2 gif_anim_add $ofp 0 0 0 100 0 img
 
 img filled_rectangle 0 0 199 199 0
-img text $black $font 20 0 10 30 YOU
+img text $black $font 20 0 10 30 THIS
 img gif_anim_add $ofp 0 0 0 25 0 img2
 
 img2 filled_rectangle 0 0 199 199 0
-img2 text $black $font 20 0 10 30 SUCK
+img2 text $black $font 20 0 10 30 WORK
 img2 gif_anim_add $ofp 0 0 0 50 0 img
 
 img filled_rectangle 0 0 199 199 0
