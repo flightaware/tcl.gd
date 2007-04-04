@@ -2,7 +2,7 @@
 .HS tclgd tcl
 .BS
 .SH NAME
-gdtcl \- modern, nearly feature-complete interface to gd-2 graphics drawing routines
+tclgd \- modern, nearly feature-complete interface to gd-2 graphics drawing routines
 .SH SYNOPSIS
 \fBpackage require gdtcl\fR
 .PP
@@ -108,8 +108,6 @@ gdtcl \- modern, nearly feature-complete interface to gd-2 graphics drawing rout
 .br
 \fBobjName bounds_safe\fI x y\fR
 .br
-\fBobjName bounds_safe\fI x y\fR
-.br
 \fBobjName green_component\fI color\fR
 .br
 \fBobjName red_component\fI color\fR
@@ -136,6 +134,8 @@ gdtcl \- modern, nearly feature-complete interface to gd-2 graphics drawing rout
 .br
 \fBobjName sharpen\fI percent\fR
 .br
+\fBobjName compare \fIsomething\fR
+.br
 \fBobjName square_to_circle\fI name radius\fR
 .br
 \fBobjName write_jpeg\fI channel quality\fR
@@ -145,6 +145,12 @@ gdtcl \- modern, nearly feature-complete interface to gd-2 graphics drawing rout
 \fBobjName write_gif\fI channel\fR
 .br
 \fBobjName gif_data\fR
+.br
+\fBobjName gif_anim_begin\fI channel global_color_map loops\fR
+.br
+\fBobjName gif_anim_add \fIchannel local_color_map left_offset top_offset delay disposal ?previous_image?\fR
+.br
+\fBobjName gif_anim_end \fIchannel\fR
 .br
 \fBobjName write_png\fI channel compressionLevel\fR
 .br
@@ -365,3 +371,25 @@ high-performance but non-portable \fIgd\fR format, while
 high-performance but non-portable \fIgd2\fR format, with \fIchunkSize\fR
 determining the size of each chunk, and format being either \fBcompressed\fR
 or \fBraw\fR.
+.PP
+.SH ANIMATED GIFS
+\fBobjName gif_anim_begin\fI channel global_color_map loops\fR begins an 
+animated GIF by specifying the file channel to be written to, a \fB1\fR if the global color map is to be used, and the number of times to play the animation.
+If \fIloops\fR is zero, the animation will repeat indefinitely.
+.PP
+\fBobjName gif_anim_add \fIchannel local_color_map left_offset top_offset 
+delay disposal ?previous_image?\fR adds a GIF image to an animated GIF that 
+is under construction.  Set \fIlocal_color_map\fR to 1 to add a local palette for this image to the animation, else the global palette is used.
+.br
+If you use local palettes, you must make sure they match the global palette;
+use the \fIcopy_palette\fR method to copy palettes between images.
+.br
+\fIleft_offset\fR and \fItop_offset\fR let you place the frame with an offset into the parent frame, where (0, 0) puts it in the corner.
+.br
+Delay specifies the delay between the previous frame and this frame in hundredths of a second.  Disposal can be 0 for unknown, 1 for none, 2 for restore background, or 3 for restore previous.  Unknown is not recommended.  Restore background restores the first allocated color of the global palette.  Restore previous restores the appearance of the affected area before teh frame was rendered.  Only /fBnone\fR is a sensible choice for the first frame.
+.br
+If the previous image is passed, the built-in GIF optimizer is automatically engaged and the disposal method specified is ignored.  The optimizer comapres the images and only writes the changed pixels to the new frame of the animation. To achieve good optimization, it is usually best to use a single global color map. To allow \fIgif_anim|add\fR to compress unchanged pixels via the use of a transparent color, the image must include a transparent color. 
+See \fBgd\fR documentation for details.
+.br
+\fBobjName gif_anim_end \fIchannel\fR is self-explanatory.
+.PP

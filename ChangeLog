@@ -1,4 +1,7 @@
-$Id: ChangeLog,v 1.14 2006-01-31 04:11:02 karl Exp $
+$Id: ChangeLog,v 1.15 2007-04-04 13:07:48 karl Exp $
+
+2007-04-04 karl
+    * Document the animated GIF support.
 
 2006-01-10 Karl Lehenbauer <karl-tclgd@sc.com>
     * configure.in: Remove pkgIndex.tcl from list of files that are to
