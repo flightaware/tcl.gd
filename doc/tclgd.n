@@ -251,6 +251,9 @@ the specified color.
 \fBobjName text\fI color font pointSize angle x y text\fR renders text
 using the specified font and point size, at the specified angle, starting
 at x, y.
+\fBFont\fR is the full or relative pathname to a TrueType font 
+file (.ttf or .ttc file).  (\fBTclgd\fR does not support GD's optionally
+built-in, non-antialiased, non-TrueType fonts.)
 .PP
 \fBobjName text_bounds\fI color font pointSize angle x y text\fRdetermines the
 bounds of text given the specified font and point size, at the specified angle,

@@ -1,4 +1,9 @@
-$Id: ChangeLog,v 1.15 2007-04-04 13:07:48 karl Exp $
+$Id: ChangeLog,v 1.16 2007-08-16 22:28:19 karl Exp $
+
+2007-08-16 karl
+    * Document that "font" in the text and text_bounds calls is the path
+      to a TrueType (.ttf or .ttc) file and that we do not support the
+      non-antialiased, non-TrueType built-in GD fonts.
 
 2007-04-04 karl
     * Document the animated GIF support.
