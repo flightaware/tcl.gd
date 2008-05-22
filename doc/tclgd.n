@@ -346,7 +346,8 @@ color.
 \fBobjName write_jpeg\fI channel quality\fR writes the image in JPEG format,
 with the specified quality level,
 to the specified Tcl channel, while \fBobjName jpeg_data\fI quality\fR
-will return it as binary data.
+will return it as binary data.  Quality can range from \fB0\fR to \fB100\fR,
+where higher numbers give higher quality.
 .PP
 \fBobjName write_gif\fI channel\fR writes the image to the specified
 channel in GIF format, while \fBobjName gif_data\fR returns it as binary
@@ -355,7 +356,7 @@ data.
 \fBobjName write_png\fI channel compressionLevel\fR write the image to
 the specified channel, with the compression level of \fB-1\fR for the
 default set when gd was built, \fB0\fR to indicate no compression,
-\fB1\fR to compress quickly, all th eway to \fB9\fR to select the best
+\fB1\fR to compress quickly, all the way to \fB9\fR to select the best
 possible compression.  Likewise \fBobjName png_data\fI compressionLevel\fR
 returns the image as binary data, with the specified compression.
 .PP
