@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.28 2006-01-10 15:18:09 karl Exp $
+ * $Id: tclgd.c,v 1.29 2008-06-06 21:51:16 karl Exp $
  */
 
 #include "tclgd.h"
@@ -1907,7 +1907,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[3], &localCM) == TCL_ERROR) {
-	    return tclgd_complain (interp, "global_color_map");
+	    return tclgd_complain (interp, "local_color_map");
 	}
 
 	if (Tcl_GetIntFromObj (interp, objv[4], &leftOffset) == TCL_ERROR) {
@@ -2426,7 +2426,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	    return TCL_ERROR;
 	}
 
-	memPtr = Tcl_GetByteArrayFromObj (objv[2], &size);
+	memPtr = Tcl_GetByteArrayFromObj (objv[3], &size);
 	im = gdImageCreateFromJpegPtr (size, memPtr);
 	break;
       }

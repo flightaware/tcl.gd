@@ -1,4 +1,12 @@
-$Id: ChangeLog,v 1.16 2007-08-16 22:28:19 karl Exp $
+$Id: ChangeLog,v 1.17 2008-06-06 21:51:16 karl Exp $
+Thu May 22 01:43:35 CDT 2008
+
+2008-05-22 karl
+    * Fixed problem with GD create_from_jpeg_data looking at the wrong argument
+      for the binary data.
+
+    * Fixed a thing where the GIF anim begin code could complain about a 
+      global color map problem when really it was a local color map problem.
 
 2007-08-16 karl
     * Document that "font" in the text and text_bounds calls is the path

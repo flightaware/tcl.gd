@@ -3,7 +3,7 @@ complete with gd 2 than Gdtclft.
 
 Version 0.6
 
-$Id: README,v 1.5 2005-12-18 23:49:37 karl Exp $
+$Id: README,v 1.6 2008-06-06 21:51:16 karl Exp $
 
 This package is a freely available open source package under the "Berkeley"
 license, same as Tcl.  You can do virtually anything you like with it, such as 
@@ -23,6 +23,12 @@ TCLGD QUICK REF
 
 Please see the tclgd manpage in the doc directory.
 
+EXAMPLES
+========
+
+A number of simple examples of the use of tcl.gd can be found in the playpen
+directory.
+
 BUGS
 ====
 
@@ -32,7 +38,9 @@ INTEGRATING TCLGD WITH EXISTING C APPLICATIONS THAT USE GD
 ==========================================================
 
 You can attach an existing gd handle to a tcl.gd image manipulation command
-using tclgd_newGDObjectAttach.  Please see the tclgd_newGDObjectAttach manpage
+using tclgd_newGDObjectAttach.  This provides a way to grab a GD image created
+by some library that you've linked your application with and manipulate it
+from Tcl using tcl.gd.  Please see the tclgd_newGDObjectAttach manpage
 for details.
 
 MAPSERVER MAPSCRIPT PATCH
