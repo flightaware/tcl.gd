@@ -366,7 +366,6 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 {
     gdImagePtr im = ((tclgd_clientData *)cData)->im;
     int         optIndex;
-    Tcl_Obj    *resultObj = Tcl_GetObjResult(interp);
 
     static CONST char *options[] = {
 	"pixel",
@@ -529,7 +528,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
        }
 
        if (objc == 4) {
-	   Tcl_SetIntObj (resultObj, gdImageGetPixel (im, x, y));
+	   Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageGetPixel (im, x, y)));
 	   return TCL_OK;
 	}
 
@@ -992,7 +991,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 
 	resultString = gdImageStringFT (textIm, &brect[0], color, fontName, pointSize, angle, x, y, text);
 	if (resultString != NULL) {
-	    Tcl_SetStringObj (resultObj, resultString, -1);
+	    Tcl_SetObjResult (interp, Tcl_NewStringObj (resultString, -1));
 	    Tcl_AppendResult (interp, " '", fontName, "'", NULL);
 	    return TCL_ERROR;
 	}
@@ -1003,7 +1002,9 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    for (i = 0; i < 8; i++) {
 		brectObjv[i] = Tcl_NewIntObj(brect[i]);
 	    }
-	    Tcl_SetListObj (resultObj, 8, brectObjv);
+
+	    Tcl_SetObjResult (interp, Tcl_NewListObj (8, brectObjv));
+	    return TCL_OK;
 	}
 	break;
       }
@@ -1029,7 +1030,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
         }
 
 	if (objc == 5) {
-	    Tcl_SetIntObj (resultObj, gdImageColorAllocate (im, r, g, b));
+	    Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageColorAllocate (im, r, g, b)));
 	    return TCL_OK;
 	}
 
@@ -1037,7 +1038,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	   return tclgd_complainAlpha (interp);
 	}
 
-	Tcl_SetIntObj (resultObj, gdImageColorAllocateAlpha (im, r, g, b, alpha));
+	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageColorAllocateAlpha (im, r, g, b, alpha)));
 	return TCL_OK;
       }
 
@@ -1062,7 +1063,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
         }
 
 	if (objc == 5) {
-	    Tcl_SetIntObj (resultObj, gdImageColorClosest (im, r, g, b));
+	    Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageColorClosest (im, r, g, b)));
 	    return TCL_OK;
 	}
 
@@ -1070,7 +1071,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	   return tclgd_complainAlpha (interp);
 	}
 
-	Tcl_SetIntObj (resultObj, gdImageColorClosestAlpha (im, r, g, b, alpha));
+	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageColorClosestAlpha (im, r, g, b, alpha)));
 	return TCL_OK;
       }
 
@@ -1094,7 +1095,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	   return tclgd_complainBlue (interp);
         }
 
-	Tcl_SetIntObj (resultObj, gdImageColorClosestHWB (im, r, g, b));
+	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageColorClosestHWB (im, r, g, b)));
 	return TCL_OK;
       }
 
@@ -1119,7 +1120,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
         }
 
 	if (objc == 5) {
-	    Tcl_SetIntObj (resultObj, gdImageColorExact (im, r, g, b));
+	    Tcl_SetObjResult (interp, Tcl_NewIntObj(gdImageColorExact (im, r, g, b)));
 	    return TCL_OK;
 	}
 
@@ -1127,7 +1128,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	   return tclgd_complainAlpha (interp);
         }
 
-	Tcl_SetIntObj (resultObj, gdImageColorExactAlpha (im, r, g, b, alpha));
+	Tcl_SetObjResult (interp, Tcl_NewIntObj(gdImageColorExactAlpha (im, r, g, b, alpha)));
 	return TCL_OK;
       }
 
@@ -1152,7 +1153,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
         }
 
 	if (objc == 5) {
-	    Tcl_SetIntObj (resultObj, gdImageColorResolve (im, r, g, b));
+	    Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageColorResolve (im, r, g, b)));
 	    return TCL_OK;
 	}
 
@@ -1160,7 +1161,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	   return tclgd_complainAlpha (interp);
 	}
 
-	Tcl_SetIntObj (resultObj, gdImageColorResolveAlpha (im, r, g, b, alpha));
+	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageColorResolveAlpha (im, r, g, b, alpha)));
 	break;
       }
 
@@ -1169,7 +1170,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    Tcl_WrongNumArgs (interp, 2, objv, "");
 	    return TCL_ERROR;
 	}
-	Tcl_SetIntObj (resultObj, gdImageColorsTotal (im));
+	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageColorsTotal (im)));
 	break;
 
       case OPT_DEALLOCATE_COLOR: {
@@ -1209,7 +1210,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
         }
 
 	if (objc == 5) {
-	    Tcl_SetIntObj (resultObj, gdTrueColor (r, g, b));
+	    Tcl_SetObjResult (interp, Tcl_NewIntObj (gdTrueColor (r, g, b)));
 	    return TCL_OK;
 	}
 
@@ -1217,7 +1218,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	   return tclgd_complainAlpha (interp);
 	}
 
-	Tcl_SetIntObj (resultObj, gdTrueColorAlpha (r, g, b, alpha));
+	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdTrueColorAlpha (r, g, b, alpha)));
 	return TCL_OK;
       }
 
@@ -1225,7 +1226,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int interlaced;
 
 	if (objc == 2) {
-	  Tcl_SetIntObj (resultObj, gdImageGetInterlaced (im));
+	  Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageGetInterlaced (im)));
 	  return TCL_OK;
 	}
 
@@ -1250,7 +1251,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	if (objc == 2) {
-	   Tcl_SetIntObj (resultObj, gdImageGetTransparent (im));
+	   Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageGetTransparent (im)));
 	   return TCL_OK;
 	}
 
@@ -1373,7 +1374,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    clipObjv[1] = Tcl_NewIntObj(y1);
 	    clipObjv[2] = Tcl_NewIntObj(x2);
 	    clipObjv[3] = Tcl_NewIntObj(y2);
-	    Tcl_SetListObj (resultObj, 4, clipObjv);
+	    Tcl_SetObjResult (interp, Tcl_NewListObj (4, clipObjv));
 	    return TCL_OK;
 	}
 
@@ -1416,7 +1417,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	   return tclgd_complainY (interp);
        }
 
-	Tcl_SetBooleanObj (resultObj, gdImageBoundsSafe (im, x, y));
+	Tcl_SetObjResult (interp, Tcl_NewBooleanObj (gdImageBoundsSafe (im, x, y)));
 	break;
       }
 
@@ -1432,7 +1433,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	   return tclgd_complainColor (interp);
 	}
 
-	Tcl_SetIntObj (resultObj, gdImageGreen (im, color));
+	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageGreen (im, color)));
 	return TCL_OK;
       }
 
@@ -1448,7 +1449,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    return tclgd_complainColor (interp);
 	}
 
-	Tcl_SetIntObj (resultObj, gdImageRed (im, color));
+	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageRed (im, color)));
 	return TCL_OK;
       }
 
@@ -1464,16 +1465,16 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    return tclgd_complainColor (interp);
 	}
 
-	Tcl_SetIntObj (resultObj, gdImageBlue (im, color));
+	Tcl_SetObjResult (interp, Tcl_NewIntObj gdImageBlue (im, color));
 	return TCL_OK;
       }
 
       case OPT_WIDTH:
-	Tcl_SetIntObj (resultObj, gdImageSX(im));
+	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageSX(im)));
 	break;
 
       case OPT_HEIGHT:
-	Tcl_SetIntObj (resultObj, gdImageSY(im));
+	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageSY(im)));
 	break;
 
       case OPT_COPY: {
@@ -1795,7 +1796,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	memPtr = gdImageJpegPtr (im, &size, quality);
-	Tcl_SetByteArrayObj (resultObj, memPtr, size);
+	Tcl_SetObjResult (interp, Tcl_NewByteArrayObj (memPtr, size));
 	break;
       }
 #endif /* GD_JPEG */
@@ -1835,7 +1836,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	memPtr = gdImageGifPtr (im, &size);
-	Tcl_SetByteArrayObj (resultObj, memPtr, size);
+	Tcl_SetObjResult (interp, Tcl_NewByteArrayObj (memPtr, size));
 	break;
       }
 
@@ -1985,7 +1986,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	memPtr = gdImagePngPtrEx (im, &size, compression);
-	Tcl_SetByteArrayObj (resultObj, memPtr, size);
+	Tcl_SetObjResult (interp, Tcl_NewByteArrayObj (memPtr, size));
 	break;
       }
 #endif /* GD_PNG */
@@ -2027,7 +2028,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	memPtr = gdImageWBMPPtr (im, &size, fgcolor);
-	Tcl_SetByteArrayObj (resultObj, memPtr, size);
+	Tcl_SetObjResult (interp, Tcl_NewByteArrayObj (memPtr, size));
 	break;
       }
 
@@ -2058,7 +2059,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	memPtr = gdImageGdPtr (im, &size);
-	Tcl_SetByteArrayObj (resultObj, memPtr, size);
+	Tcl_SetObjResult (interp, Tcl_NewByteArrayObj (memPtr, size));
 	break;
       }
 
@@ -2163,7 +2164,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	memPtr = gdImageGd2Ptr (im, chunkSize, format, &size);
-	Tcl_SetByteArrayObj (resultObj, memPtr, size);
+	Tcl_SetObjResult (interp, Tcl_NewByteArrayObj (memPtr, size));
 	break;
       }
     }
@@ -2193,7 +2194,6 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 int
 tclgd_newGDObject (Tcl_Interp *interp, Tcl_Obj *nameObj, gdImagePtr im, int destroyOnDelete)
 {
-    Tcl_Obj           *resultObj = Tcl_GetObjResult(interp);
     char              *newName = Tcl_GetString (nameObj);;
     char               autoObjName[64];
     tclgd_clientData  *tclgdClientData;
@@ -2221,7 +2221,7 @@ tclgd_newGDObject (Tcl_Interp *interp, Tcl_Obj *nameObj, gdImagePtr im, int dest
     }
 
     Tcl_CreateObjCommand (interp, newName, tclgd_gdObjectObjCmd, tclgdClientData, tclgd_GDdeleteProc);
-    Tcl_SetStringObj (resultObj, newName, -1);
+    Tcl_SetObjResult (interp, Tcl_NewStringObj (newName, -1));
     return TCL_OK;
 }
 
@@ -2287,7 +2287,6 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 {
     int          optIndex;
     gdImagePtr   im = NULL;
-    Tcl_Obj     *resultObj = Tcl_GetObjResult(interp);
     gdIOCtx     *inctx = NULL;
 
     static CONST char *options[] = {
@@ -2688,7 +2687,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	    return TCL_ERROR;
 	}
 
-	Tcl_SetStringObj (resultObj, GD_VERSION, -1);
+	Tcl_SetObjResult (interp, Tcl_NewStringObj (GD_VERSION, -1));
 	return TCL_OK;
       }
 
@@ -2698,7 +2697,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	    return TCL_ERROR;
 	}
 
-	Tcl_SetStringObj (resultObj, GD_FEATURES, -1);
+	Tcl_SetObjResult (interp, Tcl_NewStringObj (GD_FEATURES, -1));
 	return TCL_OK;
       }
     }

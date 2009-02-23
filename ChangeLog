@@ -22,6 +22,10 @@ $Id: ChangeLog,v 1.17 2008-06-06 21:51:16 karl Exp $
       one of these names that its clientData pointer is not null before
       dereferencing it to get to the frame buffer.
 
+    * Also at GPS's suggestion, change from getting the result object
+      with Tcl_GetObjResult and setting it with Tcl_SetIntOBj, etc, 
+      set the object result using newly created objects and Tcl_SetObjResult.
+
     * Version bump to 0.7.
 
 2009-02-21 karl
