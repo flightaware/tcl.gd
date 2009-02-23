@@ -13,37 +13,6 @@
 /*
  *----------------------------------------------------------------------
  *
- * tclgd_newObjName --
- *
- *    Given a Tcl_Obj containing a name for a new GD image handling
- *    command object, if it contains "#auto", return an autoincrementing
- *    unique handle name, a la incr Tcl, otherwise return the name
- *    passed.
- *
- * Results:
- *    None.
- *
- *----------------------------------------------------------------------
- */
-static char *
-tclgd_newObjName (Tcl_Obj *nameObj)
-{
-    char *name = Tcl_GetString (nameObj);
-    static int nextObjNumber = 0;
-    static char nextObjName[16];
-
-    if (strcmp (name, "#auto") == 0) {
-	sprintf (nextObjName, "gd%d", nextObjNumber++);
-	return nextObjName;
-    }
-
-    return name;
-}
-
-
-/*
- *----------------------------------------------------------------------
- *
  * tclgd_cmdNameObjToIM --
  *
  *    Given a Tcl_Obj containing a name for an existing GD image handling
@@ -2220,14 +2189,32 @@ int
 tclgd_newGDObject (Tcl_Interp *interp, Tcl_Obj *nameObj, gdImagePtr im, int destroyOnDelete)
 {
     Tcl_Obj           *resultObj = Tcl_GetObjResult(interp);
-    char              *newName;
+    char              *newName = Tcl_GetString (nameObj);;
+    char               autoObjName[64];
     tclgd_clientData  *tclgdClientData;
 
     tclgdClientData = (tclgd_clientData *)ckalloc (sizeof (tclgd_clientData));
     tclgdClientData->im = im;
     tclgdClientData->destroyOnDelete = destroyOnDelete;
 
-    newName = tclgd_newObjName (nameObj);
+    static unsigned long nextObjNumber = 0;
+
+    /* if new name is "#auto", generate a unique object name */
+    if (strcmp (newName, "#auto") == 0) {
+	while (1) {
+	    Tcl_CmdInfo dummy;
+
+	    snprintf (autoObjName, sizeof (autoObjName), "gd%lu", nextObjNumber++);
+	    /* if autoObjName doesn't exist in the interpreter,
+	     * we've got a good name
+	     */
+	    if (Tcl_GetCommandInfo (interp, autoObjName, &dummy) == 0) {
+		newName = autoObjName;
+		break;
+	    }
+	}
+    }
+
     Tcl_CreateObjCommand (interp, newName, tclgd_gdObjectObjCmd, tclgdClientData, tclgd_GDdeleteProc);
     Tcl_SetStringObj (resultObj, newName, -1);
     return TCL_OK;

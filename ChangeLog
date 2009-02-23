@@ -1,5 +1,19 @@
 $Id: ChangeLog,v 1.17 2008-06-06 21:51:16 karl Exp $
-Thu May 22 01:43:35 CDT 2008
+
+2009-02-23 karl
+    * Fixed potential buffer overflow problem and potential wraparound problem
+      with #auto object naming and thread safety problems as reported by 
+      George Peter Staplin:
+
+	* Folded tclgd_newObjName into tclgd_newGDObject.
+
+	* Removed static buffer used for object name construction and
+	  sized new one large enough to support long longs without overflow.
+
+	* It now tries as many object names as needed to find one that doesn't
+	  collide with any existing objects (usually only takes one).
+
+	* Made next object number variable into an unsigned long.
 
 2008-05-22 karl
     * Fixed problem with GD create_from_jpeg_data looking at the wrong argument
