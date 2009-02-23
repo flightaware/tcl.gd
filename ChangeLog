@@ -15,6 +15,16 @@ $Id: ChangeLog,v 1.17 2008-06-06 21:51:16 karl Exp $
 
 	* Made next object number variable into an unsigned long.
 
+    * Another bug reported by George Peter Staplin is that a crash can
+      by caused by passing the copy methods (copy, copy_resized, etc) 
+      a Tcl command that is not one of our GD objects.  Although not
+      a complete fix for the problem, we now insure when looking at
+      one of these names that its clientData pointer is not null before
+      dereferencing it to get to the frame buffer.
+
+2009-02-21 karl
+    * tcl.gd 0.6 released to the public.
+
 2008-05-22 karl
     * Fixed problem with GD create_from_jpeg_data looking at the wrong argument
       for the binary data.

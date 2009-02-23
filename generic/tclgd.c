@@ -37,6 +37,11 @@ tclgd_cmdNameObjToIM (Tcl_Interp *interp, Tcl_Obj *commandNameObj, gdImagePtr *s
 	return TCL_ERROR;
     }
 
+    if (cmdInfo.objClientData == NULL) {
+	Tcl_AppendResult (interp, "Error: '", Tcl_GetString (commandNameObj), "' is not a tclgd object", NULL);
+	return TCL_ERROR;
+    }
+
     *srcImPtr = ((tclgd_clientData *)cmdInfo.objClientData)->im;
 
     return TCL_OK;
