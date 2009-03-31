@@ -1,0 +1,12 @@
+# $Id$
+#
+# Debian configure command for tcl.gd
+#
+# Requires tcl-dev and libgd2-noxpm-dev or libgd2-xpm-dev
+#
+# apt-get install tcl8.4-dev
+# apt-get install libgd2-noxpm-dev
+#
+
+./configure --with-tcl=/usr/lib/tcl8.4 --with-tclinclude=/usr/include/tcl8.4 --with-gd-include=/usr/include --with-gd-lib=/usr/lib --enable-shared --enable-symbols
+

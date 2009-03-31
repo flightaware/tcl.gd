@@ -1,5 +1,9 @@
 $Id: ChangeLog,v 1.17 2008-06-06 21:51:16 karl Exp $
 
+2009-03-31 karl
+    * Builds cleanly under Debian.  Added README.Debian that explains how
+      to configure.
+
 2009-02-23 karl
     * Fixed potential buffer overflow problem and potential wraparound problem
       with #auto object naming and thread safety problems as reported by 
