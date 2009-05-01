@@ -5,6 +5,8 @@ $Id: ChangeLog,v 1.17 2008-06-06 21:51:16 karl Exp $
       FreeBSD port modifying the output of "gdlib-config --libs".
       (fix for googlecode issue 1).
 
+    * Version bump to 1.0.
+
 2009-03-31 karl
     * Builds cleanly under Debian.  Added README.Debian that explains how
       to configure.
