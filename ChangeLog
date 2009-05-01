@@ -5,6 +5,8 @@ $Id: ChangeLog,v 1.17 2008-06-06 21:51:16 karl Exp $
       FreeBSD port modifying the output of "gdlib-config --libs".
       (fix for googlecode issue 1).
 
+    * Remove autom4te.cache upon "make distclean".
+
     * Version bump to 1.0.
 
 2009-03-31 karl

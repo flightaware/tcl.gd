@@ -150,7 +150,7 @@ PKG_CFLAGS	= @PKG_CFLAGS@
 #DEFS		= $(TCL_DEFS) @DEFS@ $(PKG_CFLAGS)
 DEFS		= @DEFS@ $(PKG_CFLAGS)
 
-CONFIG_CLEAN_FILES = Makefile pkgIndex.tcl
+CONFIG_CLEAN_FILES = Makefile pkgIndex.tcl autom4te.cache
 
 CPPFLAGS	= @CPPFLAGS@
 LIBS		= @PKG_LIBS@ @LIBS@ @GD_LDFLAGS@ -lgd @GD_LIBS@
@@ -330,7 +330,7 @@ clean:
 
 distclean: clean
 	-rm -f *.tab.c
-	-rm -f $(CONFIG_CLEAN_FILES)
+	-rm -rf $(CONFIG_CLEAN_FILES)
 	-rm -rf config.cache config.log config.status autom4te*.cache
 
 #========================================================================
