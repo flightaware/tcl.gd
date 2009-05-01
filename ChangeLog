@@ -1,5 +1,10 @@
 $Id: ChangeLog,v 1.17 2008-06-06 21:51:16 karl Exp $
 
+2009-05-01 karl
+    * Add -lgd to link libraries -- that it worked before was due to the 
+      FreeBSD port modifying the output of "gdlib-config --libs".
+      (fix for googlecode issue 1).
+
 2009-03-31 karl
     * Builds cleanly under Debian.  Added README.Debian that explains how
       to configure.
@@ -50,19 +55,19 @@ $Id: ChangeLog,v 1.17 2008-06-06 21:51:16 karl Exp $
 2007-04-04 karl
     * Document the animated GIF support.
 
-2006-01-10 Karl Lehenbauer <karl-tclgd@sc.com>
+2006-01-10 Karl Lehenbauer
     * configure.in: Remove pkgIndex.tcl from list of files that are to
       be deleted on "make clean" -- since it's now generated from 
       pkgIndex.tcl.in (updated TEA), it should only be cleaned by
       make distclean, not make clean.
 
-2006-01-10 Karl Lehenbauer <karl-tclgd@sc.com>
+2006-01-10 Karl Lehenbauer
     * generic/tclgd.c: Fix filled_arc to require the correct number of
       parameters (it required one too many) and to handle optional
       parameters correctly (it would only use the first one, when
       multiple are allowed.)
 
-2005-12-18 Karl Lehenbauer <karl-tclgd@sc.com>
+2005-12-18 Karl Lehenbauer
 
     * generic/tclgdio.c: Use Tcl's ckalloc and ckfree instead of GD's
       gdMalloc and gdFree -- it wasn't necessary to use GD's versions,
@@ -77,7 +82,7 @@ $Id: ChangeLog,v 1.17 2008-06-06 21:51:16 karl Exp $
       the C function to bring a GD image structure into Tcl from a C
       program.  Better document the Mapserver patch.
 
-2005-12-14 Karl Lehenbauer <karl-tclgd@sc.com>
+2005-12-14 Karl Lehenbauer
     * Update to Tcl TEA build environment version 3.4.
 
     * configure.in: Enforce GD version must be at least 2.0.33 (we need
@@ -87,7 +92,7 @@ $Id: ChangeLog,v 1.17 2008-06-06 21:51:16 karl Exp $
 
     * generic/tclgd.c: Compile properly when gd was built without JPEG support.
 
-2005-11-26 Karl Lehenbauer <karl-tclgd@sc.com>
+2005-11-26 Karl Lehenbauer
 
     * generic/tclgd.c: "text_bounds" method was still rendering into the
       target image because we weren't passing a null target image when
@@ -100,7 +105,7 @@ $Id: ChangeLog,v 1.17 2008-06-06 21:51:16 karl Exp $
 
     * Release version 0.6
 
-2005-11-25 Karl Lehenbauer <karl-tclgd@sc.com>
+2005-11-25 Karl Lehenbauer
 
     * generic/tclgd.c: Make "handle transparent" return the current 
       transparency color index if no color is specified.  Also when it 
@@ -123,12 +128,12 @@ $Id: ChangeLog,v 1.17 2008-06-06 21:51:16 karl Exp $
 
     * doc/tclgd_newGDObjectAttach.3: Documentation for the above API.
 
-2005-11-22 Karl Lehenbauer <karl-tclgd@sc.com>
+2005-11-22 Karl Lehenbauer
 
     * Fix minor memory leak where tclgd_channelIOCtx structures weren't
       being freed after writing images to Tcl channels.
 
-2005-11-01 Karl Lehenbauer <karl-tclgd@sc.com>
+2005-11-01 Karl Lehenbauer
 
     * Export 
 
