@@ -2,5 +2,5 @@
 
 # $Id: README.FreeBSD,v 1.4 2005-11-27 04:49:50 karl Exp $
 
-./configure --with-tcl=/usr/local/lib/tcl8.4 --with-tclinclude=/usr/local/include/tcl8.4 --with-gd-include=/usr/local/include --with-gd-lib=/usr/local/lib --enable-shared --enable-symbols
+./configure --with-tcl=/usr/local/lib/tcl8.5 --with-tclinclude=/usr/local/include/tcl8.5 --enable-shared --enable-symbols
 
