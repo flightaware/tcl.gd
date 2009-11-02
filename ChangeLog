@@ -1,4 +1,11 @@
-$Id: ChangeLog,v 1.17 2008-06-06 21:51:16 karl Exp $
+ChangeLog for tcl.gd
+====================
+
+2009-11-02 karl
+    * Add rgb_components method -- given a color it returns a list of the
+      red, green and blue components.  This is the same as invoking the
+      red_component, blue_component and green_component methods and returning
+      the result as a list.
 
 2009-05-01 karl
     * Add -lgd to link libraries -- that it worked before was due to the 

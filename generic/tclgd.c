@@ -404,6 +404,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	"green_component",
 	"red_component",
 	"blue_component",
+	"rgb_components",
 	"width",
 	"height",
 	"copy",
@@ -471,6 +472,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	OPT_GREEN_COMPONENT,
 	OPT_RED_COMPONENT,
 	OPT_BLUE_COMPONENT,
+	OPT_RGB_COMPONENTS,
 	OPT_WIDTH,
 	OPT_HEIGHT,
 	OPT_COPY,
@@ -1466,6 +1468,27 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	Tcl_SetObjResult (interp, Tcl_NewIntObj gdImageBlue (im, color));
+	return TCL_OK;
+      }
+
+      case OPT_RGB_COMPONENTS: {
+	int color;
+	Tcl_Obj *listObjv[3];
+
+	if (objc != 3) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "color");
+	    return TCL_ERROR;
+	}
+
+	if (Tcl_GetIntFromObj (interp, objv[2], &color) == TCL_ERROR) {
+	    return tclgd_complainColor (interp);
+	}
+
+	listObjv[0] = Tcl_NewIntObj gdImageRed (im, color);
+	listObjv[1] = Tcl_NewIntObj gdImageGreen (im, color);
+	listObjv[2] = Tcl_NewIntObj gdImageBlue (im, color);
+
+	Tcl_SetObjResult (interp, Tcl_NewListObj (3, listObjv));
 	return TCL_OK;
       }
 

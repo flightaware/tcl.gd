@@ -114,6 +114,8 @@ tclgd \- modern, nearly feature-complete interface to gd-2 graphics drawing rout
 .br
 \fBobjName blue_component\fI color\fR
 .br
+\fBobjName rgb_components\fI color\fR
+.br
 \fBobjName width\fR
 .br
 \fBobjName height\fR
@@ -320,6 +322,9 @@ color.
 .PP
 \fBobjName blue_component\fI color\fR - returns the blue component of the
 color.
+.PP
+\fBobjName rgb_components\fI color\fR - returns the red, green and blue
+components of the color as a list.
 .PP
 \fBobjName width\fI return the width of the image, while
 \fBobjName height\fR returns the height.
