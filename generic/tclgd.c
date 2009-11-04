@@ -369,6 +369,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 
     static CONST char *options[] = {
 	"pixel",
+	"pixelrgb",
 	"line",
 	"polygon",
 	"rectangle",
@@ -437,6 +438,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 
     enum options {
 	OPT_PIXEL,
+	OPT_PIXELRGB,
 	OPT_LINE,
 	OPT_POLYGON,
 	OPT_RECTANGLE,
@@ -532,6 +534,46 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
        if (objc == 4) {
 	   Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageGetPixel (im, x, y)));
 	   return TCL_OK;
+	}
+
+	if (tclgd_GetColor (interp, objv[4], &color) == TCL_ERROR) {
+	    return TCL_ERROR;
+	}
+
+	gdImageSetPixel (im, x, y, color);
+	break;
+      }
+
+      case OPT_PIXELRGB: {
+	int x, y, color;
+
+	if ((objc < 4) || (objc > 5)) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "x y ?color?");
+	    return TCL_ERROR;
+	}
+
+       if (Tcl_GetIntFromObj (interp, objv[2], &x) == TCL_ERROR) {
+	   return tclgd_complainX (interp);
+       }
+
+       if (Tcl_GetIntFromObj (interp, objv[3], &y) == TCL_ERROR) {
+	   return tclgd_complainY (interp);
+       }
+
+       /* if they're querying the color, get the color from the pixel
+        * and return its red, green and blue components as a list.
+	*/
+       if (objc == 4) {
+	   Tcl_Obj *listObjv[3];
+
+           color = gdImageGetPixel (im, x, y);
+
+	    listObjv[0] = Tcl_NewIntObj gdImageRed (im, color);
+	    listObjv[1] = Tcl_NewIntObj gdImageGreen (im, color);
+	    listObjv[2] = Tcl_NewIntObj gdImageBlue (im, color);
+
+	    Tcl_SetObjResult (interp, Tcl_NewListObj (3, listObjv));
+	    return TCL_OK;
 	}
 
 	if (tclgd_GetColor (interp, objv[4], &color) == TCL_ERROR) {

@@ -44,6 +44,8 @@ tclgd \- modern, nearly feature-complete interface to gd-2 graphics drawing rout
 .PP
 \fBobjName pixel\fI x y ?color?\fR
 .br
+\fBobjName pixelrgb\fI x y ?color?\fR
+.br
 \fBobjName line\fI x1 y1 x2 y2 color\fR
 .br
 \fBobjName polygon\fI ?filled|open? pointList color\fR
@@ -215,6 +217,12 @@ reference to that variable, in the same manner as Incr Tcl.
 \fBobjName pixel \fIx y\fR returns the color index of the pixel located at
 coordinates x and y, while \fBobjName pixel \fIx y color\fR sets that pixel
 location to the specified color index.
+.PP
+\fBobjName pixelrgb \fIx y\fR returns a list containing the red, green
+and blue values of the pixel located at
+coordinates x and y, while \fBobjName pixelrgb \fIx y color\fR sets that pixel
+location to the specified color index.  For setting, use \fBpixel\fR
+instead as how or whether \fBpixelrgb\fR will set colors is likely to change.
 .PP
 \fBobjName line\fI x1 y1 x2 y2 color\fR draws a line from the coordinates
 \fIx1, y1\fR to \fIx2, y2\fR using color \fIcolor\fR.  If thickness is set
