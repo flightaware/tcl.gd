@@ -138,6 +138,8 @@ tclgd \- modern, nearly feature-complete interface to gd-2 graphics drawing rout
 .br
 \fBobjName sharpen\fI percent\fR
 .br
+\fBobjName compare_ratio \fIsrcImageCommand\fR
+.br
 \fBobjName compare \fIsomething\fR
 .br
 \fBobjName square_to_circle\fI name radius\fR
@@ -336,6 +338,8 @@ components of the color as a list.
 .PP
 \fBobjName width\fI return the width of the image, while
 \fBobjName height\fR returns the height.
+.PP
+\fBobjName compare_ratio \fIsrcImageCommand\fR - given two images of identical dimensions, returns the ratio of pixels that are identical between the two images, between 0.0 and 1.0.
 .PP
 \fBobjName copy\fI srcImageCommand destX destY srcX srcY width height\fR
 .PP

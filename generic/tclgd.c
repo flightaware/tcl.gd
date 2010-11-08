@@ -47,6 +47,30 @@ tclgd_cmdNameObjToIM (Tcl_Interp *interp, Tcl_Obj *commandNameObj, gdImagePtr *s
     return TCL_OK;
 }
 
+static double
+tclgd_imageCompareRatio (gdImagePtr im1, gdImagePtr im2)
+{
+    int x, y;
+    int p1, p2;
+    long matchCount = 0;
+
+    if (im1->sx != im2->sx || im1->sy != im2->sy) {
+        return -1;
+    }
+
+    for (y = 0; (y < im1->sy); y++) {
+        for (x = 0; (x < im1->sx); x++) {
+	    p1 = im1->trueColor ? gdImageTrueColorPixel (im1, x, y) : gdImagePalettePixel (im1, x, y);
+	    p2 = im2->trueColor ? gdImageTrueColorPixel (im2, x, y) : gdImagePalettePixel (im2, x, y);
+
+	    if (gdImageRed(im1, p1) == gdImageRed(im2, p2) && gdImageGreen(im1, p1) == gdImageGreen(im2, p2) && gdImageBlue(im1, p1) == gdImageBlue(im2, p2)) {
+	        matchCount++;
+	    }
+	}
+    }
+
+    return (double)(matchCount) / (double)(im1->sx * im1->sy);
+}
 
 /* tclgd_complain routines -- these get called in a lot of places after
  * integer and double-precision floating point conversion failures to
@@ -408,6 +432,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	"rgb_components",
 	"width",
 	"height",
+	"compare_ratio",
 	"copy",
 	"copy_resized",
 	"copy_resampled",
@@ -477,6 +502,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	OPT_RGB_COMPONENTS,
 	OPT_WIDTH,
 	OPT_HEIGHT,
+	OPT_COMPARE_RATIO,
 	OPT_COPY,
 	OPT_COPY_RESIZED,
 	OPT_COPY_RESAMPLED,
@@ -1541,6 +1567,28 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
       case OPT_HEIGHT:
 	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageSY(im)));
 	break;
+
+      case OPT_COMPARE_RATIO: {
+	gdImagePtr   srcIm;
+	double ratio;
+
+	if (objc != 3) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "srcImageCommand");
+	    return TCL_ERROR;
+	}
+
+	if (tclgd_cmdNameObjToIM (interp, objv[2], &srcIm) == TCL_ERROR) {
+	    return TCL_ERROR;
+	}
+
+	ratio = tclgd_imageCompareRatio (im, srcIm);
+	if (ratio < 0) {
+	    Tcl_AppendResult (interp, "compare_ratio images must have identical dimensions", NULL);
+	    return TCL_ERROR;
+	}
+	Tcl_SetObjResult (interp, Tcl_NewDoubleObj (ratio));
+	break;
+      }
 
       case OPT_COPY: {
         int          destX;

@@ -1,5 +1,8 @@
 ChangeLog for tcl.gd
 ====================
+2010-11-08 karl
+    * Add compare_ratio method -- given a second image of identical dimensions,
+      returns the ratio of identical pixels between the images.
 
 2009-11-04 karl
     * Add pixelrgb method -- given an x and a y in an image, returns the
