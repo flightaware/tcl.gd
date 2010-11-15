@@ -1,5 +1,10 @@
 ChangeLog for tcl.gd
 ====================
+2010-11-15 karl
+    * Make get_alpha method, which returns the alpha component of the
+      specified color index where 0 is completely opaque and 127 is
+      completely transparent, actually work.
+
 2010-11-08 karl
     * Add compare_ratio method -- given a second image of identical dimensions,
       returns the ratio of identical pixels between the images.

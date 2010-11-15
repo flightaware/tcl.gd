@@ -1468,9 +1468,6 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	break;
       }
 
-      case OPT_GET_ALPHA:
-	break;
-
       case OPT_BOUNDS_SAFE: {
 	int x, y;
 
@@ -1491,11 +1488,28 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	break;
       }
 
+      case OPT_GET_ALPHA: {
+	int color;
+
+	if (objc != 3) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "colorIndex");
+	    return TCL_ERROR;
+	}
+
+	if (Tcl_GetIntFromObj (interp, objv[2], &color) == TCL_ERROR) {
+	   return tclgd_complainColor (interp);
+	}
+
+	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageAlpha (im, color)));
+	return TCL_OK;
+      }
+
+
       case OPT_GREEN_COMPONENT: {
 	int color;
 
 	if (objc != 3) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "color");
+	    Tcl_WrongNumArgs (interp, 2, objv, "colorIndex");
 	    return TCL_ERROR;
 	}
 
@@ -1511,7 +1525,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int color;
 
 	if (objc != 3) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "color");
+	    Tcl_WrongNumArgs (interp, 2, objv, "colorIndex");
 	    return TCL_ERROR;
 	}
 
@@ -1527,7 +1541,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int color;
 
 	if (objc != 3) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "color");
+	    Tcl_WrongNumArgs (interp, 2, objv, "colorIndex");
 	    return TCL_ERROR;
 	}
 
