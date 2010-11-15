@@ -5,6 +5,8 @@ ChangeLog for tcl.gd
       specified color index where 0 is completely opaque and 127 is
       completely transparent, actually work.
 
+    * Make set_brush and set_tile work properly.
+
 2010-11-08 karl
     * Add compare_ratio method -- given a second image of identical dimensions,
       returns the ratio of identical pixels between the images.

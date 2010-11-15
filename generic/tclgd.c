@@ -1370,11 +1370,37 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	return TCL_OK;
       }
 
-      case OPT_SET_BRUSH:
-	break;
+      case OPT_SET_BRUSH: {
+	gdImagePtr   brushIm;
 
-      case OPT_SET_TILE:
+	if (objc != 2) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "brushImageCommand");
+	    return TCL_ERROR;
+	}
+
+	if (tclgd_cmdNameObjToIM (interp, objv[2], &brushIm) == TCL_ERROR) {
+	    return TCL_ERROR;
+	}
+
+	gdImageSetBrush (im, brushIm);
 	break;
+      }
+
+      case OPT_SET_TILE: {
+	gdImagePtr   tileIm;
+
+	if (objc != 2) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "tileImageCommand");
+	    return TCL_ERROR;
+	}
+
+	if (tclgd_cmdNameObjToIM (interp, objv[2], &tileIm) == TCL_ERROR) {
+	    return TCL_ERROR;
+	}
+
+	gdImageSetBrush (im, tileIm);
+	break;
+      }
 
       case OPT_STYLE:
 	break;

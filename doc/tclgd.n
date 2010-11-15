@@ -94,9 +94,9 @@ tclgd \- modern, nearly feature-complete interface to gd-2 graphics drawing rout
 .br
 \fBobjName set_anti_aliased_dont_blend\fI color\fR
 .br
-\fBobjName set_brush\fI BROKE\fR
+\fBobjName set_brush\fI brushImageCommand\fR
 .br
-\fBobjName set_tile\fI BROKE\fR
+\fBobjName set_tile\fI tileImageCommand\fR
 .br
 \fBobjName set_style\fI BROKE\fR
 .br
@@ -306,32 +306,38 @@ supports it.  If \fIcolor\fR is not specified, the current color is returned.
 .PP
 \fBobjName set_anti_aliased_dont_blend\fI color\fR
 .PP
-\fBobjName set_brush\fI BROKE\fR
+\fBobjName set_brush\fI brushImageCommand\fR - set the brush for brushed 
+drawing to be the image contained in the specified image command.
 .PP
-\fBobjName set_tile\fI BROKE\fR
+\fBobjName set_tile\fI tileImageCommand\fR - set the tile for tiled drawing
+to be the image contained in the specified image command.
 .PP
 \fBobjName set_style\fI BROKE\fR
 .PP
-\fBobjName set_thickness\fI thickness\fR
+\fBobjName set_thickness\fI thickness\fR - set the thickness of lines drawn
+by the line and polygon drawing functions.
 .PP
 \fBobjName alpha_blending\fI blending\fR
 .PP
 \fBobjName save_alpha\fI boolean\fR
 .PP
-\fBobjName get_alpha\fR
+\fBobjName get_alpha\fI color\fR - returns the alpha component of the specified
+color index, 
+where 0 is completely opaque (no blending with the background) through 127
+being completely transparent (the background shines through 100%).
 .PP
 \fBobjName bounds_safe\fI x y\fR
 .PP
 \fBobjName bounds_safe\fI x y\fR
 .PP
 \fBobjName green_component\fI color\fR - returns the green component of the
-color.
+specific color index.
 .PP
 \fBobjName red_component\fI color\fR - returns the red component of the
-color.
+specified colofr index.
 .PP
 \fBobjName blue_component\fI color\fR - returns the blue component of the
-color.
+specified colofr index.
 .PP
 \fBobjName rgb_components\fI color\fR - returns the red, green and blue
 components of the color as a list.
