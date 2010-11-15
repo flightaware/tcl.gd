@@ -98,7 +98,7 @@ tclgd \- modern, nearly feature-complete interface to gd-2 graphics drawing rout
 .br
 \fBobjName set_tile\fI tileImageCommand\fR
 .br
-\fBobjName set_style\fI BROKE\fR
+\fBobjName set_style\fI colorList\fR
 .br
 \fBobjName set_thickness\fI thickness\fR
 .br
@@ -312,7 +312,21 @@ drawing to be the image contained in the specified image command.
 \fBobjName set_tile\fI tileImageCommand\fR - set the tile for tiled drawing
 to be the image contained in the specified image command.
 .PP
-\fBobjName set_style\fI BROKE\fR
+\fBobjName set_style\fI colorList\fR - set the image style for styled lines to a
+list of colors.  Each color in the list is either a color value or the
+word \fItransparent\fR
+to indicate that the existing color should be left unchanged for that 
+particular pixel, allowing lines to be drawn with dashed lines, etc, when
+the color argument to the line drawing function is specified as \fIstyled\fR.
+.PP
+Styles and brushes can be combined to draw the brush image at intervals
+instead of with a continuous stroke.  When creating a style list for use with
+a brush, list elements of zero indicate pixels at which the brush should not 
+be drawn and elements of one indicates pixels at which the brush should be 
+drawn.
+.PP
+To draw a styled, brushed line, use the special color \fIstyled_brushed\fR for
+the color argument to the \fBdraw\fR method..
 .PP
 \fBobjName set_thickness\fI thickness\fR - set the thickness of lines drawn
 by the line and polygon drawing functions.

@@ -1402,8 +1402,33 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	break;
       }
 
-      case OPT_STYLE:
+      case OPT_STYLE: {
+	Tcl_Obj   **colorObjList;
+	int         nColors;
+	int         i;
+	int        *styleInts;
+
+        if (objc != 2) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "colorList");
+	    return TCL_ERROR;
+	}
+
+	if (Tcl_ListObjGetElements (interp, objv[2], &nColors, &colorObjList) == TCL_ERROR) {
+	    return TCL_ERROR;
+	}
+
+	styleInts = (int *)ckalloc (nColors * sizeof (int));
+
+	for (i = 0; i < nColors; i++) {
+	    if (tclgd_GetColor (interp, colorObjList[i], &styleInts[i]) == TCL_ERROR) {
+		return TCL_ERROR;
+	    }
+	}
+
+	gdImageSetStyle (im, styleInts, nColors);
+	ckfree ((char *)styleInts);
 	break;
+      }
 
       case OPT_SET_THICKNESS: {
 	int thickness;

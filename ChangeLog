@@ -1,11 +1,13 @@
 ChangeLog for tcl.gd
 ====================
 2010-11-15 karl
-    * Make get_alpha method, which returns the alpha component of the
+    * Make the "get_alpha" method, which returns the alpha component of the
       specified color index where 0 is completely opaque and 127 is
-      completely transparent, actually work.
+      completely transparent, work properly.
 
-    * Make set_brush and set_tile work properly.
+    * Make "set_brush" and "set_tile" methods work properly.
+
+    * Make the "style" method work.
 
 2010-11-08 karl
     * Add compare_ratio method -- given a second image of identical dimensions,
