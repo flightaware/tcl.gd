@@ -138,9 +138,9 @@ tclgd \- modern, nearly feature-complete interface to gd-2 graphics drawing rout
 .br
 \fBobjName sharpen\fI percent\fR
 .br
-\fBobjName compare_ratio \fIsrcImageCommand\fR
+\fBobjName compare \fIotherImageCommand\fR
 .br
-\fBobjName compare \fIsomething\fR
+\fBobjName compare_ratio \fIotherImageCommand\fR
 .br
 \fBobjName square_to_circle\fI name radius\fR
 .br
@@ -359,7 +359,31 @@ components of the color as a list.
 \fBobjName width\fI return the width of the image, while
 \fBobjName height\fR returns the height.
 .PP
-\fBobjName compare_ratio \fIsrcImageCommand\fR - given two images of identical dimensions, returns the ratio of pixels that are identical between the two images, between 0.0 and 1.0.
+\fBobjName compare \fIotherImageCommand\fR - given two images (the named object
+and another image command), return a list of ways in which the two images
+are different.
+.PP
+The members of the list will include zero or more of the following elements:
+\fBimage\fR, if present, indicates that the images will appear differently
+when displayed.  \fBnum_colors\fR, if present, indicates that the number of
+colors in the palettes differ, while \fBcolors\fR indicates that the colors
+differ between the two images.  \fBheight\fR, if present, indicates that the
+height of the images differ, while \fBwidth\fR, if present, indicates that
+the width of the images differs.
+.PP
+\fBtransparent\fR, if present, indicates that the transparent color differs,
+while \fBbackground\fR indicates that the background color differs.
+\fBinterlace\fR, if present, indicates that one image is interlaced while the
+other is not, and \fBtruecolor\fR, if present, indicates that one image is
+a truecolor while the other is indexed and has a palette.
+.PP
+If the list returned is empty, the images should be identical.  If \fBimage\fR
+is not present, the images will appear identically if displayed, regardless
+of other characteristics differing.  According to the libgd documentation,
+any difference in the transparent color is assumed to make images display
+differently, even if the transparent color is not used.
+.PP
+\fBobjName compare_ratio \fIotherImageCommand\fR - given two images of identical dimensions, returns the ratio of pixels that are identical between the two images, between 0.0 and 1.0.
 .PP
 \fBobjName copy\fI srcImageCommand destX destY srcX srcY width height\fR
 .PP

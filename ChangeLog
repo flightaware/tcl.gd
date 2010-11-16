@@ -1,5 +1,8 @@
 ChangeLog for tcl.gd
 ====================
+1020-11-16 karl
+    * Make the "compare" method work.
+
 2010-11-15 karl
     * Make the "get_alpha" method, which returns the alpha component of the
       specified color index where 0 is completely opaque and 127 is

@@ -1904,8 +1904,63 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	return TCL_OK;
       }
 
-      case OPT_COMPARE:
+      case OPT_COMPARE: {
+	gdImagePtr   compIm;
+	int          cmpMask;
+	Tcl_Obj     *listObj;
+
+	if (objc != 3) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "compImageCommand");
+	    return TCL_ERROR;
+	}
+
+	if (tclgd_cmdNameObjToIM (interp, objv[2], &compIm) == TCL_ERROR) {
+	    return TCL_ERROR;
+	}
+
+	cmpMask = gdImageCompare (im, compIm);
+
+	listObj = Tcl_NewObj();
+
+	if (cmpMask & GD_CMP_IMAGE) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("image", -1));
+	}
+
+	if (cmpMask & GD_CMP_NUM_COLORS) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("num_colors", -1));
+	}
+
+	if (cmpMask & GD_CMP_COLOR) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("colors", -1));
+	}
+
+	if (cmpMask & GD_CMP_SIZE_X) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("width", -1));
+	}
+
+	if (cmpMask & GD_CMP_SIZE_Y) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("height", -1));
+	}
+
+	if (cmpMask & GD_CMP_TRANSPARENT) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("transparent", -1));
+	}
+
+	if (cmpMask & GD_CMP_BACKGROUND) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("background", -1));
+	}
+
+	if (cmpMask & GD_CMP_INTERLACE) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("interlace", -1));
+	}
+
+	if (cmpMask & GD_CMP_TRUECOLOR) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("truecolor", -1));
+	}
+
+	Tcl_SetObjResult (interp, listObj);
 	break;
+      }
 
       case OPT_SQUARE_TO_CIRCLE: {
         int radius;
