@@ -300,7 +300,8 @@ the current interlace setting for the image.
 \fBobjName transparent\fI color\fR says what color index will be generated as
 transparent when the image is saved, assuming the outputted image format 
 supports it.  If \fIcolor\fR is not specified, the current color is returned.
-\fB-1\fR means transparency is disabled.
+\fB-1\fR means transparency is disabled; setting transparency to -1 disables it
+as well.
 .PP
 \fBobjName set_anti_aliased\fI color\fR
 .PP
@@ -416,9 +417,10 @@ data.
 .PP
 \fBobjName write_png\fI channel compressionLevel\fR write the image to
 the specified channel, with the compression level of \fB-1\fR for the
-default set when gd was built, \fB0\fR to indicate no compression,
-\fB1\fR to compress quickly, all the way to \fB9\fR to select the best
-possible compression.  Likewise \fBobjName png_data\fI compressionLevel\fR
+default set when zlib was built, \fB0\fR to indicate no compression,
+\fB1\fR to compress as quickly as possible, all the way to \fB9\fR to select 
+the best possible compression.  
+Likewise \fBobjName png_data\fI compressionLevel\fR
 returns the image as binary data, with the specified compression.
 .PP
 \fBobjName write_wbmp\fI channel fgcolor\fR write the image to the specified

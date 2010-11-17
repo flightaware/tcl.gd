@@ -574,7 +574,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int x, y, color;
 
 	if ((objc < 4) || (objc > 5)) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "x y ?color?");
+	    Tcl_WrongNumArgs (interp, 2, objv, "x y ?rgbColorList?");
 	    return TCL_ERROR;
 	}
 
@@ -1389,7 +1389,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
       case OPT_SET_TILE: {
 	gdImagePtr   tileIm;
 
-	if (objc != 2) {
+	if (objc != 3) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "tileImageCommand");
 	    return TCL_ERROR;
 	}
@@ -1408,7 +1408,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int         i;
 	int        *styleInts;
 
-        if (objc != 2) {
+        if (objc != 3) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "colorList");
 	    return TCL_ERROR;
 	}
