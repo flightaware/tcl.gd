@@ -332,9 +332,36 @@ the color argument to the \fBdraw\fR method..
 \fBobjName set_thickness\fI thickness\fR - set the thickness of lines drawn
 by the line and polygon drawing functions.
 .PP
-\fBobjName alpha_blending\fI blending\fR
+\fBobjName alpha_blending\fI blending\fR - GD has two different modes for
+drawing on truecolor images.  In blending mode, which is on by default,
+the alpha channel component of the color supplied to each drawing function
+is used to determine how much of the underlying color should be allowed to
+shine through.  In this mode gd automatically blends the existing color at
+that point with the drawing color, storing the result in the image.  In this
+mode, the resulting pixel is opaque (alpha channel value of zero.)
 .PP
-\fBobjName save_alpha\fI boolean\fR
+In non-blending mode, the drawing color is copied literally with its alpha
+channel information, replacing the destination pixel with the color and
+alpha channel value.  In this mode the alpha value stored in the image is
+whatever alpha value the pixel was drawn with, hence the resulting pixel in
+the resulting image will range from opaque to translucent depending on the
+alpha channel value.
+.PP
+Blending mode is only available with truecolor images and PNG is currently the
+only file format supported by gd which can include alpha channel information.
+.PP
+\fBobjName save_alpha\fI boolean\fR - by default gd does not attempt to save
+full alpha channel information (as opposed to single-color transparency)
+when saving PNG images.  (PNG is currently the only gd-supported file format
+that can include alpha channel information.)  This saves space in the output
+file.
+.PP
+If you want to create an image with a full alpha (transparency) channel, invoke
+the \fBsave_alpha\fR method with an argument of 1 and also invoke the
+\fBalpha_blending\fR method with an argument of 0 to turn off alpa
+blending within the library, causing the alpha channel information to be stored
+in the image rather than having gd composite the image immediately when
+the drawing functions are invoked.
 .PP
 \fBobjName get_alpha\fI color\fR - returns the alpha component of the specified
 color index, 
