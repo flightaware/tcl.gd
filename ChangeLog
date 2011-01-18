@@ -1,5 +1,8 @@
 ChangeLog for tcl.gd
 ====================
+2011-01-18 karl
+    * Version bump to 1.1.  Tagging 1.1 for release.
+
 2010-12-07 karl
     * Document the alpha_blending and save_alpha methods.
 
