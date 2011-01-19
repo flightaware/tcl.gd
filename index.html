@@ -1,80 +1,202 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-	<title>lehenbauer/tcl.gd @ GitHub</title>
-	
-	<style type="text/css">
-		body {
-  		margin-top: 1.0em;
-  		background-color: #9ba3a1;
-		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-		h1 { font-size: 3.8em; color: #645c5e; margin-bottom: 3px; }
-		h1 .small { font-size: 0.4em; }
-		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #645c5e; }
-    h3 { text-align: center; color: #645c5e; }
-    a { color: #645c5e; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-	</style>
-	
+    <title>tcl.gd</title>
+    
+    <style type="text/css">
+      body {
+        background-color: #D5D6D7;
+        padding:20px;
+        text-align: center;
+        align: center;
+      }
+      .header {
+        border-bottom: 1px solid #959596;
+        padding: 5px;
+        color: #ffffff;
+        background-color: rgb(115, 160, 197);
+      }
+      .header a {
+        text-decoration: none;
+        color: #ffffff;
+      }
+      .pageTitle {
+        font-size: 3em;
+        font-weight: normal;
+      }
+      .small { font-size: 1em; }
+
+      #outerContainer {
+        border:1px solid #959596;
+        font-family: "helvetica"; 
+        color: #000000;
+        margin: 0 auto;
+        background-color: #ffffff;
+      }
+      #container {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: left;
+        width: 700px;
+        color: #333333;
+      }
+      h1 { font-size: 3.8em; color: #736f30; margin-bottom: 3px; }
+      h1 .small { font-size: 0.4em; }
+      h1 a { text-decoration: none }
+      h2 { font-size: 1.5em; text-align: center;}
+      h3 { font-size: 1.2em; color: #111144}
+      .description {
+        font-size: 1.2em;
+        margin-bottom: 30px;
+        margin-top: 30px;
+        font-style: italic;
+      }
+      .download { float: right; }
+      pre { background: #f4f4f4; color: #000080; padding: 15px;}
+      hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+      .footer { text-align:center; padding-top:30px; font-style: italic; }
+      .styleCredit { font-size: 75%; }
+    </style>
+    
 </head>
 
 <body>
   <a href="http://github.com/lehenbauer/tcl.gd"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-
+  
+  <div id="outerContainer">
+  <div class="header">
+    <span class="pageTitle">
+      <a href="http://github.com/lehenbauer/tcl.gd">tcl.gd</a>
+    </span><br>
+    <span class="small">
+      by <a href="http://github.com/lehenbauer">lehenbauer</a> and <a href="http://flightaware.com/">flightaware</a>
+    </span>
+  </div>
   <div id="container">
-
-    <div class="download">
-      <a href="http://github.com/lehenbauer/tcl.gd/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/lehenbauer/tcl.gd/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="http://github.com/lehenbauer/tcl.gd">tcl.gd</a>
-      <span class="small">by <a href="http://github.com/lehenbauer">lehenbauer</a></span></h1>
-
     <div class="description">
-      Feature-complete Tcl interface to GD graphics drawing library
     </div>
 
-    <h2>Authors</h2>
-<p>Karl Lehenbauer (karl@flightaware.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Karl Lehenbauer (karl-gh@flightaware.com)<br/>      </p>
+    <h2>Overview</h2>
 
+	  <p>
+	  This is tcl.gd, a new Tcl interface to the GD drawing library
+	  that is nearly 100% feature complete with GD, far more complete
+	  with gd 2 than Gdtclft.
+	  </p>
+	  <p>
+	  After package requiring the tclgd package, you use the GD
+	  command with a suboption to create an image object.  You can
+	  create an indexed or truecolor image, either starting with
+	  an empty one or loading one from a JPEG, PNG, GIF, WBMP, XBM, XPM,
+	  GD or GD2 native formats, depending on build options.
+	  </p>
+	  <p>
+	  This create a new command object that you use to manipulate
+	  and save your image.  You can draw pixels, lines, polygons,
+	  rectangles, arcs, and ellipses.  You can emit text styled with
+	  truetype fonts.  You can fill, manage colors, anti-alias,
+	  resize, resample, rotate, and merge images, and you can save
+	  images as JPEG, GIF, animated GIF, PNG8, PNG24, etc.
+	  </p>
+	  It's complete, solid, and fast.
 
+    <h2>Documentation</h2>
+    <p>
+	UNIX manual page as a PDF is available at
+	<a href="https://github.com/lehenbauer/tcl.gd/raw/master/doc/tclgd.pdf">
+	https://github.com/lehenbauer/tcl.gd/raw/master/doc/tclgd.pdf</a>
+	</p>
+    <h2>Code</h2>
+    <p>
+      Get it on github: <a href="http://github.com/lehenbauer/tcl.gd">http://github.com/lehenbauer/tcl.gd</a>
+    </p>
+    <h2>Support</h2>
+    <p>
+        You can sometimes find tcl.gd on IRC in the <code>#tcl</code> channel on the <a href="http://freenode.net">Freenode</a> network 
+        or you can file issues with github <a href="https://github.com/lehenbauer/tcl.gd/issues">here</a>.
+    </p>
     <h2>Download</h2>
     <p>
-      You can download this project in either
-      <a href="http://github.com/lehenbauer/tcl.gd/zipball/master">zip</a> or
-      <a href="http://github.com/lehenbauer/tcl.gd/tarball/master">tar</a> formats.
+      <ul>
+	  <li><a href="https://github.com/lehenbauer/tcl.gd/tarball/master">Latest Source as a tarball</a>
+	  <li><a href="https://github.com/lehenbauer/tcl.gd/zipball/master">Latest Source as a tarball</a>
+      <li><a href="https://github.com/lehenbauer/tcl.gd/zipball/v1.1">tcl.gd 1.1 zip</a>
+      <li><a href="https://github.com/lehenbauer/tcl.gd/tarball/v1.1">tcl.gd 1.1 tar.gz</a>
+       </ul>
     </p>
     <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
       by running:
       <pre>$ git clone git://github.com/lehenbauer/tcl.gd</pre>
     </p>
 
+    <h2>License</h2>
+
+    <pre>
+This software is copyrighted by Karl Lehenbauer, and includes modified
+sample extension code copyright Scriptics corporation, and other
+parties.  The following terms apply to all files associated with the
+software unless explicitly disclaimed in individual files.
+
+$Id: license.terms,v 1.2 2005-11-21 11:38:11 karl Exp $
+
+The author hereby grants permission to use, copy, modify, distribute,
+and license this software and its documentation for any purpose, provided
+that existing copyright notices are retained in all copies and that this
+notice is included verbatim in any distributions. No written agreement,
+license, or royalty fee is required for any of the authorized uses.
+Modifications to this software may be copyrighted by their authors
+and need not follow the licensing terms described here, provided that
+the new terms are clearly indicated on the first page of each file where
+they apply.
+
+IN NO EVENT SHALL THE AUTHORS OR DISTRIBUTORS BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE, ITS DOCUMENTATION, OR ANY
+DERIVATIVES THEREOF, EVEN IF THE AUTHORS HAVE BEEN ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+
+THE AUTHORS AND DISTRIBUTORS SPECIFICALLY DISCLAIM ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.  THIS SOFTWARE
+IS PROVIDED ON AN "AS IS" BASIS, AND THE AUTHORS AND DISTRIBUTORS HAVE
+NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
+MODIFICATIONS.
+
+GOVERNMENT USE: If you are acquiring this software on behalf of the
+U.S. government, the Government shall have only "Restricted Rights"
+in the software and related documentation as defined in the Federal
+Acquisition Regulations (FARs) in Clause 52.227.19 (c) (2).  If you
+are acquiring the software on behalf of the Department of Defense, the
+software shall be classified as "Commercial Computer Software" and the
+Government shall have only "Restricted Rights" as defined in Clause
+252.227-7013 (c) (1) of DFARs.  Notwithstanding the foregoing, the
+authors grant the U.S. Government and others acting in its behalf
+permission to use and distribute the software in accordance with the
+terms specified in this license.
+~                                         
+</pre>
+
     <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/lehenbauer/tcl.gd">lehenbauer/tcl.gd</a>
+      get the source code on GitHub : <a href="http://github.com/lehenbauer/yajl">lehenbauer/yajl</a>
     </div>
-
-  </div>
-
-  
+    
+    <div class="styleCredit footer">
+      (page style "borrowed" from
+       <a href="http://lloyd.github.com/yajl/">Lloyd Hilaiel</a>) borrowed from
+       <a href="http://kylecordes.com">Kyle Cordes</a>)
+    </div>
+    
+  </div></div>
 </body>
+
+<link type="text/css" rel="stylesheet" href="dp.SyntaxHighlighter/SyntaxHighlighter.css"></link>
+<script language="javascript" src="dp.SyntaxHighlighter/shCore.js"></script>
+<script language="javascript" src="dp.SyntaxHighlighter/shBrushCpp.js"></script>
+<script language="javascript">
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
 </html>
