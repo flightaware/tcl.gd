@@ -1,4 +1,4 @@
-.TH tclgd n 0.6 "Tcl-Extensions"
+.TH tclgd n 1.1 "Tcl-Extensions"
 .HS tclgd tcl
 .BS
 .SH NAME

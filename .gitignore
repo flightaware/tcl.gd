@@ -8,3 +8,4 @@ pkgIndex.tcl
 *.so
 *.so.*
 *.swp
+*.ps
