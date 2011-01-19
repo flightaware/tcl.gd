@@ -1,6 +1,9 @@
-
-
+#
+# configure script for building on FreeBSD where Tcl 8.5 has been built
+# and installed from the ports tree at /usr/ports/lang/tcl85
+#
 # $Id: README.FreeBSD,v 1.4 2005-11-27 04:49:50 karl Exp $
+#
 
 ./configure --with-tcl=/usr/local/lib/tcl8.5 --mandir=/usr/local/man
 

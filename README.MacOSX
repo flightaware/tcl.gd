@@ -1,6 +1,10 @@
-
-
+#
+# This configure script assumes you have built GD yourself and installed it
+# in /usr/local/.  If you build gd using macports and it's installed in
+# /opt/local instead, please adjust accordingly.  It should still work.
+#
 # $Id: README.MacOSX,v 1.1 2007-11-21 10:45:17 karl Exp $
+#
 
 ./configure --prefix=/usr/local --with-gd-include=/usr/local/include --with-gd-lib=/usr/local/lib --enable-shared --enable-symbols
 
