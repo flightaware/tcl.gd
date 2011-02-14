@@ -6,3 +6,6 @@ configure
 pkgIndex.tcl
 *.o
 *.so
+*.so.*
+*.swp
+*.ps

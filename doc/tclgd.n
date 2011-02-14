@@ -1,4 +1,4 @@
-.TH tclgd n 0.6 "Tcl-Extensions"
+.TH tclgd n 1.1 "Tcl-Extensions"
 .HS tclgd tcl
 .BS
 .SH NAME
@@ -94,11 +94,11 @@ tclgd \- modern, nearly feature-complete interface to gd-2 graphics drawing rout
 .br
 \fBobjName set_anti_aliased_dont_blend\fI color\fR
 .br
-\fBobjName set_brush\fI BROKE\fR
+\fBobjName set_brush\fI brushImageCommand\fR
 .br
-\fBobjName set_tile\fI BROKE\fR
+\fBobjName set_tile\fI tileImageCommand\fR
 .br
-\fBobjName set_style\fI BROKE\fR
+\fBobjName set_style\fI colorList\fR
 .br
 \fBobjName set_thickness\fI thickness\fR
 .br
@@ -138,7 +138,9 @@ tclgd \- modern, nearly feature-complete interface to gd-2 graphics drawing rout
 .br
 \fBobjName sharpen\fI percent\fR
 .br
-\fBobjName compare \fIsomething\fR
+\fBobjName compare \fIotherImageCommand\fR
+.br
+\fBobjName compare_ratio \fIotherImageCommand\fR
 .br
 \fBobjName square_to_circle\fI name radius\fR
 .br
@@ -298,44 +300,118 @@ the current interlace setting for the image.
 \fBobjName transparent\fI color\fR says what color index will be generated as
 transparent when the image is saved, assuming the outputted image format 
 supports it.  If \fIcolor\fR is not specified, the current color is returned.
-\fB-1\fR means transparency is disabled.
+\fB-1\fR means transparency is disabled; setting transparency to -1 disables it
+as well.
 .PP
 \fBobjName set_anti_aliased\fI color\fR
 .PP
 \fBobjName set_anti_aliased_dont_blend\fI color\fR
 .PP
-\fBobjName set_brush\fI BROKE\fR
+\fBobjName set_brush\fI brushImageCommand\fR - set the brush for brushed 
+drawing to be the image contained in the specified image command.
 .PP
-\fBobjName set_tile\fI BROKE\fR
+\fBobjName set_tile\fI tileImageCommand\fR - set the tile for tiled drawing
+to be the image contained in the specified image command.
 .PP
-\fBobjName set_style\fI BROKE\fR
+\fBobjName set_style\fI colorList\fR - set the image style for styled lines to a
+list of colors.  Each color in the list is either a color value or the
+word \fItransparent\fR
+to indicate that the existing color should be left unchanged for that 
+particular pixel, allowing lines to be drawn with dashed lines, etc, when
+the color argument to the line drawing function is specified as \fIstyled\fR.
 .PP
-\fBobjName set_thickness\fI thickness\fR
+Styles and brushes can be combined to draw the brush image at intervals
+instead of with a continuous stroke.  When creating a style list for use with
+a brush, list elements of zero indicate pixels at which the brush should not 
+be drawn and elements of one indicates pixels at which the brush should be 
+drawn.
 .PP
-\fBobjName alpha_blending\fI blending\fR
+To draw a styled, brushed line, use the special color \fIstyled_brushed\fR for
+the color argument to the \fBdraw\fR method..
 .PP
-\fBobjName save_alpha\fI boolean\fR
+\fBobjName set_thickness\fI thickness\fR - set the thickness of lines drawn
+by the line and polygon drawing functions.
 .PP
-\fBobjName get_alpha\fR
+\fBobjName alpha_blending\fI blending\fR - GD has two different modes for
+drawing on truecolor images.  In blending mode, which is on by default,
+the alpha channel component of the color supplied to each drawing function
+is used to determine how much of the underlying color should be allowed to
+shine through.  In this mode gd automatically blends the existing color at
+that point with the drawing color, storing the result in the image.  In this
+mode, the resulting pixel is opaque (alpha channel value of zero.)
+.PP
+In non-blending mode, the drawing color is copied literally with its alpha
+channel information, replacing the destination pixel with the color and
+alpha channel value.  In this mode the alpha value stored in the image is
+whatever alpha value the pixel was drawn with, hence the resulting pixel in
+the resulting image will range from opaque to translucent depending on the
+alpha channel value.
+.PP
+Blending mode is only available with truecolor images and PNG is currently the
+only file format supported by gd which can include alpha channel information.
+.PP
+\fBobjName save_alpha\fI boolean\fR - by default gd does not attempt to save
+full alpha channel information (as opposed to single-color transparency)
+when saving PNG images.  (PNG is currently the only gd-supported file format
+that can include alpha channel information.)  This saves space in the output
+file.
+.PP
+If you want to create an image with a full alpha (transparency) channel, invoke
+the \fBsave_alpha\fR method with an argument of 1 and also invoke the
+\fBalpha_blending\fR method with an argument of 0 to turn off alpa
+blending within the library, causing the alpha channel information to be stored
+in the image rather than having gd composite the image immediately when
+the drawing functions are invoked.
+.PP
+\fBobjName get_alpha\fI color\fR - returns the alpha component of the specified
+color index, 
+where 0 is completely opaque (no blending with the background) through 127
+being completely transparent (the background shines through 100%).
 .PP
 \fBobjName bounds_safe\fI x y\fR
 .PP
 \fBobjName bounds_safe\fI x y\fR
 .PP
 \fBobjName green_component\fI color\fR - returns the green component of the
-color.
+specific color index.
 .PP
 \fBobjName red_component\fI color\fR - returns the red component of the
-color.
+specified colofr index.
 .PP
 \fBobjName blue_component\fI color\fR - returns the blue component of the
-color.
+specified colofr index.
 .PP
 \fBobjName rgb_components\fI color\fR - returns the red, green and blue
 components of the color as a list.
 .PP
 \fBobjName width\fI return the width of the image, while
 \fBobjName height\fR returns the height.
+.PP
+\fBobjName compare \fIotherImageCommand\fR - given two images (the named object
+and another image command), return a list of ways in which the two images
+are different.
+.PP
+The members of the list will include zero or more of the following elements:
+\fBimage\fR, if present, indicates that the images will appear differently
+when displayed.  \fBnum_colors\fR, if present, indicates that the number of
+colors in the palettes differ, while \fBcolors\fR indicates that the colors
+differ between the two images.  \fBheight\fR, if present, indicates that the
+height of the images differ, while \fBwidth\fR, if present, indicates that
+the width of the images differs.
+.PP
+\fBtransparent\fR, if present, indicates that the transparent color differs,
+while \fBbackground\fR indicates that the background color differs.
+\fBinterlace\fR, if present, indicates that one image is interlaced while the
+other is not, and \fBtruecolor\fR, if present, indicates that one image is
+a truecolor while the other is indexed and has a palette.
+.PP
+If the list returned is empty, the images should be identical.  If \fBimage\fR
+is not present, the images will appear identically if displayed, regardless
+of other characteristics differing.  According to the libgd documentation,
+any difference in the transparent color is assumed to make images display
+differently, even if the transparent color is not used.
+.PP
+\fBobjName compare_ratio \fIotherImageCommand\fR - given two images of identical dimensions, returns the ratio of pixels that are identical between the two images, between 0.0 and 1.0.
 .PP
 \fBobjName copy\fI srcImageCommand destX destY srcX srcY width height\fR
 .PP
@@ -368,9 +444,10 @@ data.
 .PP
 \fBobjName write_png\fI channel compressionLevel\fR write the image to
 the specified channel, with the compression level of \fB-1\fR for the
-default set when gd was built, \fB0\fR to indicate no compression,
-\fB1\fR to compress quickly, all the way to \fB9\fR to select the best
-possible compression.  Likewise \fBobjName png_data\fI compressionLevel\fR
+default set when zlib was built, \fB0\fR to indicate no compression,
+\fB1\fR to compress as quickly as possible, all the way to \fB9\fR to select 
+the best possible compression.  
+Likewise \fBobjName png_data\fI compressionLevel\fR
 returns the image as binary data, with the specified compression.
 .PP
 \fBobjName write_wbmp\fI channel fgcolor\fR write the image to the specified

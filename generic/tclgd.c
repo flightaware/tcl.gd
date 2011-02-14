@@ -47,6 +47,30 @@ tclgd_cmdNameObjToIM (Tcl_Interp *interp, Tcl_Obj *commandNameObj, gdImagePtr *s
     return TCL_OK;
 }
 
+static double
+tclgd_imageCompareRatio (gdImagePtr im1, gdImagePtr im2)
+{
+    int x, y;
+    int p1, p2;
+    long matchCount = 0;
+
+    if (im1->sx != im2->sx || im1->sy != im2->sy) {
+        return -1;
+    }
+
+    for (y = 0; (y < im1->sy); y++) {
+        for (x = 0; (x < im1->sx); x++) {
+	    p1 = im1->trueColor ? gdImageTrueColorPixel (im1, x, y) : gdImagePalettePixel (im1, x, y);
+	    p2 = im2->trueColor ? gdImageTrueColorPixel (im2, x, y) : gdImagePalettePixel (im2, x, y);
+
+	    if (gdImageRed(im1, p1) == gdImageRed(im2, p2) && gdImageGreen(im1, p1) == gdImageGreen(im2, p2) && gdImageBlue(im1, p1) == gdImageBlue(im2, p2)) {
+	        matchCount++;
+	    }
+	}
+    }
+
+    return (double)(matchCount) / (double)(im1->sx * im1->sy);
+}
 
 /* tclgd_complain routines -- these get called in a lot of places after
  * integer and double-precision floating point conversion failures to
@@ -408,6 +432,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	"rgb_components",
 	"width",
 	"height",
+	"compare_ratio",
 	"copy",
 	"copy_resized",
 	"copy_resampled",
@@ -477,6 +502,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	OPT_RGB_COMPONENTS,
 	OPT_WIDTH,
 	OPT_HEIGHT,
+	OPT_COMPARE_RATIO,
 	OPT_COPY,
 	OPT_COPY_RESIZED,
 	OPT_COPY_RESAMPLED,
@@ -548,7 +574,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int x, y, color;
 
 	if ((objc < 4) || (objc > 5)) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "x y ?color?");
+	    Tcl_WrongNumArgs (interp, 2, objv, "x y ?rgbColorList?");
 	    return TCL_ERROR;
 	}
 
@@ -1344,14 +1370,65 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	return TCL_OK;
       }
 
-      case OPT_SET_BRUSH:
-	break;
+      case OPT_SET_BRUSH: {
+	gdImagePtr   brushIm;
 
-      case OPT_SET_TILE:
-	break;
+	if (objc != 2) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "brushImageCommand");
+	    return TCL_ERROR;
+	}
 
-      case OPT_STYLE:
+	if (tclgd_cmdNameObjToIM (interp, objv[2], &brushIm) == TCL_ERROR) {
+	    return TCL_ERROR;
+	}
+
+	gdImageSetBrush (im, brushIm);
 	break;
+      }
+
+      case OPT_SET_TILE: {
+	gdImagePtr   tileIm;
+
+	if (objc != 3) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "tileImageCommand");
+	    return TCL_ERROR;
+	}
+
+	if (tclgd_cmdNameObjToIM (interp, objv[2], &tileIm) == TCL_ERROR) {
+	    return TCL_ERROR;
+	}
+
+	gdImageSetBrush (im, tileIm);
+	break;
+      }
+
+      case OPT_STYLE: {
+	Tcl_Obj   **colorObjList;
+	int         nColors;
+	int         i;
+	int        *styleInts;
+
+        if (objc != 3) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "colorList");
+	    return TCL_ERROR;
+	}
+
+	if (Tcl_ListObjGetElements (interp, objv[2], &nColors, &colorObjList) == TCL_ERROR) {
+	    return TCL_ERROR;
+	}
+
+	styleInts = (int *)ckalloc (nColors * sizeof (int));
+
+	for (i = 0; i < nColors; i++) {
+	    if (tclgd_GetColor (interp, colorObjList[i], &styleInts[i]) == TCL_ERROR) {
+		return TCL_ERROR;
+	    }
+	}
+
+	gdImageSetStyle (im, styleInts, nColors);
+	ckfree ((char *)styleInts);
+	break;
+      }
 
       case OPT_SET_THICKNESS: {
 	int thickness;
@@ -1442,9 +1519,6 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	break;
       }
 
-      case OPT_GET_ALPHA:
-	break;
-
       case OPT_BOUNDS_SAFE: {
 	int x, y;
 
@@ -1465,11 +1539,28 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	break;
       }
 
+      case OPT_GET_ALPHA: {
+	int color;
+
+	if (objc != 3) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "colorIndex");
+	    return TCL_ERROR;
+	}
+
+	if (Tcl_GetIntFromObj (interp, objv[2], &color) == TCL_ERROR) {
+	   return tclgd_complainColor (interp);
+	}
+
+	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageAlpha (im, color)));
+	return TCL_OK;
+      }
+
+
       case OPT_GREEN_COMPONENT: {
 	int color;
 
 	if (objc != 3) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "color");
+	    Tcl_WrongNumArgs (interp, 2, objv, "colorIndex");
 	    return TCL_ERROR;
 	}
 
@@ -1485,7 +1576,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int color;
 
 	if (objc != 3) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "color");
+	    Tcl_WrongNumArgs (interp, 2, objv, "colorIndex");
 	    return TCL_ERROR;
 	}
 
@@ -1501,7 +1592,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int color;
 
 	if (objc != 3) {
-	    Tcl_WrongNumArgs (interp, 2, objv, "color");
+	    Tcl_WrongNumArgs (interp, 2, objv, "colorIndex");
 	    return TCL_ERROR;
 	}
 
@@ -1541,6 +1632,28 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
       case OPT_HEIGHT:
 	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageSY(im)));
 	break;
+
+      case OPT_COMPARE_RATIO: {
+	gdImagePtr   srcIm;
+	double ratio;
+
+	if (objc != 3) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "srcImageCommand");
+	    return TCL_ERROR;
+	}
+
+	if (tclgd_cmdNameObjToIM (interp, objv[2], &srcIm) == TCL_ERROR) {
+	    return TCL_ERROR;
+	}
+
+	ratio = tclgd_imageCompareRatio (im, srcIm);
+	if (ratio < 0) {
+	    Tcl_AppendResult (interp, "compare_ratio images must have identical dimensions", NULL);
+	    return TCL_ERROR;
+	}
+	Tcl_SetObjResult (interp, Tcl_NewDoubleObj (ratio));
+	break;
+      }
 
       case OPT_COPY: {
         int          destX;
@@ -1791,8 +1904,63 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	return TCL_OK;
       }
 
-      case OPT_COMPARE:
+      case OPT_COMPARE: {
+	gdImagePtr   compIm;
+	int          cmpMask;
+	Tcl_Obj     *listObj;
+
+	if (objc != 3) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "compImageCommand");
+	    return TCL_ERROR;
+	}
+
+	if (tclgd_cmdNameObjToIM (interp, objv[2], &compIm) == TCL_ERROR) {
+	    return TCL_ERROR;
+	}
+
+	cmpMask = gdImageCompare (im, compIm);
+
+	listObj = Tcl_NewObj();
+
+	if (cmpMask & GD_CMP_IMAGE) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("image", -1));
+	}
+
+	if (cmpMask & GD_CMP_NUM_COLORS) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("num_colors", -1));
+	}
+
+	if (cmpMask & GD_CMP_COLOR) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("colors", -1));
+	}
+
+	if (cmpMask & GD_CMP_SIZE_X) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("width", -1));
+	}
+
+	if (cmpMask & GD_CMP_SIZE_Y) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("height", -1));
+	}
+
+	if (cmpMask & GD_CMP_TRANSPARENT) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("transparent", -1));
+	}
+
+	if (cmpMask & GD_CMP_BACKGROUND) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("background", -1));
+	}
+
+	if (cmpMask & GD_CMP_INTERLACE) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("interlace", -1));
+	}
+
+	if (cmpMask & GD_CMP_TRUECOLOR) {
+	    Tcl_ListObjAppendElement (interp, listObj, Tcl_NewStringObj ("truecolor", -1));
+	}
+
+	Tcl_SetObjResult (interp, listObj);
 	break;
+      }
 
       case OPT_SQUARE_TO_CIRCLE: {
         int radius;
