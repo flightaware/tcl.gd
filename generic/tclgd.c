@@ -2300,7 +2300,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	gdIOCtx     *outctx;
 	int          chunkSize;
 	int          formatIndex;
-	int          format;
+	int          format = 0;
 
 	static CONST char *formatOptions[] = {
 	    "compressed",
@@ -2345,7 +2345,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 #if 0
 	gdImageGd2Ctx (im, outctx, chunkSize, format);
 #else
-	Tcl_AppendResult (interp, "gdImageGd2Ctx is documented but doesn'ta ctually exist", NULL);
+	Tcl_AppendResult (interp, "gdImageGd2Ctx is documented but doesn't actually exist", NULL);
 	return TCL_ERROR;
 
 #endif
