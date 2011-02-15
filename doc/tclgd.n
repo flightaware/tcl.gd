@@ -4,7 +4,7 @@
 .SH NAME
 tclgd \- modern, nearly feature-complete interface to gd-2 graphics drawing routines
 .SH SYNOPSIS
-\fBpackage require gdtcl\fR
+\fBpackage require tclgd\fR
 .PP
 \fBGD create\fI objName width height\fR
 .br
