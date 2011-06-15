@@ -280,17 +280,39 @@ to draw the specified color, but it's not really an index per se.
 \fBobjName closest_color\fI r g b ?alpha?\fR returns the closest color index
 that can be found among the currently allocated colors.
 .PP
-\fBobjName closest_color_hwb\fI r g b\fR
+\fBobjName closest_color_hwb\fI r g b\fR returns the closest color
+based on hue, whiteness and blackness and is superior to \fBclosest_color\fR.
 .PP
-\fBobjName exact_color\fI r g b ?alpha?\fR
+\fBobjName exact_color\fI r g b ?alpha?\fR searches the colors which have
+been defined thus far in the specified image and returns the index of the
+first color with RGB values which exactly match those of the request.
 .PP
-\fBobjName resolve_color\fI r g b ?alpha?\fR
+If no allocated color matches the request precisely, -1 is returned.
 .PP
-\fBobjName total_colors\fR
+\fBobjName resolve_color\fI r g b ?alpha?\fR searches the colors which have
+been defined thus far in the specified image object and returns the index of 
+the first color with RGB values which exactly match those of the request.
+If no allocated color matches the request precisely, it tries to allocate the 
+exact color.  If there is no space left in the color table then it
+returns the index of the closest color.
 .PP
-\fBobjName deallocate_color\fI color\fR
+If applied to a truecolor image, this method always succeeds in returning the
+requested color.  If the \fIalpha\fR argument is specified, then the
+index of the first color with matching RGBA values is returned, etc, as
+above.
 .PP
-\fBobjName true_color\fI r g b ?alpha?\fR
+\fBobjName total_colors\fR returns the number of colors currently allocated
+in a palette image.
+.PP
+\fBobjName deallocate_color\fI color\fR marks the specified color as being
+available for reuse.
+.PP
+\fBobjName true_color\fI r g b ?alpha?\fR returns an RGB or RGBA color value
+for use when drawing on a truecolor image.  If \fIalpha\fR is specified then
+alpha channel transarency is used.
+.PP
+Red, green and blue are all in the range between 0, off, and 255, maximum.
+Alpha ranges between 0, opaque, and 127 (fully transparent).
 .PP
 \fBobjName interlace\fI ?boolean?\fR if set to 1, t, etc, causes the image
 to be saved interlaced if the output format supports it, if 0, f, etc, causes
@@ -303,9 +325,22 @@ supports it.  If \fIcolor\fR is not specified, the current color is returned.
 \fB-1\fR means transparency is disabled; setting transparency to -1 disables it
 as well.
 .PP
-\fBobjName set_anti_aliased\fI color\fR
+\fBobjName set_anti_aliased\fI color\fR is used to specify the foreground
+color to be used when drawing antialiased lines.
 .PP
-\fBobjName set_anti_aliased_dont_blend\fI color\fR
+Antialiased lines can be drawn on both truecolor and palette-based images.
+However, attempts to draw antialiased lines on highly complex palette-based
+backgrounds may not give satisfactory results due to the limited number of
+colors available in the palette.  Antialiased line-drawing on simple
+backgrounds should work well with palette-based images.  Otherwise, please
+use a truecolor image instead.
+.PP
+\fBobjName set_anti_aliased_dont_blend\fI color\fR - Normally when drawing
+lines with the special antialiased color, blending colors with the background
+to reduce jagged edges is the desired behavior.  Sometimes, though, one
+desires that lines not be blended with one particular color when it is 
+encountered int he background, this method can be used to indicate the
+special color that the foreground sould stand out more clearly against.
 .PP
 \fBobjName set_brush\fI brushImageCommand\fR - set the brush for brushed 
 drawing to be the image contained in the specified image command.
@@ -368,9 +403,8 @@ color index,
 where 0 is completely opaque (no blending with the background) through 127
 being completely transparent (the background shines through 100%).
 .PP
-\fBobjName bounds_safe\fI x y\fR
-.PP
-\fBobjName bounds_safe\fI x y\fR
+\fBobjName bounds_safe\fI x y\fR returns true (1) if the specified point is
+within the current clipping rectangle, and false (0) if not.  
 .PP
 \fBobjName green_component\fI color\fR - returns the green component of the
 specific color index.
@@ -413,23 +447,34 @@ differently, even if the transparent color is not used.
 .PP
 \fBobjName compare_ratio \fIotherImageCommand\fR - given two images of identical dimensions, returns the ratio of pixels that are identical between the two images, between 0.0 and 1.0.
 .PP
-\fBobjName copy\fI srcImageCommand destX destY srcX srcY width height\fR
+\fBobjName copy\fI srcImageCommand destX destY srcX srcY width height\fR - copy 
+a rectangular portion of one image to another image.  If you want to stretch or shrink the image in the process, use \fBcopy_resized\fR or \fBcopy_resampled\fR.
 .PP
-\fBobjName copy_resized\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR
+\fBobjName copy_resized\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR - used to copy a rectangular portion of one image to another image.  The X and Y dimensions of the source and destination regions can vary, resulting in stretching or shrinking of the region as appropriate.
 .PP
-\fBobjName copy_resampled\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR
+\fBobjName copy_resampled\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR - This command provides "smooth" copying from
+a large image to a smaller one using a weighted average of the pixels of
+the source area rather than selecting one representative pixel.
 .PP
 \fBobjName copy_rotated\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight angle\fR
 .PP
-\fBobjName copy_merge\fI srcImageCommand destX destY srcX srcY width height percent\fR
+\fBobjName copy_merge\fI srcImageCommand destX destY srcX srcY width height percent\fR - merge two images by the specified percentage.  If the percentage is 100 then it will function the same as the \fBcopy\fR method.
 .PP
 \fBobjName copy_merge_grey\fI srcImageCommand destX destY srcX srcY width height percent\fR
 .PP
-\fBobjName copy_palette\fI srcImageCommand\fR
+\fBobjName copy_palette\fI srcImageCommand\fR - copies a palette from one 
+image to another, attempting to match the colors in the target image to
+the colors in the source palette.
 .PP
-\fBobjName sharpen\fI percent\fR
+\fBobjName sharpen\fI percent\fR - sharpen the specified image.  Argument
+is the sharpening percentage and can be greater than 100.  Silently does
+nothing to non-truecolor images.  Silently does nothing for 0 percent.
+Transparency and alpha channel are not altered.
 .PP
-\fBobjName square_to_circle\fI name radius\fR
+\fBobjName square_to_circle\fI name radius\fR - creates a new image of
+the width and height radius * 2, in which the X axis of the original has
+been remapped to rho, the distance from the center.  This is known as
+a polar coordinate transform.  The source image must be square.
 .PP
 .SH IMAGE OUTPUT ROUTINES
 \fBobjName write_jpeg\fI channel quality\fR writes the image in JPEG format,
