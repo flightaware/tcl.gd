@@ -1,5 +1,12 @@
 ChangeLog for tcl.gd
 ====================
+2011-10-26 karl
+    * Correct "rectangle" method to create a non-filled rectangle.  (We were
+      incorrectly calling gdImageFilledRectangle instead of gdImageRectangle.)
+
+2011-06-15 karl
+    * Expand docs.
+
 2011-01-18 karl
     * Version bump to 1.1.  Tagging 1.1 for release.
 

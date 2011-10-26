@@ -757,7 +757,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    return TCL_ERROR;
 	}
 
-	gdImageFilledRectangle (im, x1, y1, x2, y2, color);
+	gdImageRectangle (im, x1, y1, x2, y2, color);
 	break;
       }
 
