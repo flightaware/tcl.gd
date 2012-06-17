@@ -2010,7 +2010,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImageJpegCtx (im, outctx, quality);
-	gdFree (outctx);
+	outctx->gd_free (outctx);
 	break;
       }
 
@@ -2055,7 +2055,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImageGifCtx (im, outctx);
-	gdFree (outctx);
+	outctx->gd_free (outctx);
 	break;
       }
 
@@ -2096,7 +2096,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImageGifAnimBeginCtx (im, outctx, globalCM, loops);
-	gdFree (outctx);
+	outctx->gd_free (outctx);
 	break;
       }
 
@@ -2145,7 +2145,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImageGifAnimAddCtx (im, outctx, localCM, leftOffset, topOffset, delay, disposal, previousIm);
-	gdFree (outctx);
+	outctx->gd_free (outctx);
 	break;
       }
 
@@ -2162,7 +2162,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImageGifAnimEndCtx (outctx);
-	gdFree (outctx);
+	outctx->gd_free (outctx);
 	break;
       }
 #endif /* GD_GIF */
@@ -2195,7 +2195,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImagePngCtxEx (im, outctx, compression);
-	gdFree (outctx);
+	outctx->gd_free (outctx);
 	break;
       }
 
@@ -2242,7 +2242,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	}
 
 	gdImageWBMPCtx (im, fgcolor, outctx);
-	gdFree (outctx);
+	outctx->gd_free (outctx);
 	return TCL_OK;
       }
 
@@ -2349,7 +2349,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	return TCL_ERROR;
 
 #endif
-	gdFree (outctx);
+	outctx->gd_free (outctx);
 	break;
       }
 
@@ -2940,7 +2940,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
      * if inctx was allocated, we need to free it
      */
     if (inctx == NULL) {
-	gdFree (inctx);
+    inctx->gd_free (inctx);
     }
 
     /*
