@@ -163,12 +163,12 @@ tclgd_channelNameToIOCtx (Tcl_Interp *interp, char *channelName, int modeFlag)
 	return NULL;
     }
 
-    outctx = tclgd_newChannelCtx (channel);
-
     if (!(mode & modeFlag)) {
 	Tcl_AppendResult (interp, "channel '", channelName, "' not open for ", ((modeFlag & TCL_WRITABLE) ? "writing" : "reading"), NULL);
 	return NULL;
     }
+
+    outctx = tclgd_newChannelCtx (channel);
 
     return outctx;
 }
