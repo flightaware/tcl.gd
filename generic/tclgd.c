@@ -2273,7 +2273,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[2]), 1, 1, (ClientData *)&file) == TCL_ERROR) {
+	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[2]), 1, 1, (ClientData *)(void*)&file) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
@@ -2891,7 +2891,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	    return TCL_ERROR;
 	}
 
-	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[3]), 1, 1, (ClientData *)&file) == TCL_ERROR) {
+	if (Tcl_GetOpenFile (interp, Tcl_GetString(objv[3]), 1, 1, (ClientData *)(void*)&file) == TCL_ERROR) {
 	    return TCL_ERROR;
 	}
 
