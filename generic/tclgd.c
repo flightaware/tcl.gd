@@ -2939,7 +2939,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
      *
      * if inctx was allocated, we need to free it
      */
-    if (inctx == NULL) {
+    if (inctx != NULL) {
     inctx->gd_free (inctx);
     }
 
