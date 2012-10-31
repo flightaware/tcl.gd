@@ -1,5 +1,15 @@
 ChangeLog for tcl.gd
 ====================
+2012-10-31 karl
+    * Use interpreter-associated data for the next object number for
+      GD objects created with a name of "#auto" rather than a global.
+
+      Although this should not have caused any problems with multiple
+      threads using tclgd simultaneously, better safe than sorry.
+
+    * New function, tclgd_imageRewriteColor, rewrites one color to another
+      for indexed and truecolor images.  Not used yet.
+
 2012-06-17 bovine
     * Fix possible memory leak in tclgd_channelNameToIOCtx
 

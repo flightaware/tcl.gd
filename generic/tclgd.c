@@ -72,6 +72,42 @@ tclgd_imageCompareRatio (gdImagePtr im1, gdImagePtr im2)
     return (double)(matchCount) / (double)(im1->sx * im1->sy);
 }
 
+
+/*
+ *----------------------------------------------------------------------
+ *
+ * tclgd_imageRewriteColor --
+ *
+ *    Given a GD image pointer, an original true color and a new 
+ *    true color, changes all occurrences of the original color
+ *    to the new color.
+ *
+ *    Works for both true color and indexed images.
+ *
+ *    Would be crazily more efficient to just change the color
+ *    index if an indexed image.
+ *
+ * Results:
+ *    None.
+ *
+ *----------------------------------------------------------------------
+ */
+static void 
+tclgd_imageRewriteColor (gdImagePtr im, int origColor, int destColor)
+{
+    int x, y;
+    int pixelColor;
+
+    for (y = 0; (y < im->sy); y++) {
+        for (x = 0; (x < im->sx); x++) {
+	    pixelColor = im->trueColor ? gdImageTrueColorPixel (im, x, y) : gdImagePalettePixel (im, x, y);
+	    if (pixelColor == origColor) {
+		gdImageSetPixel (im, x, y, destColor);
+	    }
+	}
+    }
+}
+
 /* tclgd_complain routines -- these get called in a lot of places after
  * integer and double-precision floating point conversion failures to
  * help the user understand which function argument contained bad
@@ -2435,10 +2471,11 @@ tclgd_newGDObject (Tcl_Interp *interp, Tcl_Obj *nameObj, gdImagePtr im, int dest
     tclgdClientData->im = im;
     tclgdClientData->destroyOnDelete = destroyOnDelete;
 
-    static unsigned long nextObjNumber = 0;
-
     /* if new name is "#auto", generate a unique object name */
     if (strcmp (newName, "#auto") == 0) {
+	/* if Tcl_GetAssocData fails it returns NULL, we'll take that as a zero */
+        unsigned long nextObjNumber = (unsigned long)Tcl_GetAssocData (interp, "tcl.gd", NULL);
+
 	while (1) {
 	    Tcl_CmdInfo dummy;
 
@@ -2448,12 +2485,14 @@ tclgd_newGDObject (Tcl_Interp *interp, Tcl_Obj *nameObj, gdImagePtr im, int dest
 	     */
 	    if (Tcl_GetCommandInfo (interp, autoObjName, &dummy) == 0) {
 		newName = autoObjName;
+		Tcl_SetAssocData (interp, "tcl.gd", NULL, (ClientData) nextObjNumber);
 		break;
 	    }
 	}
     }
 
     Tcl_CreateObjCommand (interp, newName, tclgd_gdObjectObjCmd, tclgdClientData, tclgd_GDdeleteProc);
+
     Tcl_SetObjResult (interp, Tcl_NewStringObj (newName, -1));
     return TCL_OK;
 }
