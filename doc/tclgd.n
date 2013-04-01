@@ -42,137 +42,139 @@ tclgd \- modern, nearly feature-complete interface to gd-2 graphics drawing rout
 .br
 \fBGD create_from_xpm\fI objName fileHandle\fR
 .PP
-\fBobjName pixel\fI x y ?color?\fR
+\fIobjName \fBpixel\fI x y ?color?\fR
 .br
-\fBobjName pixelrgb\fI x y ?color?\fR
+\fIobjName \fBpixelrgb\fI x y ?color?\fR
 .br
-\fBobjName line\fI x1 y1 x2 y2 color\fR
+\fIobjName \fBline\fI x1 y1 x2 y2 color\fR
 .br
-\fBobjName polygon\fI ?filled|open? pointList color\fR
+\fIobjName \fBpolygon\fI ?filled|open? pointList color\fR
 .br
-\fBobjName rectangle\fI x1 y1 x2 y2 color\fR
+\fIobjName \fBrectangle\fI x1 y1 x2 y2 color\fR
 .br
-\fBobjName filled_rectangle\fI x1 y1 x2 y2 color\fR
+\fIobjName \fBfilled_rectangle\fI x1 y1 x2 y2 color\fR
 .br
-\fBobjName arc\fI cx cy width height startDegrees endDegrees color\fR
+\fIobjName \fBarc\fI cx cy width height startDegrees endDegrees color\fR
 .br
-\fBobjName filled_arc\fI cx cy width height startDegrees endDegrees color ?arc? ?chord? ?pie? ?nofill? ?edged?\fR
+\fIobjName \fBfilled_arc\fI cx cy width height startDegrees endDegrees color ?arc? ?chord? ?pie? ?nofill? ?edged?\fR
 .br
-\fBobjName filled_ellipse\fI cx cy width height color\fR
+\fIobjName \fBfilled_ellipse\fI cx cy width height color\fR
 .br
-\fBobjName fill_to_border\fI x y borderColor color\fR
+\fIobjName \fBfill_to_border\fI x y borderColor color\fR
 .br
-\fBobjName fill\fI x y color\fR
+\fIobjName \fBfill\fI x y color\fR
 .br
-\fBobjName fill\fI x y color\fR
+\fIobjName \fBtext\fI color font pointSize angle x y text\fR
 .br
-\fBobjName text\fI color font pointSize angle x y text\fR
+\fIobjName \fBtext_bounds\fI color font pointSize angle x y text\fR
 .br
-\fBobjName text_bounds\fI color font pointSize angle x y text\fR
+\fIobjName \fBallocate_color\fI r g b ?alpha?\fR
 .br
-\fBobjName allocate_color\fI r g b ?alpha?\fR
+\fIobjName \fBclosest_color\fI r g b ?alpha?\fR
 .br
-\fBobjName closest_color\fI r g b ?alpha?\fR
+\fIobjName \fBclosest_color_hwb\fI r g b\fR
 .br
-\fBobjName closest_color_hwb\fI r g b\fR
+\fIobjName \fBexact_color\fI r g b ?alpha?\fR
 .br
-\fBobjName exact_color\fI r g b ?alpha?\fR
+\fIobjName \fBresolve_color\fI r g b ?alpha?\fR
 .br
-\fBobjName resolve_color\fI r g b ?alpha?\fR
+\fIobjName \fBtotal_colors\fR
 .br
-\fBobjName total_colors\fR
+\fIobjName \fBdeallocate_color\fI color\fR
 .br
-\fBobjName deallocate_color\fI color\fR
+\fIobjName \fBtrue_color\fI r g b ?alpha?\fR
 .br
-\fBobjName true_color\fI r g b ?alpha?\fR
+\fIobjName \fBinterlace\fI ?boolean?\fR
 .br
-\fBobjName interlace\fI ?boolean?\fR
+\fIobjName \fBtransparent\fI ?color?\fR
 .br
-\fBobjName transparent\fI ?color?\fR
+\fIobjName \fBset_anti_aliased\fI color\fR
 .br
-\fBobjName set_anti_aliased\fI color\fR
+\fIobjName \fBset_anti_aliased_dont_blend\fI color\fR
 .br
-\fBobjName set_anti_aliased_dont_blend\fI color\fR
+\fIobjName \fBset_brush\fI brushImageCommand\fR
 .br
-\fBobjName set_brush\fI brushImageCommand\fR
+\fIobjName \fBset_tile\fI tileImageCommand\fR
 .br
-\fBobjName set_tile\fI tileImageCommand\fR
+\fIobjName \fBset_style\fI colorList\fR
 .br
-\fBobjName set_style\fI colorList\fR
+\fIobjName \fBset_thickness\fI thickness\fR
 .br
-\fBobjName set_thickness\fI thickness\fR
+\fIobjName \fBalpha_blending\fI blending\fR
 .br
-\fBobjName alpha_blending\fI blending\fR
+\fIobjName \fBsave_alpha\fI boolean\fR
 .br
-\fBobjName save_alpha\fI boolean\fR
+\fIobjName \fBget_alpha colorIndex\fR
 .br
-\fBobjName get_alpha\fR
+\fIobjName \fBclip \fI?x1 y1 x2 y2?\fR
 .br
-\fBobjName bounds_safe\fI x y\fR
+\fIobjName \fBbounds_safe\fI x y\fR
 .br
-\fBobjName green_component\fI color\fR
+\fIobjName \fBgreen_component\fI color\fR
 .br
-\fBobjName red_component\fI color\fR
+\fIobjName \fBred_component\fI color\fR
 .br
-\fBobjName blue_component\fI color\fR
+\fIobjName \fBblue_component\fI color\fR
 .br
-\fBobjName rgb_components\fI color\fR
+\fIobjName \fBrgb_components\fI color\fR
 .br
-\fBobjName width\fR
+\fIobjName \fBwidth\fR
 .br
-\fBobjName height\fR
+\fIobjName \fBheight\fR
 .br
-\fBobjName copy\fI srcImageCommand destX destY srcX srcY width height\fR
+\fIobjName \fBcopy\fI srcImageCommand destX destY srcX srcY width height\fR
 .br
-\fBobjName copy_resized\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR
+\fIobjName \fBcopy_resized\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR
 .br
-\fBobjName copy_resampled\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR
+\fIobjName \fBcopy_resampled\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR
 .br
-\fBobjName copy_rotated\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight angle\fR
+\fIobjName \fBcopy_rotated\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight angle\fR
 .br
-\fBobjName copy_merge\fI srcImageCommand destX destY srcX srcY width height percent\fR
+\fIobjName \fBcopy_merge\fI srcImageCommand destX destY srcX srcY width height percent\fR
 .br
-\fBobjName copy_merge_grey\fI srcImageCommand destX destY srcX srcY width height percent\fR
+\fIobjName \fBcopy_merge_grey\fI srcImageCommand destX destY srcX srcY width height percent\fR
 .br
-\fBobjName copy_palette\fI srcImageCommand\fR
+\fIobjName \fBcopy_palette\fI srcImageCommand\fR
 .br
-\fBobjName sharpen\fI percent\fR
+\fIobjName \fBsharpen\fI percent\fR
 .br
-\fBobjName compare \fIotherImageCommand\fR
+\fIobjName \fBcompare \fIotherImageCommand\fR
 .br
-\fBobjName compare_ratio \fIotherImageCommand\fR
+\fIobjName \fBcompare_ratio \fIotherImageCommand\fR
 .br
-\fBobjName square_to_circle\fI name radius\fR
+\fIobjName \fBsquare_to_circle\fI name radius\fR
 .br
-\fBobjName write_jpeg\fI channel quality\fR
+\fIobjName \fBrewrite_color\fI oldColor newColor\fR
 .br
-\fBobjName jpeg_data\fI quality\fR
+\fIobjName \fBwrite_jpeg\fI channel quality\fR
 .br
-\fBobjName write_gif\fI channel\fR
+\fIobjName \fBjpeg_data\fI quality\fR
 .br
-\fBobjName gif_data\fR
+\fIobjName \fBwrite_gif\fI channel\fR
 .br
-\fBobjName gif_anim_begin\fI channel global_color_map loops\fR
+\fIobjName \fBgif_data\fR
 .br
-\fBobjName gif_anim_add \fIchannel local_color_map left_offset top_offset delay disposal ?previous_image?\fR
+\fIobjName \fBgif_anim_begin\fI channel global_color_map loops\fR
 .br
-\fBobjName gif_anim_end \fIchannel\fR
+\fIobjName \fBgif_anim_add \fIchannel local_color_map left_offset top_offset delay disposal ?previous_image?\fR
 .br
-\fBobjName write_png\fI channel compressionLevel\fR
+\fIobjName \fBgif_anim_end \fIchannel\fR
 .br
-\fBobjName png_data\fI compressionLevel\fR
+\fIobjName \fBwrite_png\fI channel compressionLevel\fR
 .br
-\fBobjName write_wbmp\fI channel fgcolor\fR
+\fIobjName \fBpng_data\fI compressionLevel\fR
 .br
-\fBobjName wbmp_data\fI fgcolor\fR
+\fIobjName \fBwrite_wbmp\fI channel fgcolor\fR
 .br
-\fBobjName write_gd\fI fileHandle\fR
+\fIobjName \fBwbmp_data\fI fgcolor\fR
 .br
-\fBobjName gd_data\fR
+\fIobjName \fBwrite_gd\fI fileHandle\fR
 .br
-\fBobjName write_gd2\fI channel chunkSize format\fR
+\fIobjName \fBgd_data\fR
 .br
-\fBobjName gd2_data\fI chunkSize format\fR
+\fIobjName \fBwrite_gd2\fI channel chunkSize format\fR
+.br
+\fIobjName \fBgd2_data\fI chunkSize format\fR
 .br
 .SH DESCRIPTION
 tclgd gives Tcl programs the ability to read, manipulate, and generate
@@ -189,9 +191,10 @@ IMPORTANT: The channel being read should be configured for binary translation
 using something like
 .nf
     set fp [open parrots.png]
-    fconfigure $fp -translation binary
+    fconfigure $fp -translation binary -encoding binary
     GD create_from_png parrots $fp
-.fo
+.ad
+.PP
 If you get corrupt image errors on images that you feel pretty sure are OK, 
 like you can load them into Photoshop, you probably are not setting
 translation to binary.
@@ -199,10 +202,6 @@ translation to binary.
 For formats where channels are support (the majority), any type of channel
 can be used, including files, sockets, and, if so equipped, alternate
 channel interfaces such as reading the data directly from zip files.
-.PP
-Tweezer gives Tcl programs the ability to examine and manipulate the
-state of Tcl objects, the core building blocks of Tcl in versions 8
-and above.
 .PP
 Once an image has been created or loaded, it can be manipulated via the
 named object, or if the object name is \fB#auto\fR, a unique command name
@@ -216,80 +215,80 @@ reference to that variable, in the same manner as Incr Tcl.
 .PP
 .SH DRAWING FUNCTIONS
 .PP
-\fBobjName pixel \fIx y\fR returns the color index of the pixel located at
-coordinates x and y, while \fBobjName pixel \fIx y color\fR sets that pixel
+\fIobjName \fBpixel \fIx y\fR returns the color index of the pixel located at
+coordinates x and y, while \fIobjName \fBpixel \fIx y color\fR sets that pixel
 location to the specified color index.
 .PP
-\fBobjName pixelrgb \fIx y\fR returns a list containing the red, green
+\fIobjName \fBpixelrgb \fIx y\fR returns a list containing the red, green
 and blue values of the pixel located at
-coordinates x and y, while \fBobjName pixelrgb \fIx y color\fR sets that pixel
+coordinates x and y, while \fIobjName \fBpixelrgb \fIx y color\fR sets that pixel
 location to the specified color index.  For setting, use \fBpixel\fR
 instead as how or whether \fBpixelrgb\fR will set colors is likely to change.
 .PP
-\fBobjName line\fI x1 y1 x2 y2 color\fR draws a line from the coordinates
+\fIobjName \fBline\fI x1 y1 x2 y2 color\fR draws a line from the coordinates
 \fIx1, y1\fR to \fIx2, y2\fR using color \fIcolor\fR.  If thickness is set
 to 1 and antialiasing is enabled, the line will be drawn antialiased.
 .PP
-\fBobjName polygon\fI ?filled|open? pointList color\fR draws a polygon
+\fIobjName \fBpolygon\fI ?filled|open? pointList color\fR draws a polygon
 of color \fIcolor\fR using points from the point list \fIpointList\fR
 which must contain an even number of xy pairs.
 .PP
-\fBobjName rectangle\fI x1 y1 x2 y2 color\fR draws a rectangle of the given
+\fIobjName \fBrectangle\fI x1 y1 x2 y2 color\fR draws a rectangle of the given
 color from the corner at x1, y2 to the corner at x2, y2.
 .PP
-\fBobjName filled_rectangle\fI x1 y1 x2 y2 color\fR same as rectangle except
+\fIobjName \fBfilled_rectangle\fI x1 y1 x2 y2 color\fR same as rectangle except
 the rectangle is filled.
 .PP
-\fBobjName arc\fI cx cy width height startDegrees endDegrees color\fR draws
+\fIobjName \fBarc\fI cx cy width height startDegrees endDegrees color\fR draws
 an arc centered on cx, cy, of the specified width and heigtht, starting
 and ending at the specified degrees, and using the specified color.
 .PP
-\fBobjName filled_arc\fI cx cy width height startDegrees endDegrees color ?arc? ?chord? ?pie? ?nofill? ?edged?\fR draws
+\fIobjName \fBfilled_arc\fI cx cy width height startDegrees endDegrees color ?arc? ?chord? ?pie? ?nofill? ?edged?\fR draws
 an arc centered on cx, cy, of the specified width and heigtht, starting
 and ending at the specified degrees, and using the specified color.  Additional
 options can be specified and are logically or'ed together,
 \fBchord\fR, \fBpie\fR, \fBnofill\fR and/or \fBedged\fR.
 .PP
-\fBobjName filled_ellipse\fI cx cy width height color\fR draws a filled
+\fIobjName \fBfilled_ellipse\fI cx cy width height color\fR draws a filled
 ellipse centered at cx, cy, of the given width, height and color.
 .PP
-\fBobjName fill_to_border\fI x y borderColor color\fR fills to the border
+\fIobjName \fBfill_to_border\fI x y borderColor color\fR fills to the border
 matching the specified borderColor, starting at x, y, using the specified
 color.
 .PP
-\fBobjName fill\fI x y color\fR does a flood fill starting at x, y using
+\fIobjName \fBfill\fI x y color\fR does a flood fill starting at x, y using
 the specified color.
 .PP
-\fBobjName text\fI color font pointSize angle x y text\fR renders text
+\fIobjName \fBtext\fI color font pointSize angle x y text\fR renders text
 using the specified font and point size, at the specified angle, starting
 at x, y.
 \fBFont\fR is the full or relative pathname to a TrueType font 
 file (.ttf or .ttc file).  (\fBTclgd\fR does not support GD's optionally
 built-in, non-antialiased, non-TrueType fonts.)
 .PP
-\fBobjName text_bounds\fI color font pointSize angle x y text\fRdetermines the
+\fIobjName \fBtext_bounds\fI color font pointSize angle x y text\fRdetermines the
 bounds of text given the specified font and point size, at the specified angle,
 starting at x, y.  The bounds are returned as an 8-element list giving the
 x and y coordinates of the four corners of a box the text will be within.
 .PP
-\fBobjName allocate_color\fI r g b ?alpha?\fR allocates a color given the
+\fIobjName \fBallocate_color\fI r g b ?alpha?\fR allocates a color given the
 specified red, green and blue values, and optional alpha value, and returns
 the color index.  For truecolor images it returns a value that can be used
 to draw the specified color, but it's not really an index per se.
 .PP
-\fBobjName closest_color\fI r g b ?alpha?\fR returns the closest color index
+\fIobjName \fBclosest_color\fI r g b ?alpha?\fR returns the closest color index
 that can be found among the currently allocated colors.
 .PP
-\fBobjName closest_color_hwb\fI r g b\fR returns the closest color
+\fIobjName \fBclosest_color_hwb\fI r g b\fR returns the closest color
 based on hue, whiteness and blackness and is superior to \fBclosest_color\fR.
 .PP
-\fBobjName exact_color\fI r g b ?alpha?\fR searches the colors which have
+\fIobjName \fBexact_color\fI r g b ?alpha?\fR searches the colors which have
 been defined thus far in the specified image and returns the index of the
 first color with RGB values which exactly match those of the request.
 .PP
 If no allocated color matches the request precisely, -1 is returned.
 .PP
-\fBobjName resolve_color\fI r g b ?alpha?\fR searches the colors which have
+\fIobjName \fBresolve_color\fI r g b ?alpha?\fR searches the colors which have
 been defined thus far in the specified image object and returns the index of 
 the first color with RGB values which exactly match those of the request.
 If no allocated color matches the request precisely, it tries to allocate the 
@@ -301,31 +300,31 @@ requested color.  If the \fIalpha\fR argument is specified, then the
 index of the first color with matching RGBA values is returned, etc, as
 above.
 .PP
-\fBobjName total_colors\fR returns the number of colors currently allocated
+\fIobjName \fBtotal_colors\fR returns the number of colors currently allocated
 in a palette image.
 .PP
-\fBobjName deallocate_color\fI color\fR marks the specified color as being
+\fIobjName \fBdeallocate_color\fI color\fR marks the specified color as being
 available for reuse.
 .PP
-\fBobjName true_color\fI r g b ?alpha?\fR returns an RGB or RGBA color value
+\fIobjName \fBtrue_color\fI r g b ?alpha?\fR returns an RGB or RGBA color value
 for use when drawing on a truecolor image.  If \fIalpha\fR is specified then
 alpha channel transarency is used.
 .PP
 Red, green and blue are all in the range between 0, off, and 255, maximum.
 Alpha ranges between 0, opaque, and 127 (fully transparent).
 .PP
-\fBobjName interlace\fI ?boolean?\fR if set to 1, t, etc, causes the image
+\fIobjName \fBinterlace\fI ?boolean?\fR if set to 1, t, etc, causes the image
 to be saved interlaced if the output format supports it, if 0, f, etc, causes
 the image to be saved noninterlaced.  If boolean isn't specified, returns
 the current interlace setting for the image.
 .PP
-\fBobjName transparent\fI color\fR says what color index will be generated as
+\fIobjName \fBtransparent\fI color\fR says what color index will be generated as
 transparent when the image is saved, assuming the outputted image format 
 supports it.  If \fIcolor\fR is not specified, the current color is returned.
 \fB-1\fR means transparency is disabled; setting transparency to -1 disables it
 as well.
 .PP
-\fBobjName set_anti_aliased\fI color\fR is used to specify the foreground
+\fIobjName \fBset_anti_aliased\fI color\fR is used to specify the foreground
 color to be used when drawing antialiased lines.
 .PP
 Antialiased lines can be drawn on both truecolor and palette-based images.
@@ -335,20 +334,20 @@ colors available in the palette.  Antialiased line-drawing on simple
 backgrounds should work well with palette-based images.  Otherwise, please
 use a truecolor image instead.
 .PP
-\fBobjName set_anti_aliased_dont_blend\fI color\fR - Normally when drawing
+\fIobjName \fBset_anti_aliased_dont_blend\fI color\fR - Normally when drawing
 lines with the special antialiased color, blending colors with the background
 to reduce jagged edges is the desired behavior.  Sometimes, though, one
 desires that lines not be blended with one particular color when it is 
 encountered int he background, this method can be used to indicate the
 special color that the foreground sould stand out more clearly against.
 .PP
-\fBobjName set_brush\fI brushImageCommand\fR - set the brush for brushed 
+\fIobjName \fBset_brush\fI brushImageCommand\fR - set the brush for brushed 
 drawing to be the image contained in the specified image command.
 .PP
-\fBobjName set_tile\fI tileImageCommand\fR - set the tile for tiled drawing
+\fIobjName \fBset_tile\fI tileImageCommand\fR - set the tile for tiled drawing
 to be the image contained in the specified image command.
 .PP
-\fBobjName set_style\fI colorList\fR - set the image style for styled lines to a
+\fIobjName \fBset_style\fI colorList\fR - set the image style for styled lines to a
 list of colors.  Each color in the list is either a color value or the
 word \fItransparent\fR
 to indicate that the existing color should be left unchanged for that 
@@ -364,10 +363,10 @@ drawn.
 To draw a styled, brushed line, use the special color \fIstyled_brushed\fR for
 the color argument to the \fBdraw\fR method..
 .PP
-\fBobjName set_thickness\fI thickness\fR - set the thickness of lines drawn
+\fIobjName \fBset_thickness\fI thickness\fR - set the thickness of lines drawn
 by the line and polygon drawing functions.
 .PP
-\fBobjName alpha_blending\fI blending\fR - GD has two different modes for
+\fIobjName \fBalpha_blending\fI blending\fR - GD has two different modes for
 drawing on truecolor images.  In blending mode, which is on by default,
 the alpha channel component of the color supplied to each drawing function
 is used to determine how much of the underlying color should be allowed to
@@ -385,7 +384,7 @@ alpha channel value.
 Blending mode is only available with truecolor images and PNG is currently the
 only file format supported by gd which can include alpha channel information.
 .PP
-\fBobjName save_alpha\fI boolean\fR - by default gd does not attempt to save
+\fIobjName \fBsave_alpha\fI boolean\fR - by default gd does not attempt to save
 full alpha channel information (as opposed to single-color transparency)
 when saving PNG images.  (PNG is currently the only gd-supported file format
 that can include alpha channel information.)  This saves space in the output
@@ -398,30 +397,32 @@ blending within the library, causing the alpha channel information to be stored
 in the image rather than having gd composite the image immediately when
 the drawing functions are invoked.
 .PP
-\fBobjName get_alpha\fI color\fR - returns the alpha component of the specified
+\fIobjName \fBget_alpha\fI color\fR - returns the alpha component of the specified
 color index, 
 where 0 is completely opaque (no blending with the background) through 127
 being completely transparent (the background shines through 100%).
 .PP
-\fBobjName bounds_safe\fI x y\fR returns true (1) if the specified point is
+\fIobjName \fBclip\fI ?x1 y1 x2 y2?\fR - with no arguments, returns the boundaries of the current clipping rectangle.  With arguments, sets a clipping rectangle.  Once set, all future drawing operations will remain within the specified clipping area, until a new clipping rectangle is set.
+.PP
+\fIobjName \fBbounds_safe\fI x y\fR returns true (1) if the specified point is
 within the current clipping rectangle, and false (0) if not.  
 .PP
-\fBobjName green_component\fI color\fR - returns the green component of the
+\fIobjName \fBgreen_component\fI color\fR - returns the green component of the
 specific color index.
 .PP
-\fBobjName red_component\fI color\fR - returns the red component of the
+\fIobjName \fBred_component\fI color\fR - returns the red component of the
 specified colofr index.
 .PP
-\fBobjName blue_component\fI color\fR - returns the blue component of the
+\fIobjName \fBblue_component\fI color\fR - returns the blue component of the
 specified colofr index.
 .PP
-\fBobjName rgb_components\fI color\fR - returns the red, green and blue
+\fIobjName \fBrgb_components\fI color\fR - returns the red, green and blue
 components of the color as a list.
 .PP
-\fBobjName width\fI return the width of the image, while
-\fBobjName height\fR returns the height.
+\fIobjName \fBwidth\fB return the width of the image, while
+\fIobjName \fBheight\fR returns the height.
 .PP
-\fBobjName compare \fIotherImageCommand\fR - given two images (the named object
+\fIobjName \fBcompare \fIotherImageCommand\fR - given two images (the named object
 and another image command), return a list of ways in which the two images
 are different.
 .PP
@@ -445,78 +446,82 @@ of other characteristics differing.  According to the libgd documentation,
 any difference in the transparent color is assumed to make images display
 differently, even if the transparent color is not used.
 .PP
-\fBobjName compare_ratio \fIotherImageCommand\fR - given two images of identical dimensions, returns the ratio of pixels that are identical between the two images, between 0.0 and 1.0.
+\fIobjName \fBcompare_ratio \fIotherImageCommand\fR - given two images of identical dimensions, returns the ratio of pixels that are identical between the two images, between 0.0 and 1.0.
 .PP
-\fBobjName copy\fI srcImageCommand destX destY srcX srcY width height\fR - copy 
+\fIobjName \fBcopy\fI srcImageCommand destX destY srcX srcY width height\fR - copy 
 a rectangular portion of one image to another image.  If you want to stretch or shrink the image in the process, use \fBcopy_resized\fR or \fBcopy_resampled\fR.
 .PP
-\fBobjName copy_resized\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR - used to copy a rectangular portion of one image to another image.  The X and Y dimensions of the source and destination regions can vary, resulting in stretching or shrinking of the region as appropriate.
+\fIobjName \fBcopy_resized\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR - used to copy a rectangular portion of one image to another image.  The X and Y dimensions of the source and destination regions can vary, resulting in stretching or shrinking of the region as appropriate.
 .PP
-\fBobjName copy_resampled\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR - This command provides "smooth" copying from
+\fIobjName \fBcopy_resampled\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight\fR - This command provides "smooth" copying from
 a large image to a smaller one using a weighted average of the pixels of
 the source area rather than selecting one representative pixel.
 .PP
-\fBobjName copy_rotated\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight angle\fR
+\fIobjName \fBcopy_rotated\fI srcImageCommand destX destY srcX srcY destWidth destHeight srcWidth srcHeight angle\fR
 .PP
-\fBobjName copy_merge\fI srcImageCommand destX destY srcX srcY width height percent\fR - merge two images by the specified percentage.  If the percentage is 100 then it will function the same as the \fBcopy\fR method.
+\fIobjName \fBcopy_merge\fI srcImageCommand destX destY srcX srcY width height percent\fR - merge two images by the specified percentage.  If the percentage is 100 then it will function the same as the \fBcopy\fR method.
 .PP
-\fBobjName copy_merge_grey\fI srcImageCommand destX destY srcX srcY width height percent\fR
+\fIobjName \fBcopy_merge_grey\fI srcImageCommand destX destY srcX srcY width height percent\fR
 .PP
-\fBobjName copy_palette\fI srcImageCommand\fR - copies a palette from one 
+\fIobjName \fBcopy_palette\fI srcImageCommand\fR - copies a palette from one 
 image to another, attempting to match the colors in the target image to
 the colors in the source palette.
 .PP
-\fBobjName sharpen\fI percent\fR - sharpen the specified image.  Argument
+\fIobjName \fBsharpen\fI percent\fR - sharpen the specified image.  Argument
 is the sharpening percentage and can be greater than 100.  Silently does
 nothing to non-truecolor images.  Silently does nothing for 0 percent.
 Transparency and alpha channel are not altered.
 .PP
-\fBobjName square_to_circle\fI name radius\fR - creates a new image of
+\fIobjName \fBsquare_to_circle\fI name radius\fR - creates a new image of
 the width and height radius * 2, in which the X axis of the original has
 been remapped to rho, the distance from the center.  This is known as
 a polar coordinate transform.  The source image must be square.
 .PP
+\fIobjName \fBrewrite_color\fI oldColor newColor\fR - converts all pixels
+with a color of \fIoldColor\fR to a color of \fInewColor\fR and returns
+a count of the number of pixels changed.
+.PP
 .SH IMAGE OUTPUT ROUTINES
-\fBobjName write_jpeg\fI channel quality\fR writes the image in JPEG format,
+\fIobjName \fBwrite_jpeg\fI channel quality\fR writes the image in JPEG format,
 with the specified quality level,
-to the specified Tcl channel, while \fBobjName jpeg_data\fI quality\fR
+to the specified Tcl channel, while \fIobjName \fBjpeg_data\fI quality\fR
 will return it as binary data.  Quality can range from \fB0\fR to \fB100\fR,
 where higher numbers give higher quality.
 .PP
-\fBobjName write_gif\fI channel\fR writes the image to the specified
-channel in GIF format, while \fBobjName gif_data\fR returns it as binary
+\fIobjName \fBwrite_gif\fI channel\fR writes the image to the specified
+channel in GIF format, while \fIobjName \fBgif_data\fR returns it as binary
 data.
 .PP
-\fBobjName write_png\fI channel compressionLevel\fR write the image to
+\fIobjName \fBwrite_png\fI channel compressionLevel\fR write the image to
 the specified channel, with the compression level of \fB-1\fR for the
 default set when zlib was built, \fB0\fR to indicate no compression,
 \fB1\fR to compress as quickly as possible, all the way to \fB9\fR to select 
 the best possible compression.  
-Likewise \fBobjName png_data\fI compressionLevel\fR
+Likewise \fIobjName \fBpng_data\fI compressionLevel\fR
 returns the image as binary data, with the specified compression.
 .PP
-\fBobjName write_wbmp\fI channel fgcolor\fR write the image to the specified
+\fIobjName \fBwrite_wbmp\fI channel fgcolor\fR write the image to the specified
 channel in Windows bitmap format, selecting only pixels matching the specified
-foreground color.  \fBobjName wbmp_data\fI fgcolor\fR returns the image
+foreground color.  \fIobjName \fBwbmp_data\fI fgcolor\fR returns the image
 in wbmp format as binary data.
 .PP
-\fBobjName write_gd\fI fileHandle\fR writes the image out in the 
+\fIobjName \fBwrite_gd\fI fileHandle\fR writes the image out in the 
 high-performance but non-portable \fIgd\fR format, while
-\fBobjName gd_data\fR returns the image as binary data.
+\fIobjName \fBgd_data\fR returns the image as binary data.
 .PP
-\fBobjName write_gd2\fI channel chunkSize format\fR
+\fIobjName \fBwrite_gd2\fI channel chunkSize format\fR
 .PP
-\fBobjName gd2_data\fI chunkSize format\fR writes the image out in the
+\fIobjName \fBgd2_data\fI chunkSize format\fR writes the image out in the
 high-performance but non-portable \fIgd2\fR format, with \fIchunkSize\fR
 determining the size of each chunk, and format being either \fBcompressed\fR
 or \fBraw\fR.
 .PP
 .SH ANIMATED GIFS
-\fBobjName gif_anim_begin\fI channel global_color_map loops\fR begins an 
+\fIobjName \fBgif_anim_begin\fI channel global_color_map loops\fR begins an 
 animated GIF by specifying the file channel to be written to, a \fB1\fR if the global color map is to be used, and the number of times to play the animation.
 If \fIloops\fR is zero, the animation will repeat indefinitely.
 .PP
-\fBobjName gif_anim_add \fIchannel local_color_map left_offset top_offset 
+\fIobjName \fBgif_anim_add \fIchannel local_color_map left_offset top_offset 
 delay disposal ?previous_image?\fR adds a GIF image to an animated GIF that 
 is under construction.  Set \fIlocal_color_map\fR to 1 to add a local palette for this image to the animation, else the global palette is used.
 .br
@@ -530,5 +535,5 @@ Delay specifies the delay between the previous frame and this frame in hundredth
 If the previous image is passed, the built-in GIF optimizer is automatically engaged and the disposal method specified is ignored.  The optimizer comapres the images and only writes the changed pixels to the new frame of the animation. To achieve good optimization, it is usually best to use a single global color map. To allow \fIgif_anim|add\fR to compress unchanged pixels via the use of a transparent color, the image must include a transparent color. 
 See \fBgd\fR documentation for details.
 .br
-\fBobjName gif_anim_end \fIchannel\fR is self-explanatory.
+\fIobjName \fBgif_anim_end \fIchannel\fR is self-explanatory.
 .PP

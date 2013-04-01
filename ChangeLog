@@ -1,5 +1,11 @@
 ChangeLog for tcl.gd
 ====================
+2013-04-01 karl
+    * Add new rewrite_color method to GD objects that will rewrite one
+      color to another.  Clean up manpage.
+
+    * Version bump to 1.2.
+
 2012-10-31 karl
     * Use interpreter-associated data for the next object number for
       GD objects created with a name of "#auto" rather than a global.

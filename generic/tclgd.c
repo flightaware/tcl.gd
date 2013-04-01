@@ -88,24 +88,27 @@ tclgd_imageCompareRatio (gdImagePtr im1, gdImagePtr im2)
  *    index if an indexed image.
  *
  * Results:
- *    None.
+ *    The number of pixels rewritten.
  *
  *----------------------------------------------------------------------
  */
-static void 
+static int 
 tclgd_imageRewriteColor (gdImagePtr im, int origColor, int destColor)
 {
     int x, y;
     int pixelColor;
+    int nChanged = 0;
 
     for (y = 0; (y < im->sy); y++) {
         for (x = 0; (x < im->sx); x++) {
 	    pixelColor = im->trueColor ? gdImageTrueColorPixel (im, x, y) : gdImagePalettePixel (im, x, y);
 	    if (pixelColor == origColor) {
 		gdImageSetPixel (im, x, y, destColor);
+		nChanged++;
 	    }
 	}
     }
+    return nChanged;
 }
 
 /* tclgd_complain routines -- these get called in a lot of places after
@@ -479,6 +482,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	"sharpen",
 	"compare",
 	"square_to_circle",
+	"rewrite_color",
 	"write_jpeg",
 	"jpeg_data",
 	"write_gif",
@@ -549,6 +553,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	OPT_SHARPEN,
 	OPT_COMPARE,
 	OPT_SQUARE_TO_CIRCLE,
+	OPT_REWRITE_COLOR,
 	OPT_WRITE_JPEG,
 	OPT_JPEG_DATA,
 	OPT_WRITE_GIF,
@@ -2020,6 +2025,30 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	newIm = gdImageSquareToCircle (im, radius);
 #endif
 	Tcl_CreateObjCommand (interp, Tcl_GetString(objv[2]), tclgd_gdObjectObjCmd, newIm, tclgd_GDdeleteProc);
+	break;
+      }
+
+      case OPT_REWRITE_COLOR: {
+	int origColor;
+	int newColor;
+	int nChanged;
+
+	if (objc != 4) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "origColor newColor");
+	    return TCL_ERROR;
+	}
+
+	if (tclgd_GetColor (interp, objv[2], &origColor) == TCL_ERROR) {
+	    return TCL_ERROR;
+	}
+
+	if (tclgd_GetColor (interp, objv[3], &newColor) == TCL_ERROR) {
+	    return TCL_ERROR;
+	}
+
+	nChanged = tclgd_imageRewriteColor (im, origColor, newColor);
+
+	Tcl_SetObjResult (interp, Tcl_NewIntObj (nChanged));
 	break;
       }
 
