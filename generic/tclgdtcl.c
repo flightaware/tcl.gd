@@ -1,7 +1,6 @@
 /*
- * tclcdata.c --
+ * tclgdtcl.c --
  *
- * $Id: tclgdtcl.c,v 1.5 2005-11-04 02:58:09 karl Exp $
  */
 
 #include "tclgd.h"

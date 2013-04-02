@@ -1,9 +1,10 @@
 /*
  * tcl.gd
  *
- * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
+ * Copyright (C) 2005 - 2013 by Karl Lehenbauer, All Rights Reserved
  *
- * $Id: tclgd.c,v 1.29 2008-06-06 21:51:16 karl Exp $
+ * Freely redistributable under the terms of the Berkeley copyright
+ *
  */
 
 #include "tclgd.h"
@@ -431,8 +432,11 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
     int         optIndex;
 
     static CONST char *options[] = {
-	"pixel",
+	"width",
+	"height",
+	"delete",
 	"pixelrgb",
+	"pixel",
 	"line",
 	"polygon",
 	"rectangle",
@@ -469,8 +473,6 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	"red_component",
 	"blue_component",
 	"rgb_components",
-	"width",
-	"height",
 	"compare_ratio",
 	"copy",
 	"copy_resized",
@@ -502,8 +504,11 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
     };
 
     enum options {
-	OPT_PIXEL,
+	OPT_WIDTH,
+	OPT_HEIGHT,
+	OPT_DELETE,
 	OPT_PIXELRGB,
+	OPT_PIXEL,
 	OPT_LINE,
 	OPT_POLYGON,
 	OPT_RECTANGLE,
@@ -540,8 +545,6 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	OPT_RED_COMPONENT,
 	OPT_BLUE_COMPONENT,
 	OPT_RGB_COMPONENTS,
-	OPT_WIDTH,
-	OPT_HEIGHT,
 	OPT_COMPARE_RATIO,
 	OPT_COPY,
 	OPT_COPY_RESIZED,
@@ -1667,12 +1670,32 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
       }
 
       case OPT_WIDTH:
+	if (objc != 2) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "");
+	    return TCL_ERROR;
+	}
+
 	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageSX(im)));
 	break;
 
       case OPT_HEIGHT:
+	if (objc != 2) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "");
+	    return TCL_ERROR;
+	}
+
 	Tcl_SetObjResult (interp, Tcl_NewIntObj (gdImageSY(im)));
 	break;
+
+      case OPT_DELETE: {
+	if (objc != 2) {
+	    Tcl_WrongNumArgs (interp, 2, objv, "");
+	    return TCL_ERROR;
+	}
+
+          Tcl_DeleteCommandFromToken(interp, ((tclgd_clientData *)cData)->cmdToken);
+	  break;
+      }
 
       case OPT_COMPARE_RATIO: {
 	gdImagePtr   srcIm;
@@ -2021,10 +2044,8 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	   return tclgd_complain (interp, "radius");
 	}
 
-#if 0
 	newIm = gdImageSquareToCircle (im, radius);
-#endif
-	Tcl_CreateObjCommand (interp, Tcl_GetString(objv[2]), tclgd_gdObjectObjCmd, newIm, tclgd_GDdeleteProc);
+	tclgd_newGDObject (interp, objv[2], newIm, 1);
 	break;
       }
 
@@ -2520,7 +2541,7 @@ tclgd_newGDObject (Tcl_Interp *interp, Tcl_Obj *nameObj, gdImagePtr im, int dest
 	}
     }
 
-    Tcl_CreateObjCommand (interp, newName, tclgd_gdObjectObjCmd, tclgdClientData, tclgd_GDdeleteProc);
+    tclgdClientData->cmdToken = Tcl_CreateObjCommand (interp, newName, tclgd_gdObjectObjCmd, tclgdClientData, tclgd_GDdeleteProc);
 
     Tcl_SetObjResult (interp, Tcl_NewStringObj (newName, -1));
     return TCL_OK;

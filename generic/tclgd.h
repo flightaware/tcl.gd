@@ -1,9 +1,9 @@
 /*
- * CDATA
+ * tcl.gd include file
  *
- * $Id: tclgd.h,v 1.6 2005-11-25 09:15:32 karl Exp $
+ * Copyright (C) 2005 -2013 by Karl Lehenbauer, All Rights Reserved
  *
- * Copyright (C) 2005 by Karl Lehenbauer, All Rights Reserved
+ * Redistributable under the terms of the Berkeley copyright
  */
 
 #include <tcl.h>
@@ -28,6 +28,7 @@ typedef struct tclgd_clientData
 {
     gdImagePtr   im;
     int          destroyOnDelete;
+    Tcl_Command  cmdToken;
 } tclgd_clientData;
 
 gdIOCtx *tclgd_newChannelCtx (Tcl_Channel channel);

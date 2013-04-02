@@ -7,7 +7,6 @@
  * modeled after the gd_io_file.c file in the gd package, which is documented
  * as having been written/modified 1999, Philip Warner.
  *
- * $Id: tclgdio.c,v 1.7 2005-12-18 23:49:37 karl Exp $
  */
 
 #include "tclgd.h"
