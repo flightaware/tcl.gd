@@ -3,6 +3,11 @@ ChangeLog for tcl.gd
 2013-04-01 karl
     * Add new rewrite_color method to GD objects that will rewrite one
       color to another.  Clean up manpage.
+      
+    * Add a "delete" method to the created GD objects. The result is the
+      same as doing a rename $object ""
+      
+    * Add argument count validation to the width and height methods.
 
     * Version bump to 1.2.
 
