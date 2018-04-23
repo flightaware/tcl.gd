@@ -3,5 +3,6 @@
 # and installed from the ports tree at /usr/ports/lang/tcl85
 #
 
+autoreconf
 ./configure --with-tcl=/usr/local/lib/tcl8.6 --mandir=/usr/local/man
 
