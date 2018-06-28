@@ -7,5 +7,6 @@
 # apt-get install libgd2-noxpm-dev
 #
 
-./configure --with-tcl=/usr/lib/tcl8.4 --with-tclinclude=/usr/include/tcl8.4 --with-gd-include=/usr/include --with-gd-lib=/usr/lib --enable-shared --enable-symbols
+autoreconf
+./configure --with-gd-lib=/usr/lib --enable-shared --enable-symbols
 
