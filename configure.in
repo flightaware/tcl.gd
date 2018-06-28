@@ -84,7 +84,11 @@ TEA_ADD_TCL_SOURCES([])
 
 AC_PATH_PROGS(GDLIB_CONFIG, gdlib-config)
 if test "${GDLIB_CONFIG}" = ""; then
-    AC_MSG_ERROR([Cannot locate program gdlib-config to determine GD library paths.  Make sure gdlib-config is in PATH or set GDLIB_CONFIG env var to path to gdlib-config.])
+    if test -z "$(pkg-config --modversion gdlib)"; then
+        AC_MSG_ERROR([Cannot locate program gdlib-config to determine GD library paths, or use pkg-config to emulate gdlib-config.  Make sure gdlib-config is in PATH or set GDLIB_CONFIG env var to path to gdlib-config.])
+    else
+	GDLIB_CONFIG="$(pwd)/gdlib-config"
+    fi
 fi
 
 GD_VERSION="`${GDLIB_CONFIG} --version`"

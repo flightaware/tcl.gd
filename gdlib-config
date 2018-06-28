@@ -14,7 +14,7 @@ case "$1" in
 		pkg-config --modversion gdlib | awk -F"." '{print $3}'
 		;;
 	"--includes")
-		pkg-config --variable=includedir gdlib
+		echo "-I`pkg-config --variable=includedir gdlib`"
 		;;
 	"--ldflags")
 		echo "-L`pkg-config --variable=libdir gdlib`"
