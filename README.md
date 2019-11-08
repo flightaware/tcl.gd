@@ -10,6 +10,25 @@ See the file "license.terms" for complete information.
 
 Gdtcl was written by Karl Lehenbauer.
 
+## Prerequisites
+
+Before building tcl.gd you need to install the graphics drawing library, GD, aka libgd, from https://github.com/libgd/libgd
+
+Make sure you have a dev version i.e. that the include files are installed as well as the libraries.  If using Debian use apt-get install libgd-dev.
+
+You'll also need to have installed Tcl, probably version 8.6, and you need autoconf.
+
+## Building
+
+Once you've got the prerequisites installed, run autoreconf to generate the configure script, then run the configure script, make and make install
+
+```sh
+autoreconf
+./configure --with-tcl=/usr/lib/tcl8.6
+make
+sudo make install
+```
+
 ## Using tcl.gd
 
 ```tcl
