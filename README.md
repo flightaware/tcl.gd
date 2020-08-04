@@ -1,7 +1,7 @@
 This is tcl.gd, a new Tcl interface to GD that is significantly more feature-
 complete with gd 2 than Gdtclft.
 
-Version 1.2
+Version 1.3
 
 This package is a freely available open source package under the "Berkeley"
 license, same as Tcl.  You can do virtually anything you like with it, such as 
