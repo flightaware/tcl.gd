@@ -17,6 +17,15 @@ if {[lsearch [namespace children] ::tcltest] == -1} {
 set ::tcltest::testSingleFile false
 set ::tcltest::testsDirectory [file dir [info script]]
 
+
+# Hook to determine if any of the tests failed. Then we can exit with
+# proper exit code: 0=all passed, 1=one or more failed
+proc tcltest::cleanupTestsHook {} {
+	variable numTests
+	set ::exitCode [expr {$numTests(Failed) > 0}]
+}
+
+
 # We need to ensure that the testsDirectory is absolute
 if {[catch {::tcltest::normalizePath ::tcltest::testsDirectory}]} {
     # The version of tcltest we have here does not support
@@ -62,5 +71,10 @@ foreach file [lsort [::tcltest::getMatchingFiles]] {
 # cleanup
 puts $chan "\nTests ended at [eval $timeCmd]"
 ::tcltest::cleanupTests 1
-return
 
+if {$exitCode == 1} {
+	puts "====== FAIL ====="
+	exit $exitCode
+} else {
+	puts "====== SUCCESS ====="
+}
