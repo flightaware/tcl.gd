@@ -1,3 +1,5 @@
+![Linux CI](https://github.com/flightaware/tcl.gd/workflows/Linux%20CI/badge.svg)
+
 This is tcl.gd, a new Tcl interface to GD that is significantly more feature-
 complete with gd 2 than Gdtclft.
 
