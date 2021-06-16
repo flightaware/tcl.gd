@@ -112,6 +112,54 @@ tclgd_imageRewriteColor (gdImagePtr im, int origColor, int destColor)
     return nChanged;
 }
 
+/* tclgd_supportsFileType -- runtime check for file format support */
+enum filetypes {
+    FILE_GD,
+    FILE_GD2,
+    FILE_GIF,
+    FILE_PNG,
+    FILE_JPEG,
+    FILE_WBMP,
+    FILE_XPM,
+    FILE_XBM,
+    FILE_end
+};
+
+static struct {
+    CONST char *name;
+    CONST char *testfile;
+    int supported;
+} types[] = {
+#define EXT(E) { #E, "test." #E, -1 }
+    EXT(gd),
+    EXT(gd2),
+    EXT(gif),
+    EXT(png),
+    EXT(jpeg),
+    EXT(wbmp),
+    EXT(xpm),
+    EXT(xbm),
+    { "", "", -1 }
+#undef EXT
+};
+
+static int
+tclgd_supportsFileType(enum filetypes t) {
+
+  if (t < 0 || t >= FILE_end) {
+      return 0;
+  }
+
+  if (types[t].supported < 0) {
+    /* Test for write support, which should imply full support */
+    types[t].supported = gdSupportsFileType(types[t].testfile, 1);
+  }
+
+  return types[t].supported;
+}
+
+#define CHECK_SUPPORT(T) if (!tclgd_supportsFileType(FILE_##T)) { Tcl_AppendResult (interp, "GD library not built with " #T " support", NULL); return TCL_ERROR; }
+
 /* tclgd_complain routines -- these get called in a lot of places after
  * integer and double-precision floating point conversion failures to
  * help the user understand which function argument contained bad
@@ -279,38 +327,6 @@ tclgd_complainCorrupt(Tcl_Interp *interp) {
     Tcl_AppendResult (interp, "image is corrupt or incorrect image type", NULL);
     return TCL_ERROR;
 }
-
-#ifndef GD_GIF
-static int
-tclgd_complainNoGIFSupport(Tcl_Interp *interp) {
-    Tcl_AppendResult (interp, "GD library not built with GIF support", NULL);
-    return TCL_ERROR;
-}
-#endif
-
-#ifndef GD_XPM
-static int
-tclgd_complainNoXPMSupport(Tcl_Interp *interp) {
-    Tcl_AppendResult (interp, "GD library not built with XPM support", NULL);
-    return TCL_ERROR;
-}
-#endif
-
-#ifndef GD_PNG
-static int
-tclgd_complainNoPNGSupport(Tcl_Interp *interp) {
-    Tcl_AppendResult (interp, "GD library not built with PNG support", NULL);
-    return TCL_ERROR;
-}
-#endif
-
-#ifndef GD_JPEG
-static int
-tclgd_complainNoJPEGSupport(Tcl_Interp *interp) {
-    Tcl_AppendResult (interp, "GD library not built with JPEG support", NULL);
-    return TCL_ERROR;
-}
-#endif
 
 /*
  *----------------------------------------------------------------------
@@ -2073,14 +2089,11 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	break;
       }
 
-#ifndef GD_JPEG
-      case OPT_WRITE_JPEG:
-      case OPT_JPEG_DATA:
-	return tclgd_complainNoJPEGSupport(interp);
-#else
       case OPT_WRITE_JPEG: {
 	gdIOCtx     *outctx;
 	int          quality;
+
+	CHECK_SUPPORT(JPEG)
 
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "channel quality");
@@ -2105,6 +2118,8 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int      size;
 	void    *memPtr;
 
+	CHECK_SUPPORT(JPEG)
+
 	if (objc != 3) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "quality");
 	    return TCL_ERROR;
@@ -2118,18 +2133,11 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	Tcl_SetObjResult (interp, Tcl_NewByteArrayObj (memPtr, size));
 	break;
       }
-#endif /* GD_JPEG */
 
-#ifndef GD_GIF
-      case OPT_WRITE_GIF:
-      case OPT_GIF_DATA:
-      case OPT_GIF_ANIM_BEGIN:
-      case OPT_GIF_ANIM_ADD:
-      case OPT_GIF_ANIM_END:
-	return tclgd_complainNoGIFSupport(interp);
-#else
       case OPT_WRITE_GIF: {
 	gdIOCtx     *outctx;
+
+	CHECK_SUPPORT(GIF)
 
 	if (objc != 3) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "channel");
@@ -2149,6 +2157,8 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int      size;
 	void    *memPtr;
 
+	CHECK_SUPPORT(GIF)
+
 	if (objc != 2) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "");
 	    return TCL_ERROR;
@@ -2163,6 +2173,8 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	gdIOCtx     *outctx;
 	int          globalCM;
 	int          loops;
+
+	CHECK_SUPPORT(GIF)
 
 	if (objc != 5) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "channel global_color_map loops");
@@ -2194,6 +2206,8 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int          delay;
 	int          disposal;
 	gdImagePtr   previousIm = NULL;
+
+	CHECK_SUPPORT(GIF)
 
 	if ((objc < 8) || (objc > 9)) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "channel local_color_map left_offset top_offset delay disposal ?previous_image?");
@@ -2238,6 +2252,8 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
       case OPT_GIF_ANIM_END: {
 	gdIOCtx     *outctx;
 
+	CHECK_SUPPORT(GIF)
+
 	if (objc != 3) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "channel");
 	    return TCL_ERROR;
@@ -2251,16 +2267,12 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	outctx->gd_free (outctx);
 	break;
       }
-#endif /* GD_GIF */
 
-#ifndef GD_PNG
-      case OPT_WRITE_PNG:
-      case OPT_PNG_DATA:
-	return tclgd_complainNoPNGSupport(interp);
-#else
       case OPT_WRITE_PNG: {
 	gdIOCtx     *outctx;
 	int          compression;
+
+	CHECK_SUPPORT(PNG)
 
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "channel compressionLevel");
@@ -2290,6 +2302,8 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int      size;
 	void    *memPtr;
 
+	CHECK_SUPPORT(PNG)
+
 	if (objc != 3) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "compressionLevel");
 	    return TCL_ERROR;
@@ -2308,11 +2322,12 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	Tcl_SetObjResult (interp, Tcl_NewByteArrayObj (memPtr, size));
 	break;
       }
-#endif /* GD_PNG */
 
       case OPT_WRITE_WBMP: {
 	gdIOCtx     *outctx;
 	int          fgcolor;
+
+	CHECK_SUPPORT(WBMP)
 
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "channel fgcolor");
@@ -2337,6 +2352,8 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int      size;
 	void    *memPtr;
 
+	CHECK_SUPPORT(WBMP)
+
 	if (objc != 3) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "fgcolor");
 	    return TCL_ERROR;
@@ -2353,6 +2370,8 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 
       case OPT_WRITE_GD: {
 	FILE *file;
+
+	CHECK_SUPPORT(GD)
 
 	if (objc != 3) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "fileHandle");
@@ -2371,6 +2390,8 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
       case OPT_GD_DATA: {
 	int      size;
 	void    *memPtr;
+
+	CHECK_SUPPORT(GD)
 
 	if (objc != 2) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "");
@@ -2399,6 +2420,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    FORMAT_RAW
 	};
 
+	CHECK_SUPPORT(GD2)
 
 	if (objc != 5) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "channel chunkSize format");
@@ -2457,6 +2479,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	    FORMAT_RAW
 	};
 
+	CHECK_SUPPORT(GD2)
 
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "chunkSize format");
@@ -2711,12 +2734,9 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
        break;
       }
 
-#ifndef GD_JPEG
-      case OPT_CREATE_FROM_JPEG:
-      case OPT_CREATE_FROM_JPEG_DATA:
-	return tclgd_complainNoJPEGSupport(interp);
-#else
       case OPT_CREATE_FROM_JPEG: {
+	CHECK_SUPPORT(JPEG)
+
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name channel");
 	    return TCL_ERROR;
@@ -2734,6 +2754,8 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
         int            size;
 	unsigned char *memPtr;
 
+	CHECK_SUPPORT(JPEG)
+
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name data");
 	    return TCL_ERROR;
@@ -2743,14 +2765,10 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	im = gdImageCreateFromJpegPtr (size, memPtr);
 	break;
       }
-#endif /* GD_JPEG */
 
-#ifndef GD_PNG
-      case OPT_CREATE_FROM_PNG:
-      case OPT_CREATE_FROM_PNG_DATA:
-	return tclgd_complainNoPNGSupport(interp);
-#else
       case OPT_CREATE_FROM_PNG: {
+	CHECK_SUPPORT(PNG)
+
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name channel");
 	    return TCL_ERROR;
@@ -2768,6 +2786,8 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
         int            size;
 	unsigned char *memPtr;
 
+	CHECK_SUPPORT(PNG)
+
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name data");
 	    return TCL_ERROR;
@@ -2777,14 +2797,10 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	im = gdImageCreateFromPngPtr (size, memPtr);
 	break;
       }
-#endif /* GD_PNG */
 
-#ifndef GD_GIF
-      case OPT_CREATE_FROM_GIF:
-      case OPT_CREATE_FROM_GIF_DATA:
-	return tclgd_complainNoGIFSupport(interp);
-#else
       case OPT_CREATE_FROM_GIF: {
+	CHECK_SUPPORT(GIF)
+
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name channel");
 	    return TCL_ERROR;
@@ -2802,6 +2818,8 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
         int            size;
 	unsigned char *memPtr;
 
+	CHECK_SUPPORT(GIF)
+
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name data");
 	    return TCL_ERROR;
@@ -2811,9 +2829,10 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	im = gdImageCreateFromGifPtr (size, memPtr);
 	break;
       }
-#endif /* GD_GIF */
 
       case OPT_CREATE_FROM_GD: {
+	CHECK_SUPPORT(GD);
+
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name channel");
 	    return TCL_ERROR;
@@ -2831,6 +2850,8 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
         int            size;
 	unsigned char *memPtr;
 
+	CHECK_SUPPORT(GD);
+
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name data");
 	    return TCL_ERROR;
@@ -2842,6 +2863,8 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_GD2: {
+	CHECK_SUPPORT(GD2);
+
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name channel");
 	    return TCL_ERROR;
@@ -2859,6 +2882,8 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
         int            size;
 	unsigned char *memPtr;
 
+	CHECK_SUPPORT(GD2);
+
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name data");
 	    return TCL_ERROR;
@@ -2874,6 +2899,8 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	int          y;
 	int          w;
 	int          h;
+
+	CHECK_SUPPORT(GD2);
 
 	if (objc != 8) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name channel x y w h");
@@ -2917,6 +2944,8 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	int            w;
 	int            h;
 
+	CHECK_SUPPORT(GD2);
+
 	if (objc != 8) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name data x y w h");
 	    return TCL_ERROR;
@@ -2945,6 +2974,8 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_WBMP: {
+	CHECK_SUPPORT(WBMP);
+
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name channel");
 	    return TCL_ERROR;
@@ -2962,6 +2993,8 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
         int            size;
 	unsigned char *memPtr;
 
+	CHECK_SUPPORT(WBMP);
+
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name data");
 	    return TCL_ERROR;
@@ -2974,6 +3007,8 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 
       case OPT_CREATE_FROM_XBM: {
 	FILE *file;
+
+	CHECK_SUPPORT(XBM);
 
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name fileHandle");
@@ -2988,11 +3023,9 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	break;
       }
 
-#ifndef GD_XPM
-      case OPT_CREATE_FROM_XPM:
-	return tclgd_complainNoXPMSupport(interp);
-#else
       case OPT_CREATE_FROM_XPM: {
+	CHECK_SUPPORT(XPM)
+
 	if (objc != 4) {
 	    Tcl_WrongNumArgs (interp, 2, objv, "name fileName");
 	    return TCL_ERROR;
@@ -3001,7 +3034,6 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	im = gdImageCreateFromXpm (Tcl_GetString(objv[2]));
 	break;
       }
-#endif /* GD_XPM */
 
       case OPT_VERSION: {
 	if (objc != 2) {
@@ -3019,7 +3051,11 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
 	    return TCL_ERROR;
 	}
 
-	Tcl_SetObjResult (interp, Tcl_NewStringObj (GD_FEATURES, -1));
+	for (int i = 0; types[i].name != NULL; i++) {
+	    if (tclgd_supportsFileType(i)) {
+		Tcl_AppendElement (interp, types[i].name);
+	    }
+	}
 	return TCL_OK;
       }
     }
