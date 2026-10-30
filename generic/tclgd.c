@@ -126,8 +126,8 @@ enum filetypes {
 };
 
 static struct {
-    CONST char *name;
-    CONST char *testfile;
+    const char *name;
+    const char *testfile;
     int supported;
 } types[] = {
 #define EXT(E) { #E, "test." #E, -1 }
@@ -367,7 +367,7 @@ void tclgd_GDdeleteProc (ClientData clientData) {
  {
      int optIndex;
 
-     static CONST char *options[] = {
+     static const char *options[] = {
 	"antialiased",
 	"brushed",
 	"styled",
@@ -442,12 +442,12 @@ void tclgd_GDdeleteProc (ClientData clientData) {
  *----------------------------------------------------------------------
  */
 int
-tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CONST objv[])
+tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *const objv[])
 {
     gdImagePtr im = ((tclgd_clientData *)cData)->im;
     int         optIndex;
 
-    static CONST char *options[] = {
+    static const char *options[] = {
 	"width",
 	"height",
 	"delete",
@@ -714,7 +714,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int          y;
 	int          color;
 
-	static CONST char *subOptions[] = {
+	static const char *subOptions[] = {
 	    "filled",
 	    "open",
 	    "basic",
@@ -905,7 +905,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int     style = 0;
 	int     styleIndex;
 
-	static CONST char *styles[] = {
+	static const char *styles[] = {
 	    "arc",
 	    "chord",
 	    "pie",
@@ -2409,7 +2409,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int          formatIndex;
 	int          format = 0;
 
-	static CONST char *formatOptions[] = {
+	static const char *formatOptions[] = {
 	    "compressed",
 	    "raw",
 	    NULL
@@ -2468,7 +2468,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *CO
 	int          size;
 	void        *memPtr;
 
-	static CONST char *formatOptions[] = {
+	static const char *formatOptions[] = {
 	    "compressed",
 	    "raw",
 	    NULL
@@ -2628,13 +2628,13 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
     ClientData clientData;		/* registered proc hashtable ptr. */
     Tcl_Interp *interp;			/* Current interpreter. */
     int objc;				/* Number of arguments. */
-    Tcl_Obj   *CONST objv[];
+    Tcl_Obj   *const objv[];
 {
     int          optIndex;
     gdImagePtr   im = NULL;
     gdIOCtx     *inctx = NULL;
 
-    static CONST char *options[] = {
+    static const char *options[] = {
         "create",
 	"create_truecolor",
 	"create_from_jpeg",
@@ -2751,7 +2751,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_JPEG_DATA: {
-        int            size;
+        Tcl_Size       size;
 	unsigned char *memPtr;
 
 	CHECK_SUPPORT(JPEG)
@@ -2783,7 +2783,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_PNG_DATA: {
-        int            size;
+        Tcl_Size       size;
 	unsigned char *memPtr;
 
 	CHECK_SUPPORT(PNG)
@@ -2815,7 +2815,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_GIF_DATA: {
-        int            size;
+        Tcl_Size       size;
 	unsigned char *memPtr;
 
 	CHECK_SUPPORT(GIF)
@@ -2847,7 +2847,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_GD_DATA: {
-        int            size;
+        Tcl_Size       size;
 	unsigned char *memPtr;
 
 	CHECK_SUPPORT(GD);
@@ -2879,7 +2879,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_GD2_DATA: {
-        int            size;
+        Tcl_Size       size;
 	unsigned char *memPtr;
 
 	CHECK_SUPPORT(GD2);
@@ -2936,7 +2936,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_GD2_PART_DATA: {
-        int            size;
+        Tcl_Size       size;
 	unsigned char *memPtr;
 
 	int            x;
@@ -2990,7 +2990,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_WBMP_DATA: {
-        int            size;
+        Tcl_Size       size;
 	unsigned char *memPtr;
 
 	CHECK_SUPPORT(WBMP);
