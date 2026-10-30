@@ -2751,7 +2751,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_JPEG_DATA: {
-        int            size;
+        Tcl_Size       size;
 	unsigned char *memPtr;
 
 	CHECK_SUPPORT(JPEG)
@@ -2783,7 +2783,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_PNG_DATA: {
-        int            size;
+        Tcl_Size       size;
 	unsigned char *memPtr;
 
 	CHECK_SUPPORT(PNG)
@@ -2815,7 +2815,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_GIF_DATA: {
-        int            size;
+        Tcl_Size       size;
 	unsigned char *memPtr;
 
 	CHECK_SUPPORT(GIF)
@@ -2847,7 +2847,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_GD_DATA: {
-        int            size;
+        Tcl_Size       size;
 	unsigned char *memPtr;
 
 	CHECK_SUPPORT(GD);
@@ -2879,7 +2879,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_GD2_DATA: {
-        int            size;
+        Tcl_Size       size;
 	unsigned char *memPtr;
 
 	CHECK_SUPPORT(GD2);
@@ -2936,7 +2936,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_GD2_PART_DATA: {
-        int            size;
+        Tcl_Size       size;
 	unsigned char *memPtr;
 
 	int            x;
@@ -2990,7 +2990,7 @@ tclgd_GDObjCmd(clientData, interp, objc, objv)
       }
 
       case OPT_CREATE_FROM_WBMP_DATA: {
-        int            size;
+        Tcl_Size       size;
 	unsigned char *memPtr;
 
 	CHECK_SUPPORT(WBMP);
