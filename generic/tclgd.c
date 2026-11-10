@@ -706,7 +706,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *co
       case OPT_POLYGON: {
         int         suboptIndex;
 	Tcl_Obj   **pointObjList;
-	int         nElements;
+	Tcl_Size    nElements;
 	int         objOffset;
 	gdPoint     *points;
 	int          i;
@@ -1464,7 +1464,7 @@ tclgd_gdObjectObjCmd(ClientData cData, Tcl_Interp *interp, int objc, Tcl_Obj *co
 
       case OPT_STYLE: {
 	Tcl_Obj   **colorObjList;
-	int         nColors;
+	Tcl_Size    nColors;
 	int         i;
 	int        *styleInts;
 
